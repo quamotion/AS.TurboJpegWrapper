@@ -1,0 +1,17 @@
+syntax: glob
+$tf
+bin
+obj
+.vs
+ignore
+packages
+ConnectionStrings.config
+*.psess
+*.suo
+*.DotSettings
+*.orig
+*.user
+*.vsp
+*.vspx
+ConnectionStrings.xml
+*.userprefs
