@@ -171,25 +171,25 @@ namespace TurboJpegWrapper
         /// </summary>
         TJPF_GRAY,
         /// <summary>
-        /// RGBA pixel format.  This is the same as @ref TJPF_RGBX, except that when
+        /// RGBA pixel format.  This is the same as <see cref="TJPF_RGBX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_RGBA,
         /// <summary>
-        /// BGRA pixel format.  This is the same as @ref TJPF_BGRX, except that when
+        /// BGRA pixel format.  This is the same as <see cref="TJPF_BGRX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_BGRA,
         /// <summary>
-        /// ABGR pixel format.  This is the same as @ref TJPF_XBGR, except that when
+        /// ABGR pixel format.  This is the same as <see cref="TJPF_XBGR"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_ABGR,
         /// <summary>
-        /// ARGB pixel format.  This is the same as @ref TJPF_XRGB, except that when
+        /// ARGB pixel format.  This is the same as <see cref="TJPF_XRGB"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
@@ -218,6 +218,10 @@ namespace TurboJpegWrapper
     [Flags]
     public enum TJFlags
     {
+        /// <summary>
+        /// Flags not set
+        /// </summary>
+        NONE = 0,
         /// <summary>
         /// The uncompressed source/destination image is stored in bottom-up (Windows, OpenGL) order, 
         /// not top-down (X11) order.

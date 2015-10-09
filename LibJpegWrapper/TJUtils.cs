@@ -27,9 +27,9 @@ namespace TurboJpegWrapper
             switch (pixelFormat)
             {
                 case PixelFormat.Format32bppArgb:
-                    return TJPixelFormats.TJPF_ARGB;
+                    return TJPixelFormats.TJPF_BGRA;
                 case PixelFormat.Format24bppRgb:
-                    return TJPixelFormats.TJPF_RGB;
+                    return TJPixelFormats.TJPF_BGR;
                 case PixelFormat.Format8bppIndexed:
                     return TJPixelFormats.TJPF_GRAY;
                 default:

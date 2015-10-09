@@ -115,7 +115,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="turbojpeg.h" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="x64\turbojpeg.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

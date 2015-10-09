@@ -35,7 +35,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>TurboJpegWrapper</Id>
-    <Version>1.4.2.3</Version>
+    <Version>1.4.2.4</Version>
     <Title>Libjpeg-Turbo wrapper for .Net</Title>
     <Authors>Autonomic Systems</Authors>
     <Owners>Autonomic Systems</Owners>

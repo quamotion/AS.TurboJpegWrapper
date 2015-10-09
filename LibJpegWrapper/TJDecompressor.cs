@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TurboJpegWrapper
 {
@@ -41,18 +41,17 @@ namespace TurboJpegWrapper
         /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <param name="width">Width of image in pixels</param>
+        /// <param name="height">Height of image in pixels</param>
+        /// <param name="stride">Bytes per line in the destination image</param>
         /// <returns>Raw pixel data of specified format</returns>
         /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
-        /// <exception cref="OutOfMemoryException">Unable to allocate buffer to store decompressed image</exception>
-        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
-        public Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
+        public unsafe byte[] Decompress(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException("this");
 
-            int width;
-            int height;
             int subsampl;
             int colorspace;
             var funcResult = TurboJpegImport.tjDecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
@@ -63,20 +62,19 @@ namespace TurboJpegWrapper
                 TJUtils.GetErrorAndThrow();
             }
 
-            var targetFormat = TJUtils.ConvertPixelFormat(destPixelFormat);
-
-            var bufSize = width * height * TurboJpegImport.PixelSizes[targetFormat];
-            var buf = Marshal.AllocHGlobal(bufSize);
-
-            try
+            var targetFormat = destPixelFormat;
+            stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[targetFormat]);
+            var bufSize = stride * height;
+            var buf = new byte[bufSize];
+            fixed (byte* bufPtr = buf)
             {
                 funcResult = TurboJpegImport.tjDecompress(
                     _decompressorHandle,
                     jpegBuf,
                     jpegBufSize,
-                    buf,
+                    (IntPtr)bufPtr,
                     width,
-                    0,
+                    stride,
                     height,
                     (int)targetFormat,
                     (int)flags);
@@ -85,20 +83,8 @@ namespace TurboJpegWrapper
                 {
                     TJUtils.GetErrorAndThrow();
                 }
-                var result = new Bitmap(width, height, destPixelFormat);
-                var data = result.LockBits(
-                    new Rectangle(0, 0, width, height),
-                    ImageLockMode.WriteOnly,
-                    destPixelFormat);
-                data.Scan0 = buf;
-                result.UnlockBits(data);
-                return result;
 
-            }
-            catch (TJException)
-            {
-                Marshal.FreeHGlobal(buf);
-                throw;
+                return buf;
             }
         }
 
@@ -108,21 +94,86 @@ namespace TurboJpegWrapper
         /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <param name="width">Width of image in pixels</param>
+        /// <param name="height">Height of image in pixels</param>
+        /// <param name="stride">Bytes per line in the destination image</param>
         /// <returns>Raw pixel data of specified format</returns>
         /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
-        /// <exception cref="OutOfMemoryException">Unable to allocate buffer to store decompressed image</exception>
+        public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException("this");
+
+            var jpegBufSize = (ulong)jpegBuf.Length;
+            fixed (byte* jpegPtr = jpegBuf)
+            {
+                return Decompress((IntPtr)jpegPtr, jpegBufSize, destPixelFormat, flags, out width, out height, out stride);
+            }
+        }
+
+        /// <summary>
+        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
+        /// </summary>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
+        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <returns>Decompressed image of specified format</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
+        public unsafe Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException("this");
+
+            var targetFormat = TJUtils.ConvertPixelFormat(destPixelFormat);
+            int width;
+            int height;
+            int stride;
+            var buffer = Decompress(jpegBuf, jpegBufSize, targetFormat, flags, out width, out height, out stride);
+            Bitmap result;
+            fixed (byte* bufferPtr = buffer)
+            {
+                result = new Bitmap(width, height, stride, destPixelFormat, (IntPtr)bufferPtr);
+                if (destPixelFormat == PixelFormat.Format8bppIndexed)
+                {
+                    result.Palette = FixPaletteToGrayscale(result.Palette);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
+        /// </summary>
+        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
+        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <returns>Decompressed image of specified format</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
         /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
         public unsafe Bitmap Decompress(byte[] jpegBuf, PixelFormat destPixelFormat, TJFlags flags)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException("this");
-            
+
             var jpegBufSize = (ulong)jpegBuf.Length;
             fixed (byte* jpegPtr = jpegBuf)
             {
-                return Decompress((IntPtr) jpegPtr, jpegBufSize, destPixelFormat, flags);
+                return Decompress((IntPtr)jpegPtr, jpegBufSize, destPixelFormat, flags);
             }
+        }
+
+        private ColorPalette FixPaletteToGrayscale(ColorPalette palette)
+        {
+            for (var index = 0; index < palette.Entries.Length; ++index)
+            {
+                palette.Entries[index] = Color.FromArgb(index, index, index);
+            }
+            return palette;
         }
 
         /// <summary>

@@ -38,8 +38,7 @@ namespace TurboJpegWrapper.Tests
 
         public static IEnumerable<byte[]> GetTestImagesData(string searchPattern)
         {
-            var path = Assembly.GetExecutingAssembly().Location;
-            var imagesDir = Path.Combine(Path.GetDirectoryName(path), "images");
+            var imagesDir = Path.Combine(BinPath, "images");
 
             foreach (var file in Directory.EnumerateFiles(imagesDir, searchPattern))
             {
@@ -47,5 +46,14 @@ namespace TurboJpegWrapper.Tests
                 yield return File.ReadAllBytes(file);
             }
         }
+
+       public static string BinPath
+       {
+           get
+           {
+               var path = Assembly.GetExecutingAssembly().Location;
+               return Path.GetDirectoryName(path);
+           }
+       }
     }
 }
