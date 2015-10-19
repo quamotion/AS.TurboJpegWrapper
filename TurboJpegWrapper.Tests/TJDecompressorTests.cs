@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using TS.NativeTools;
 
 namespace TurboJpegWrapper.Tests
 {
@@ -39,18 +35,16 @@ namespace TurboJpegWrapper.Tests
             PixelFormat.Format24bppRgb,
             PixelFormat.Format8bppIndexed)]PixelFormat format)
         {
-            var imageidx = 0;
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
                 Assert.DoesNotThrow(() =>
                 {
-                    var result = _decompressor.Decompress(data, format, TJFlags.NONE);
+                    var result = _decompressor.Decompress(data.Item2, format, TJFlags.NONE);
                     Assert.NotNull(result);
-                    
-                    var file = Path.Combine(OutDirectory, $"{imageidx}_{format}.bmp");
+
+                    var file = Path.Combine(OutDirectory, $"{Path.GetFileNameWithoutExtension(data.Item1)}_{format}.bmp");
                     result.Save(file);
                 });
-                imageidx++;
             }
         }
 
@@ -63,13 +57,13 @@ namespace TurboJpegWrapper.Tests
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                var dataPtr = TS.NativeTools.InteropUtils.CopyDataToPointer(data);
+                var dataPtr = InteropUtils.CopyDataToPointer(data.Item2);
                 Assert.DoesNotThrow(() =>
                 {
-                    var result = _decompressor.Decompress(dataPtr, (ulong)data.Length, format, TJFlags.NONE);
+                    var result = _decompressor.Decompress(dataPtr, (ulong)data.Item2.Length, format, TJFlags.NONE);
                     Assert.NotNull(result);
                 });
-                TS.NativeTools.InteropUtils.FreePtr(dataPtr);
+                InteropUtils.FreePtr(dataPtr);
             }
         }
     }

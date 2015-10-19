@@ -365,26 +365,28 @@ namespace TurboJpegWrapper
         public static int tjTransform(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
           ulong[] dstSizes, IntPtr transforms, int flags)
         {
+            var intSizes = new uint[dstSizes.Length];
+            for (var i = 0; i < dstSizes.Length; i++)
+            {
+                intSizes[i] = (uint)dstSizes[i];
+            }
+            int result;
             switch (IntPtr.Size)
             {
                 case 4:
-                    var intSizes = new uint[dstSizes.Length];
-                    for (var i = 0; i < dstSizes.Length; i++)
-                    {
-                        intSizes[i] = (uint)dstSizes[i];
-                    }
-                    var result = tjTransform_x86(handle, jpegBuf, (uint)jpegSize, n, dstBufs, intSizes, transforms, flags);
-                    for (var i = 0; i < dstSizes.Length; i++)
-                    {
-                        dstSizes[i] = intSizes[i];
-                    }
-                    return result;
+                    result = tjTransform_x86(handle, jpegBuf, (uint)jpegSize, n, dstBufs, intSizes, transforms, flags);
+                    break;
                 case 8:
-                    return tjTransform_x64(handle, jpegBuf, jpegSize, n, dstBufs, dstSizes, transforms, flags);
-
+                    result = tjTransform_x64(handle, jpegBuf, jpegSize, n, dstBufs, intSizes, transforms, flags);
+                    break;
                 default:
                     throw new InvalidOperationException("Invalid platform. Can not find proper function");
             }
+            for (var i = 0; i < dstSizes.Length; i++)
+            {
+                dstSizes[i] = intSizes[i];
+            }
+            return result;
         }
 
         [DllImport("turbojpeg.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
@@ -392,7 +394,7 @@ namespace TurboJpegWrapper
          uint[] dstSizes, IntPtr transforms, int flags);
         [DllImport("turbojpeg.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
         private static extern int tjTransform_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
-         ulong[] dstSizes, IntPtr transforms, int flags);
+         uint[] dstSizes, IntPtr transforms, int flags);
 
         /// <summary>
         /// Destroy a TurboJPEG compressor, decompressor, or transformer instance

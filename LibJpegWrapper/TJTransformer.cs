@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using TS.NativeTools;
 
@@ -56,20 +57,55 @@ namespace TurboJpegWrapper
             var destBufs = new IntPtr[count];
             var destSizes = new ulong[count];
 
+
+            int subsampl;
+            int colorspace;
+            int width;
+            int height;
+            var funcResult = TurboJpegImport.tjDecompressHeader(_transformHandle, jpegBuf, jpegBufSize,
+                out width, out height, out subsampl, out colorspace);
+
+            if (funcResult == -1)
+            {
+                TJUtils.GetErrorAndThrow();
+            }
+
+            Size mcuSize;
+            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOptions)subsampl, out mcuSize))
+            {
+                throw new TJException("Unable to read Subsampling Options from jpeg header");
+            }
+
+
+
             var tjTransforms = new tjtransform[count];
             for (var i = 0; i < count; i++)
             {
+                var x = CorrectRegionCoordinate(transforms[i].Region.X, mcuSize.Width);
+                var y = CorrectRegionCoordinate(transforms[i].Region.Y, mcuSize.Height);
+                var w = CorrectRegionSize(transforms[i].Region.X, x, transforms[i].Region.W, width);
+                var h = CorrectRegionSize(transforms[i].Region.Y, y, transforms[i].Region.H, height);
+
+
                 tjTransforms[i] = new tjtransform
                 {
                     op = (int)transforms[i].Operation,
                     options = (int)transforms[i].Options,
-                    r = transforms[i].Region
+                    r = new TJRegion
+                    {
+                        X = x,
+                        Y = y,
+                        W = w,
+                        H = h
+                    },
+                    data = transforms[i].CallbackData,
+                    customFilter = transforms[i].CustomFilter
                 };
             }
             var transformsPtr = InteropUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                var funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -95,6 +131,41 @@ namespace TurboJpegWrapper
                 InteropUtils.FreePtr(transformsPtr);
             }
         }
+
+        /// <summary>
+        /// Correct region coordinate to be evenly divisible by the MCU block dimension
+        /// </summary>
+        /// <returns></returns>
+        private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
+        {
+            var realCoordinate = desiredCoordinate;
+            var remainder = realCoordinate % mcuBlockSize;
+            if (remainder != 0)
+            {
+                realCoordinate = realCoordinate - remainder < 0 ? 0 : realCoordinate - remainder;
+            }
+            return realCoordinate;
+        }
+        private static int CorrectRegionSize(int desiredCoordinate, int realCoordinate, int desiredSize, int imageSize)
+        {
+            var delta = desiredCoordinate - realCoordinate;
+            if (desiredCoordinate == realCoordinate)
+            {
+                if (realCoordinate + desiredSize < imageSize)
+                    return desiredSize;
+                else
+                    return imageSize - realCoordinate;
+            }
+            else
+            {
+                if (realCoordinate + delta + desiredSize < imageSize)
+                    return desiredSize + delta;
+                else
+                    return imageSize - realCoordinate;
+            }
+        }
+
+
         /// <summary>Transforms input image into one or several destinations</summary>
         /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
         /// <param name="transforms">Array of transform descriptions to be applied to the source image </param>
@@ -112,7 +183,7 @@ namespace TurboJpegWrapper
 
             fixed (byte* jpegPtr = jpegBuf)
             {
-                return Transform((IntPtr) jpegPtr, (ulong) jpegBuf.Length, transforms, flags);
+                return Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
             }
         }
 

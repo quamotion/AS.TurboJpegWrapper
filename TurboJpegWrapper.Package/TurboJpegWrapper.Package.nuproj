@@ -35,7 +35,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>TurboJpegWrapper</Id>
-    <Version>1.4.2.4</Version>
+    <Version>1.4.2.5</Version>
     <Title>Libjpeg-Turbo wrapper for .Net</Title>
     <Authors>Autonomic Systems</Authors>
     <Owners>Autonomic Systems</Owners>
@@ -53,10 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="build\TurboJpegWrapper.targets" />
-    <Content Include="content\x64\turbojpeg.dll">
+    <Content Include="build\x64\turbojpeg.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="content\x86\turbojpeg.dll">
+    <Content Include="build\x86\turbojpeg.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

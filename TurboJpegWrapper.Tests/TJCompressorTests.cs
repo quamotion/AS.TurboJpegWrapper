@@ -55,7 +55,7 @@ namespace TurboJpegWrapper.Tests
 
                         Assert.NotNull(result);
 
-                        var file = Path.Combine(OutDirectory, $"{options}_{quality}_{imageidx}.jpg");
+                        var file = Path.Combine(OutDirectory, $"{imageidx}_{quality}_{options}.jpg");
                         File.WriteAllBytes(file, result);
                     });
 

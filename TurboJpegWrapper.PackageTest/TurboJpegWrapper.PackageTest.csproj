@@ -48,8 +48,8 @@
       <HintPath>..\packages\TS.NativeLibLoader.1.2.1\lib\net35\TS.NativeTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="TurboJpegWrapper, Version=1.4.2.18212, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TurboJpegWrapper.1.4.2.3\lib\net35\TurboJpegWrapper.dll</HintPath>
+    <Reference Include="TurboJpegWrapper, Version=1.4.2.16487, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TurboJpegWrapper.1.4.2.5\lib\net35\TurboJpegWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -63,17 +63,13 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="x64\turbojpeg.dll" />
-    <Content Include="x86\turbojpeg.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\TurboJpegWrapper.1.4.2.3\build\TurboJpegWrapper.targets" Condition="Exists('..\packages\TurboJpegWrapper.1.4.2.3\build\TurboJpegWrapper.targets')" />
+  <Import Project="..\packages\TurboJpegWrapper.1.4.2.5\build\TurboJpegWrapper.targets" Condition="Exists('..\packages\TurboJpegWrapper.1.4.2.5\build\TurboJpegWrapper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\TurboJpegWrapper.1.4.2.3\build\TurboJpegWrapper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\TurboJpegWrapper.1.4.2.3\build\TurboJpegWrapper.targets'))" />
+    <Error Condition="!Exists('..\packages\TurboJpegWrapper.1.4.2.5\build\TurboJpegWrapper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\TurboJpegWrapper.1.4.2.5\build\TurboJpegWrapper.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

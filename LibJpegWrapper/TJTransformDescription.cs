@@ -1,4 +1,6 @@
-﻿namespace TurboJpegWrapper
+﻿using System;
+
+namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
     /// <summary>
@@ -18,5 +20,15 @@
         /// Transform region
         /// </summary>
         public TJRegion Region { get; set; }
+
+        /// <summary>
+        /// Callback data
+        /// </summary>
+        public IntPtr CallbackData { get; set; }
+
+        /// <summary>
+        /// Custom filter delegate
+        /// </summary>
+        public CustomFilter CustomFilter { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace TurboJpegWrapper
     /// Lossless transform
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    struct tjtransform
+    public  struct tjtransform
     {
         /// <summary>
         /// Cropping region
@@ -51,7 +51,7 @@ namespace TurboJpegWrapper
         /// new JPEG image.  This allows for custom filters or other transformations
         /// to be applied in the frequency domain.
         /// </summary>
-        public customFilter customFilter { get; set; }
+        public CustomFilter customFilter { get; set; }
     }
 
     /// <summary>
@@ -96,6 +96,6 @@ namespace TurboJpegWrapper
     /// Original signature is:
     /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c></para> 
     /// </remarks>
-    delegate int customFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
+    public delegate int CustomFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
 
 }

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TurboJpegWrapper.Tests
 {
-   static class TestUtils
+    static class TestUtils
     {
         public static IEnumerable<Bitmap> GetTestImages(string searchPattern)
         {
@@ -22,7 +20,7 @@ namespace TurboJpegWrapper.Tests
                 try
                 {
                     bmp = (Bitmap)Image.FromFile(file);
-                    System.Diagnostics.Debug.WriteLine($"Input file is {file}");
+                    Debug.WriteLine($"Input file is {file}");
                 }
                 catch (OutOfMemoryException)
                 {
@@ -36,24 +34,24 @@ namespace TurboJpegWrapper.Tests
             }
         }
 
-        public static IEnumerable<byte[]> GetTestImagesData(string searchPattern)
+        public static IEnumerable<Tuple<string, byte[]>> GetTestImagesData(string searchPattern)
         {
             var imagesDir = Path.Combine(BinPath, "images");
 
             foreach (var file in Directory.EnumerateFiles(imagesDir, searchPattern))
             {
-                System.Diagnostics.Debug.WriteLine($"Input file is {file}");
-                yield return File.ReadAllBytes(file);
+                Debug.WriteLine($"Input file is {file}");
+                yield return new Tuple<string, byte[]>(file, File.ReadAllBytes(file));
             }
         }
 
-       public static string BinPath
-       {
-           get
-           {
-               var path = Assembly.GetExecutingAssembly().Location;
-               return Path.GetDirectoryName(path);
-           }
-       }
+        public static string BinPath
+        {
+            get
+            {
+                var path = Assembly.GetExecutingAssembly().Location;
+                return Path.GetDirectoryName(path);
+            }
+        }
     }
 }
