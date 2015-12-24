@@ -33,4 +33,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.4.2.*")]
-[assembly: AssemblyFileVersion("1.4.2.4")]
+[assembly: AssemblyFileVersion("1.4.2.6")]
+
+[assembly:InternalsVisibleTo("TurboJpegWrapper.Tests")]

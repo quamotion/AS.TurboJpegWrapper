@@ -2,8 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper

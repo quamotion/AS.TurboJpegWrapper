@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using TS.NativeTools;
 
 namespace TurboJpegWrapper
 {
@@ -102,7 +101,7 @@ namespace TurboJpegWrapper
                     customFilter = transforms[i].CustomFilter
                 };
             }
-            var transformsPtr = InteropUtils.StructArrayToIntPtr(tjTransforms);
+            var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
                 funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
@@ -128,7 +127,7 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                InteropUtils.FreePtr(transformsPtr);
+                TJUtils.FreePtr(transformsPtr);
             }
         }
 

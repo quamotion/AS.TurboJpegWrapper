@@ -1,7 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using System.IO;
 using NUnit.Framework;
-using TS.NativeTools;
 
 namespace TurboJpegWrapper.Tests
 {
@@ -57,13 +56,13 @@ namespace TurboJpegWrapper.Tests
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                var dataPtr = InteropUtils.CopyDataToPointer(data.Item2);
+                var dataPtr = TJUtils.CopyDataToPointer(data.Item2);
                 Assert.DoesNotThrow(() =>
                 {
                     var result = _decompressor.Decompress(dataPtr, (ulong)data.Item2.Length, format, TJFlags.NONE);
                     Assert.NotNull(result);
                 });
-                InteropUtils.FreePtr(dataPtr);
+                TJUtils.FreePtr(dataPtr);
             }
         }
     }
