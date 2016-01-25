@@ -86,6 +86,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>TurboJpegWrapper.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -113,6 +119,7 @@
     <Content Include="turbojpeg.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TurboJpegWrapper.snk" />
     <None Include="x64\turbojpeg.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
