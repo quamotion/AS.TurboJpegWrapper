@@ -15,10 +15,6 @@ namespace TurboJpegWrapper
         private bool _isDisposed;
         private readonly object _lock = new object();
 
-        static TJDecompressor()
-        {
-            TJUtils.SetUnmanagedDllPath();
-        }
         /// <summary>
         /// Creates new instance of <see cref="TJDecompressor"/>
         /// </summary>

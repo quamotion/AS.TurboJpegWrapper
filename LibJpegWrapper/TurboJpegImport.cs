@@ -9,6 +9,7 @@ namespace TurboJpegWrapper
 {
     static class TurboJpegImport
     {
+        private const string UnmanagedLibrary = "turbojpeg";
 
         /// <summary>
         /// Pixel size (in bytes) for a given pixel format.
@@ -78,7 +79,7 @@ namespace TurboJpegWrapper
         /// <returns>
         /// handle to the newly-created instance, or <see cref="IntPtr.Zero"/> 
         /// if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        [DllImport("turbojpeg.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr tjInitCompress();
 
         /// <summary>

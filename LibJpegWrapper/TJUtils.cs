@@ -8,7 +8,6 @@ namespace TurboJpegWrapper
     // ReSharper disable once InconsistentNaming
     static class TJUtils
     {
-        private static readonly WindowsLibraryLoaderLogic _logic = new WindowsLibraryLoaderLogic();
         ///<summary>
         /// Retrieves last error from underlying turbo-jpeg library and throws exception</summary>
         /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
@@ -36,17 +35,6 @@ namespace TurboJpegWrapper
                 default:
                     throw new NotSupportedException($"Provided pixel format \"{pixelFormat}\" is not supported");
             }
-        }
-
-        public static void SetUnmanagedDllPath()
-        {
-            var rootPath = Path.GetDirectoryName(typeof(TJUtils).Assembly.Location);
-            var platform = TJUtils.GetPlatformName();
-            var dllPath = Path.Combine(rootPath, platform);
-
-            System.Diagnostics.Trace.WriteLine($"Set libjpeg-turbo path to {dllPath}");
-
-            _logic.AddDllPath(dllPath);
         }
 
         /// <summary>
