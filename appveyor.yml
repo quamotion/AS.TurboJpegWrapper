@@ -6,8 +6,18 @@ build_script:
   - dotnet pack Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
   - dotnet pack runtime.win-x64.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
   - dotnet pack runtime.win-x86.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
+  - dotnet pack runtime.rhel.7-x64.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
+  - dotnet pack runtime.rhel.7-x86.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
+  - dotnet pack runtime.debian.8-x64.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
+  - dotnet pack runtime.debian.8-x86.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
+  - dotnet pack runtime.osx.10.10-x64.Quamotion.TurboJpegWrapper\project.json --version-suffix r%APPVEYOR_BUILD_NUMBER%
 
 on_success:
   - ps: Push-AppveyorArtifact "Quamotion.TurboJpegWrapper\bin\Debug\Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
   - ps: Push-AppveyorArtifact "runtime.win-x64.Quamotion.TurboJpegWrapper\bin\Debug\runtime.win-x64.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
   - ps: Push-AppveyorArtifact "runtime.win-x86.Quamotion.TurboJpegWrapper\bin\Debug\runtime.win-x86.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
+  - ps: Push-AppveyorArtifact "runtime.rhel.7-x64.Quamotion.TurboJpegWrapper\bin\Debug\runtime.rhel.7-x64.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
+  - ps: Push-AppveyorArtifact "runtime.rhel.7-x86.Quamotion.TurboJpegWrapper\bin\Debug\runtime.rhel.7-x86.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
+  - ps: Push-AppveyorArtifact "runtime.debian.8-x64.Quamotion.TurboJpegWrapper\bin\Debug\runtime.debian.8-x64.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
+  - ps: Push-AppveyorArtifact "runtime.debian.8-x86.Quamotion.TurboJpegWrapper\bin\Debug\runtime.debian.8-x86.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
+  - ps: Push-AppveyorArtifact "runtime.osx.10.10-x64.Quamotion.TurboJpegWrapper\bin\Debug\runtime.osx.10.10-x64.Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
