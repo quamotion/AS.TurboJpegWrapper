@@ -12,7 +12,7 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJCompressor : IDisposable
     {
-        private readonly IntPtr _compressorHandle;
+        private IntPtr _compressorHandle;
         private bool _isDisposed;
         private readonly object _lock = new object();
 
@@ -25,6 +25,7 @@ namespace TurboJpegWrapper
         public TJCompressor()
         {
             _compressorHandle = TurboJpegImport.tjInitCompress();
+
             if (_compressorHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
@@ -256,7 +257,17 @@ namespace TurboJpegWrapper
             {
                 _isDisposed = true;
             }
-            TurboJpegImport.tjDestroy(_compressorHandle);
+
+            // If for whathever reason, the handle was not initialized correctly (e.g. an exception
+            // in the constructor), we shouldn't free it either.
+            if (_compressorHandle != IntPtr.Zero)
+            {
+                TurboJpegImport.tjDestroy(_compressorHandle);
+
+                // Set the handle to IntPtr.Zero, to prevent double execution of this method
+                // (i.e. make calling Dispose twice a safe thing to do).
+                _compressorHandle = IntPtr.Zero;
+            }
         }
 
 

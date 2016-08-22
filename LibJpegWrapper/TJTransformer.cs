@@ -11,7 +11,7 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJTransformer
     {
-        private readonly IntPtr _transformHandle;
+        private IntPtr _transformHandle;
         private bool _isDisposed;
         private readonly object _lock = new object();
 
@@ -24,6 +24,7 @@ namespace TurboJpegWrapper
         public TJTransformer()
         {
             _transformHandle = TurboJpegImport.tjInitTransform();
+
             if (_transformHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
@@ -207,7 +208,17 @@ namespace TurboJpegWrapper
             {
                 _isDisposed = true;
             }
-            TurboJpegImport.tjDestroy(_transformHandle);
+
+            // If for whathever reason, the handle was not initialized correctly (e.g. an exception
+            // in the constructor), we shouldn't free it either.
+            if (_transformHandle != IntPtr.Zero)
+            {
+                TurboJpegImport.tjDestroy(_transformHandle);
+
+                // Set the handle to IntPtr.Zero, to prevent double execution of this method
+                // (i.e. make calling Dispose twice a safe thing to do).
+                _transformHandle = IntPtr.Zero;
+            }
         }
 
         /// <summary>
