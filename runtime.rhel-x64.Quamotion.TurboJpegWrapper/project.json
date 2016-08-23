@@ -5,7 +5,7 @@
     "Quamotion"
   ],
 
-  "title": "Debian Linux (64-bit) Native libraries for .NET wrapper for libjpeg-turbo",
+  "title": "RedHat Linux (64-bit) Native libraries for .NET wrapper for libjpeg-turbo",
   "description": "libjpeg-turbo is a JPEG image codec that uses processor instructions to accelerate JPEG compression and decompression.",
   "packOptions": {
     "licenseUrl": "https://github.com/qmfrederik/AS.TurboJpegWrapper/blob/master/LICENSE.txt",
@@ -20,7 +20,7 @@
   },
 
   "packInclude": {
-    "runtimes/debain.8-x64/native/": [
+    "runtimes/rhel-x64/native/": [
       "libturbojpeg.so"
     ]
   },
