@@ -22,7 +22,10 @@
   "packInclude": {
     "runtimes/win7-x64/native/": [
       "../LibJpegWrapper/costura64/turbojpeg.dll"
-    ]
+    ],
+    "build/net40/": [
+      "runtime.win-x64.Quamotion.TurboJpegWrapper.targets"
+    ],
   },
 
   "frameworks": {
