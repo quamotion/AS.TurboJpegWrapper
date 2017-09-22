@@ -14,7 +14,7 @@ namespace TurboJpegWrapper
     {
         private const string UnmanagedLibrary = "turbojpeg";
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_3 && !NETCOREAPP2_0
         static TurboJpegImport()
         {
             Load();
@@ -26,7 +26,7 @@ namespace TurboJpegWrapper
             private set;
         }
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD1_3 && !NETCOREAPP2_0
         public static void Load()
         {
             Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase);

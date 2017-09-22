@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.3;netcoreapp2.0</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>TurboJpegWrapper.snk</AssemblyOriginatorKeyFile>
+    <Product>.NET wrapper for libjpeg-turbo</Product>
+    <Description>libjpeg-turbo is a JPEG image codec that uses processor instructions to accelerate JPEG compression and decompression.</Description>
+    <PackageLicenseUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper</PackageProjectUrl>
+    <Authors>sergeyter, quamotion</Authors>
+    <Company>Quamotion</Company>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper</RepositoryUrl>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25718-03" />
+  </ItemGroup>
+</Project>

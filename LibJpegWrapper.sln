@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboJpegWrapper", "LibJpegWrapper\TurboJpegWrapper.csproj", "{E9D3144D-A269-4DB7-84B5-8F1097C90600}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboJpegWrapper.Tests", "TurboJpegWrapper.Tests\TurboJpegWrapper.Tests.csproj", "{7B35549C-BA0F-4B8E-9698-D4BF502AAB34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboJpegWrapper.PerformanceTests", "TurboJpegWrapper.PerformanceTests\TurboJpegWrapper.PerformanceTests.csproj", "{473B64C5-4F4B-4A36-82C1-0ADFF9D01501}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quamotion.TurboJpegWrapper", "LibJpegWrapper\Quamotion.TurboJpegWrapper.csproj", "{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|x64.ActiveCfg = Debug|x64
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|x64.Build.0 = Debug|x64
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|x86.ActiveCfg = Debug|x86
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Debug|x86.Build.0 = Debug|x86
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|x64.ActiveCfg = Release|x64
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|x64.Build.0 = Release|x64
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|x86.ActiveCfg = Release|x86
-		{E9D3144D-A269-4DB7-84B5-8F1097C90600}.Release|x86.Build.0 = Release|x86
 		{7B35549C-BA0F-4B8E-9698-D4BF502AAB34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B35549C-BA0F-4B8E-9698-D4BF502AAB34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B35549C-BA0F-4B8E-9698-D4BF502AAB34}.Debug|x64.ActiveCfg = Debug|x64
@@ -55,8 +43,23 @@ Global
 		{473B64C5-4F4B-4A36-82C1-0ADFF9D01501}.Release|x64.Build.0 = Release|x64
 		{473B64C5-4F4B-4A36-82C1-0ADFF9D01501}.Release|x86.ActiveCfg = Release|x86
 		{473B64C5-4F4B-4A36-82C1-0ADFF9D01501}.Release|x86.Build.0 = Release|x86
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|x64.Build.0 = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Debug|x86.Build.0 = Debug|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|x64.ActiveCfg = Release|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|x64.Build.0 = Release|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC4F6112-1C94-4EEF-9BB7-8BF44F1E7297}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3926AADD-D24D-4022-B364-F9B7FBF1417D}
 	EndGlobalSection
 EndGlobal

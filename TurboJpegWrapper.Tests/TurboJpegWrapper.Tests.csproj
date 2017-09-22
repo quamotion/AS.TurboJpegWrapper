@@ -95,12 +95,6 @@
     <Compile Include="TJDecompressorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibJpegWrapper\TurboJpegWrapper.csproj">
-      <Project>{e9d3144d-a269-4db7-84b5-8f1097c90600}</Project>
-      <Name>TurboJpegWrapper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
     <None Include="TurboJpegWrapper.snk" />
   </ItemGroup>
@@ -126,6 +120,12 @@
     <None Include="images\vgl_6548_0026a.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibJpegWrapper\Quamotion.TurboJpegWrapper.csproj">
+      <Project>{ac4f6112-1c94-4eef-9bb7-8bf44f1e7297}</Project>
+      <Name>Quamotion.TurboJpegWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
