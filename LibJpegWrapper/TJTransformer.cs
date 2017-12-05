@@ -97,7 +97,7 @@ namespace TurboJpegWrapper
                     customFilter = transforms[i].CustomFilter
                 };
             }
-            var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
+            var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
                 funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
@@ -169,17 +169,15 @@ namespace TurboJpegWrapper
         /// <exception cref="ArgumentNullException"><paramref name="transforms"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentException">Transforms can not be empty</exception>
         /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
-        public unsafe byte[][] Transform(byte[] jpegBuf, TJTransformDescription[] transforms, TJFlags flags)
+        public byte[][] Transform(byte[] jpegBuf, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
                 throw new ArgumentNullException("transforms");
             if (transforms.Length == 0)
                 throw new ArgumentException("Transforms can not be empty", "transforms");
 
-            fixed (byte* jpegPtr = jpegBuf)
-            {
-                return Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
-            }
+            using (var jpegPtr = new TJUnmanagedMemory(jpegBuf))
+                return Transform(jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
         }
 
         /// <summary>

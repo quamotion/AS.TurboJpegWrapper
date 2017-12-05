@@ -12,8 +12,8 @@
     <Company>Quamotion</Company>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper</RepositoryUrl>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <VersionPrefix>1.0.4</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
