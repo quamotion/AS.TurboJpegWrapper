@@ -16,5 +16,14 @@ Install using the command line:
 Install-Package Quamotion.TurboJpegWrapper
 ```
 
+#### OS X .NET Core
+Two additional packages are required -
+
+runtime.osx.10.10-x64.Quamotion.TurboJpegWrapper\
+`dotnet add package runtime.osx.10.10-x64.Quamotion.TurboJpegWrapper`
+
+System.Drawing.Common\
+`dotnet add package System.Drawing.Common`
+
 ## Credits
 The code in this repository is forked from https://bitbucket.org/Sergey_Terekhin/as.turbojpegwrapper/
