@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
-    static class TJUtils
+    public static class TJUtils
     {
         ///<summary>
         /// Retrieves last error from underlying turbo-jpeg library and throws exception</summary>
@@ -16,6 +16,7 @@ namespace TurboJpegWrapper
             var error = TurboJpegImport.tjGetErrorStr();
             throw new TJException(error);
         }
+
         /// <summary>
         /// Converts pixel format from <see cref="PixelFormat"/> to <see cref="TJPixelFormats"/>
         /// </summary>
@@ -32,6 +33,27 @@ namespace TurboJpegWrapper
                     return TJPixelFormats.TJPF_BGR;
                 case PixelFormat.Format8bppIndexed:
                     return TJPixelFormats.TJPF_GRAY;
+                default:
+                    throw new NotSupportedException($"Provided pixel format \"{pixelFormat}\" is not supported");
+            }
+        }
+
+        /// <summary>
+        /// Converts pixel format from <see cref="TJPixelFormats"/> to <see cref="PixelFormat"/>
+        /// </summary>
+        /// <param name="pixelFormat">Pixel format to convert</param>
+        /// <returns>Converted value of pixel format or exception if convertion is impossible</returns>
+        /// <exception cref="NotSupportedException">Convertion can not be performed</exception>
+        public static PixelFormat ConvertPixelFormat(TJPixelFormats pixelFormat)
+        {
+            switch (pixelFormat)
+            {
+                case TJPixelFormats.TJPF_BGRA:
+                    return PixelFormat.Format32bppArgb;
+                case TJPixelFormats.TJPF_BGR:
+                    return PixelFormat.Format24bppRgb;
+                case TJPixelFormats.TJPF_GRAY:
+                    return PixelFormat.Format8bppIndexed;
                 default:
                     throw new NotSupportedException($"Provided pixel format \"{pixelFormat}\" is not supported");
             }
