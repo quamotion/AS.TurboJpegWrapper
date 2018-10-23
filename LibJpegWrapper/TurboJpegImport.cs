@@ -14,17 +14,21 @@ namespace TurboJpegWrapper
     {
         private const string UnmanagedLibrary = "turbojpeg";
 
-#if !NETSTANDARD1_3 && !NETCOREAPP2_0
+#if NET45
         static TurboJpegImport()
         {
             Load();
         }
 #endif
+
         public static bool LibraryFound
         {
             get;
             private set;
         }
+#if !NET45
+        = true;
+#endif
 
 #if NET45
         public static void Load()
