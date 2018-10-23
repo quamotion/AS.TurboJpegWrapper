@@ -1,0 +1,130 @@
+variables:
+  LIBJPEG_TURBO_VERSION: '1.5.3'
+
+jobs:
+- job: native_windows
+  strategy:
+    maxParallel: 2
+    matrix:
+      x64:
+        BUILD_ARCH: x64
+        PLATFORM: x64
+        RID: win7-x64
+      x86:
+        BUILD_ARCH: x86
+        PLATFORM: Win32
+        RID: win7-x86
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - script: |
+      git clone https://github.com/libimobiledevice-win32/vcpkg
+      vcpkg\bootstrap-vcpkg.bat
+    displayName: Install vcpkg
+  - script: |
+      vcpkg\vcpkg version
+      vcpkg\vcpkg integrate install
+      set VCPKG_BUILD_TYPE=release
+      vcpkg\vcpkg install libjpeg-turbo:%BUILD_ARCH%-windows
+    displayName: Install native dependencies
+  - script: |
+      mkdir %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\
+      copy vcpkg\installed\%BUILD_ARCH%-windows\bin\*.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\
+      copy vcpkg\installed\%BUILD_ARCH%-windows\share\libjpeg-turbo\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\libjpeg-turbo.copyright
+    displayName: 'Install'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libjpeg-turbo/'
+      artifactName: 'libjpeg-turbo' 
+      publishLocation: 'Container'
+    displayName: Publish
+
+- job: native_macos
+  pool:
+    vmImage: 'xcode9-macos10.13'
+  variables:
+    TARGET: x86_64-apple-darwin
+    RID: osx-x64
+  steps:
+  - script: |
+      brew install autoconf automake libtool pkg-config nasm
+    displayName: Install autotools, nasm
+  - script: |
+      wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz -O libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
+      tar xvf libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
+    displayName: Download sources
+  - script: |
+      cd libjpeg-turbo-${LIBJPEG_TURBO_VERSION}
+      autoreconf -fiv
+      cd ..
+      sh libjpeg-turbo-${LIBJPEG_TURBO_VERSION}/configure --prefix=${BUILD_ARTIFACTSTAGINGDIRECTORY}/libjpeg-turbo/$RID --host=$TARGET
+      make
+    displayName: Build
+  - script: |
+      make install
+    displayName: Install
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libjpeg-turbo' 
+      artifactName: 'libjpeg-turbo' 
+      publishLocation: 'Container'
+    displayName: Publish
+
+- job: native_linux
+  variables:
+    TARGET: x86_64-unknown-linux-gnu
+    RID: ubuntu.16.04-x64
+    CFLAGS: -fPIC
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      lsb_release -a
+    displayName: Check Ubuntu version
+  - script: |
+      sudo apt-get install -y nasm
+    displayName: Install nasm
+  - script: |
+      wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz -O libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz NASM=/usr/local/bin/nasm
+      tar xvf libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
+    displayName: Download sources
+  - script: |
+      cd libjpeg-turbo-${LIBJPEG_TURBO_VERSION}
+      autoreconf -fiv
+      cd ..
+      sh libjpeg-turbo-${LIBJPEG_TURBO_VERSION}/configure --prefix=${BUILD_ARTIFACTSTAGINGDIRECTORY}/libjpeg-turbo/$RID --host=$TARGET NASM=/usr/bin/nasm
+      make
+    displayName: Build
+  - script: |
+      make install
+    displayName: Install
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libjpeg-turbo'
+      artifactName: 'libjpeg-turbo'
+      publishLocation: 'Container'
+    displayName: Publish
+
+- job: windows_test
+  dependsOn:
+    - native_windows
+    - native_macos
+    - native_linux
+  pool:
+    vmImage: 'VS2017-Win2016'
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: libjpeg-turbo
+  - script: |
+      mkdir %BUILD_ARTIFACTSTAGINGDIRECTORY%\Quamotion.TurboJpegWrapper
+      dotnet restore
+      dotnet build -c Release
+      dotnet pack -c Release -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\Quamotion.TurboJpegWrapper
+    displayName: Build
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/Quamotion.TurboJpegWrapper'
+      artifactName: 'nuget'
+      publishLocation: 'Container'
+    displayName: Publish
