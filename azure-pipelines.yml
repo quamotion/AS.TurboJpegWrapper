@@ -149,6 +149,9 @@ jobs:
     inputs:
       artifactName: libjpeg-turbo
   - script: |
+      brew install libgdiplus
+    displayName: Install libgdiplus
+  - script: |
       dotnet restore
       dotnet build -c Release
     displayName: Build
@@ -172,6 +175,11 @@ jobs:
   - task: DownloadBuildArtifacts@0
     inputs:
       artifactName: libjpeg-turbo
+  - script: |
+      sudo add-apt-repository ppa:quamotion/ppa
+      sudo apt-get update
+      sudo apt-get install -y libgdiplus
+    displayName: Install libgdiplus
   - script: |
       dotnet restore
       dotnet build -c Release
