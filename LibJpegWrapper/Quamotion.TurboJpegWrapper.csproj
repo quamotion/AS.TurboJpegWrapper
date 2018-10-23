@@ -38,11 +38,11 @@
       <PackagePath>runtimes/win-x86/native/%(Filename)%(Extension)</PackagePath>
       <Pack>true</Pack>
     </Content>
-    <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/ubuntu.16.04-x64/bin/libturbojpeg.so">
+    <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/ubuntu.16.04-x64/lib/libturbojpeg.so">
       <PackagePath>runtimes/ubuntu.16.04-x64/native/%(Filename)%(Extension)</PackagePath>
       <Pack>true</Pack>
     </Content>
-    <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/osx-x64/bin/libturbojpeg.dylib">
+    <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/osx-x64/lib/libturbojpeg.dylib">
       <PackagePath>runtimes/osx-x64/native/%(Filename)%(Extension)</PackagePath>
       <Pack>true</Pack>
     </Content>
