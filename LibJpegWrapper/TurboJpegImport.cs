@@ -26,16 +26,14 @@ namespace TurboJpegWrapper
             private set;
         }
 
-#if !NETSTANDARD1_3 && !NETCOREAPP2_0
+#if NET45
         public static void Load()
         {
             Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
         }
-#endif
 
         public static void Load(string directory)
         {
-#if !NETSTANDARD1_3
             if (directory == null)
             {
                 throw new ArgumentNullException(nameof(directory));
@@ -93,10 +91,9 @@ namespace TurboJpegWrapper
             {
                 throw new NotSupportedException("Quamotion.TurboJpegWrapper is supported on Windows (.NET FX, .NET Core), Linux (.NET Core) and OS X (.NET Core)");
             }
-#else
-            throw new NotSupportedException("Load is supported on .NET FX and Mono only. When using .NET Core, add the runtime.*.Quamotion.TurboJpegWrapper packages to your project to add the native libraries.");
-#endif
+
         }
+#endif
 
         /// <summary>
         /// Pixel size (in bytes) for a given pixel format.
