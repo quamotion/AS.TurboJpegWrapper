@@ -1,22 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
+using Xunit;
 
 namespace TurboJpegWrapper.Tests
 {
-    // ReSharper disable once InconsistentNaming
-    [TestFixture]
-    public class TJCompressorTests
+    public class TJCompressorTests : IDisposable
     {
         private TJCompressor _compressor;
 
         private string OutDirectory { get { return Path.Combine(TestUtils.BinPath, "compress_images_out"); } }
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        public TJCompressorTests()
         {
             _compressor = new TJCompressor();
             if (Directory.Exists(OutDirectory))
@@ -26,22 +24,21 @@ namespace TurboJpegWrapper.Tests
             Directory.CreateDirectory(OutDirectory);
         }
 
-        [TestFixtureTearDown]
-        public void Clean()
+        public void Dispose()
         {
             _compressor.Dispose();
         }
 
-        [Test, Combinatorial]
+        [Theory, CombinatorialData]
         public void CompressBitmap(
-            [Values
+            [CombinatorialValues
             (TJSubsamplingOptions.TJSAMP_GRAY,
             TJSubsamplingOptions.TJSAMP_411,
             TJSubsamplingOptions.TJSAMP_420,
             TJSubsamplingOptions.TJSAMP_440,
             TJSubsamplingOptions.TJSAMP_422,
             TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
-            [Values(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
+            [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             var imageidx = 0;
             foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
@@ -49,16 +46,13 @@ namespace TurboJpegWrapper.Tests
                 try
                 {
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
-                    Assert.DoesNotThrow(() =>
-                    {
-                        var result = _compressor.Compress(bitmap, options, quality, TJFlags.NONE);
 
-                        Assert.NotNull(result);
+                    var result = _compressor.Compress(bitmap, options, quality, TJFlags.NONE);
 
-                        var file = Path.Combine(OutDirectory, $"{imageidx}_{quality}_{options}.jpg");
-                        File.WriteAllBytes(file, result);
-                    });
+                    Assert.NotNull(result);
 
+                    var file = Path.Combine(OutDirectory, $"{imageidx}_{quality}_{options}.jpg");
+                    File.WriteAllBytes(file, result);
                 }
                 finally
                 {
@@ -67,16 +61,17 @@ namespace TurboJpegWrapper.Tests
                 imageidx++;
             }
         }
-        [Test, Combinatorial]
+
+        [Theory, CombinatorialData]
         public void CompressIntPtr(
-            [Values
+            [CombinatorialValues
             (TJSubsamplingOptions.TJSAMP_GRAY,
             TJSubsamplingOptions.TJSAMP_411,
             TJSubsamplingOptions.TJSAMP_420,
             TJSubsamplingOptions.TJSAMP_440,
             TJSubsamplingOptions.TJSAMP_422,
             TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
-            [Values(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
+            [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
             {
@@ -87,11 +82,8 @@ namespace TurboJpegWrapper.Tests
                         bitmap.PixelFormat);
 
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
-                    Assert.DoesNotThrow(() =>
-                    {
-                        var result = _compressor.Compress(data.Scan0, data.Stride, data.Width, data.Height, data.PixelFormat, options, quality, TJFlags.NONE);
-                        Assert.NotNull(result);
-                    });
+                    var result = _compressor.Compress(data.Scan0, data.Stride, data.Width, data.Height, data.PixelFormat, options, quality, TJFlags.NONE);
+                    Assert.NotNull(result);
 
                 }
                 finally
@@ -104,16 +96,17 @@ namespace TurboJpegWrapper.Tests
                 }
             }
         }
-        [Test, Combinatorial]
+
+        [Theory, CombinatorialData]
         public void CompressByteArray(
-            [Values
+            [CombinatorialValues
             (TJSubsamplingOptions.TJSAMP_GRAY,
             TJSubsamplingOptions.TJSAMP_411,
             TJSubsamplingOptions.TJSAMP_420,
             TJSubsamplingOptions.TJSAMP_440,
             TJSubsamplingOptions.TJSAMP_422,
             TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
-            [Values(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
+            [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
             {
@@ -133,12 +126,8 @@ namespace TurboJpegWrapper.Tests
                     bitmap.UnlockBits(data);
 
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
-                    Assert.DoesNotThrow(() =>
-                    {
-                        var result = _compressor.Compress(buf, stride, width, height, pixelFormat, options, quality, TJFlags.NONE);
-                        Assert.NotNull(result);
-                    });
-
+                    var result = _compressor.Compress(buf, stride, width, height, pixelFormat, options, quality, TJFlags.NONE);
+                    Assert.NotNull(result);
                 }
                 finally
                 {
@@ -146,8 +135,5 @@ namespace TurboJpegWrapper.Tests
                 }
             }
         }
-        
-
-        
     }
 }

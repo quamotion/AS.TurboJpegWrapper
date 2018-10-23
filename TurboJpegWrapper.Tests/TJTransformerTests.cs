@@ -1,17 +1,15 @@
-﻿using System.IO;
-using NUnit.Framework;
+﻿using System;
+using System.IO;
+using Xunit;
 
 namespace TurboJpegWrapper.Tests
 {
-    // ReSharper disable once InconsistentNaming
-    [TestFixture]
-    public class TJTransformerTests
+    public class TJTransformerTests : IDisposable
     {
         private TJTransformer _transformer;
         private string OutDirectory { get { return Path.Combine(TestUtils.BinPath, "transform_images_out"); } }
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        public TJTransformerTests()
         {
             _transformer = new TJTransformer();
             if (Directory.Exists(OutDirectory))
@@ -21,21 +19,18 @@ namespace TurboJpegWrapper.Tests
             Directory.CreateDirectory(OutDirectory);
         }
 
-        [TestFixtureTearDown]
-        public void Clean()
+        public void Dispose()
         {
             _transformer.Dispose();
         }
 
-        [Test]
+        [Fact]
         public void TransformToGrayscaleFromArray()
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                Assert.DoesNotThrow(() =>
+                var transforms = new[]
                 {
-                    var transforms = new[]
-                    {
                         new TJTransformDescription
                         {
                             Operation = TJTransformOperations.TJXOP_NONE,
@@ -43,25 +38,23 @@ namespace TurboJpegWrapper.Tests
                             Region = TJRegion.Empty
                         }
                     };
-                    var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
 
-                    Assert.NotNull(result);
-                    Assert.NotNull(result.Length == 1);
+                Assert.NotNull(result);
+                Assert.NotNull(result.Length == 1);
 
-                    var file = Path.Combine(OutDirectory, "gray_" + Path.GetFileName(data.Item1));
-                    File.WriteAllBytes(file, result[0]);
-                });
+                var file = Path.Combine(OutDirectory, "gray_" + Path.GetFileName(data.Item1));
+                File.WriteAllBytes(file, result[0]);
             }
         }
-        [Test]
+
+        [Fact]
         public void TransformToCroppedSingleImageFromArray()
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                Assert.DoesNotThrow(() =>
+                var transforms = new[]
                 {
-                    var transforms = new[]
-                    {
                         new TJTransformDescription
                         {
                             Operation = TJTransformOperations.TJXOP_NONE,
@@ -88,28 +81,25 @@ namespace TurboJpegWrapper.Tests
                         //}
                     };
 
-                    var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
-                    Assert.NotNull(result);
-                    Assert.NotNull(result.Length == 1);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                Assert.NotNull(result);
+                Assert.NotNull(result.Length == 1);
 
-                    for (var idx = 0; idx < result.Length; idx++)
-                    {
-                        var file = Path.Combine(OutDirectory, $"crop_s_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
-                        File.WriteAllBytes(file, result[0]);
-                    }
-                });
+                for (var idx = 0; idx < result.Length; idx++)
+                {
+                    var file = Path.Combine(OutDirectory, $"crop_s_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
+                    File.WriteAllBytes(file, result[0]);
+                }
             }
         }
 
-        [Test]
+        [Fact]
         public void TransformToCroppedMultiplyImagesFromArray()
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                Assert.DoesNotThrow(() =>
+                var transforms = new[]
                 {
-                    var transforms = new[]
-                    {
                         new TJTransformDescription
                         {
                             Operation = TJTransformOperations.TJXOP_NONE,
@@ -136,16 +126,15 @@ namespace TurboJpegWrapper.Tests
                         },
                     };
 
-                    var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
-                    Assert.NotNull(result);
-                    Assert.NotNull(result.Length == 1);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                Assert.NotNull(result);
+                Assert.NotNull(result.Length == 1);
 
-                    for (var idx = 0; idx < result.Length; idx++)
-                    {
-                        var file = Path.Combine(OutDirectory, $"crop_m_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
-                        File.WriteAllBytes(file, result[idx]);
-                    }
-                });
+                for (var idx = 0; idx < result.Length; idx++)
+                {
+                    var file = Path.Combine(OutDirectory, $"crop_m_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
+                    File.WriteAllBytes(file, result[idx]);
+                }
             }
         }
     }
