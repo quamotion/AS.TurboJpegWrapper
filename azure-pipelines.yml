@@ -149,7 +149,7 @@ jobs:
     inputs:
       artifactName: libjpeg-turbo
   - script: |
-      brew install libgdiplus
+      brew install mono-libgdiplus
     displayName: Install libgdiplus
   - script: |
       dotnet restore
