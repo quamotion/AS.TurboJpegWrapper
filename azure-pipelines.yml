@@ -105,7 +105,7 @@ jobs:
       publishLocation: 'Container'
     displayName: Publish
 
-- job: windows_test
+- job: test_windows
   dependsOn:
     - native_windows
     - native_macos
@@ -122,9 +122,63 @@ jobs:
       dotnet build -c Release
       dotnet pack -c Release -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\Quamotion.TurboJpegWrapper
     displayName: Build
+  - script: |
+      cd TurboJpegWrapper.Tests
+      set PATH=%PATH%;%SYSTEM_ARTIFACTDIRECTORY%\libjpeg-turbo\win7-x64\bin\
+      echo %PATH%
+      dotnet test -c Release
+    displayName: Test
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)/Quamotion.TurboJpegWrapper'
       artifactName: 'nuget'
       publishLocation: 'Container'
     displayName: Publish
+
+- job: test_macos
+  dependsOn:
+    - native_windows
+    - native_macos
+    - native_linux
+  pool:
+    vmImage: 'xcode9-macos10.13'
+  variables:
+    RID: osx-x64
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: libjpeg-turbo
+  - script: |
+      dotnet restore
+      dotnet build -c Release
+    displayName: Build
+  - script: |
+      cd TurboJpegWrapper.Tests
+      export PATH=${PATH}:${SYSTEM_ARTIFACTDIRECTORY}/libjpeg-turbo/${RID}/bin/
+      echo $PATH
+      dotnet test -c Release
+    displayName: Test
+
+- job: test_linux
+  dependsOn:
+    - native_windows
+    - native_macos
+    - native_linux
+  variables:
+    RID: ubuntu.16.04-x64
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: libjpeg-turbo
+  - script: |
+      dotnet restore
+      dotnet build -c Release
+    displayName: Build
+  - script: |
+      cd TurboJpegWrapper.Tests
+      export PATH=${PATH}:${SYSTEM_ARTIFACTDIRECTORY}/libjpeg-turbo/${RID}/bin/
+      echo $PATH
+      dotnet test -c Release
+    displayName: Test
