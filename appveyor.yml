@@ -1,9 +1,0 @@
-before_build:
-  - nuget restore
-
-build_script:
-  - dotnet restore
-  - dotnet pack LibJpegWrapper\Quamotion.TurboJpegWrapper.csproj --version-suffix r%APPVEYOR_BUILD_NUMBER% -c Release
-
-on_success:
-  - ps: Push-AppveyorArtifact "LibJpegWrapper\bin\Release\Quamotion.TurboJpegWrapper.1.0.3-r$($env:APPVEYOR_BUILD_NUMBER).nupkg"
