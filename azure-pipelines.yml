@@ -154,8 +154,8 @@ jobs:
     displayName: Build
   - script: |
       cd TurboJpegWrapper.Tests
-      export PATH=${PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
-      echo $PATH
+      export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
+      echo $LD_LIBRARY_PATH
       dotnet test -c Release
     displayName: Test
 
@@ -178,7 +178,7 @@ jobs:
     displayName: Build
   - script: |
       cd TurboJpegWrapper.Tests
-      export PATH=${PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
-      echo $PATH
+      export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
+      echo $LD_LIBRARY_PATH
       dotnet test -c Release
     displayName: Test
