@@ -123,7 +123,7 @@ jobs:
       dotnet pack -c Release -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\Quamotion.TurboJpegWrapper
     displayName: Build
   - script: |
-      cd TurboJpegWrapper.Tests
+      cd Quamotion.TurboJpegWrapper.Tests
       set PATH=%PATH%;%SYSTEM_ARTIFACTSDIRECTORY%\libjpeg-turbo\win7-x64\bin\
       echo %PATH%
       dotnet test -c Release
@@ -156,7 +156,7 @@ jobs:
       dotnet build -c Release
     displayName: Build
   - script: |
-      cd TurboJpegWrapper.Tests
+      cd Quamotion.TurboJpegWrapper.Tests
       export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
       echo $LD_LIBRARY_PATH
       dotnet test -c Release
@@ -185,7 +185,7 @@ jobs:
       dotnet build -c Release
     displayName: Build
   - script: |
-      cd TurboJpegWrapper.Tests
+      cd Quamotion.TurboJpegWrapper.Tests
       export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${SYSTEM_ARTIFACTSDIRECTORY}/libjpeg-turbo/${RID}/lib/
       echo $LD_LIBRARY_PATH
       dotnet test -c Release
