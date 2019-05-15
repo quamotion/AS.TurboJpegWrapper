@@ -7,14 +7,13 @@
     <AssemblyOriginatorKeyFile>TurboJpegWrapper.snk</AssemblyOriginatorKeyFile>
     <Product>.NET wrapper for libjpeg-turbo</Product>
     <Description>libjpeg-turbo is a JPEG image codec that uses processor instructions to accelerate JPEG compression and decompression.</Description>
-    <PackageLicenseUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>sergeyter, quamotion</Authors>
     <Company>Quamotion</Company>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/qmfrederik/AS.TurboJpegWrapper</RepositoryUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <VersionPrefix>1.0.3</VersionPrefix>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
