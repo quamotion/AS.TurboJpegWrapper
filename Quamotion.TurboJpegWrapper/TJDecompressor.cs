@@ -63,7 +63,9 @@ namespace TurboJpegWrapper
         public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             int subsampl;
             int colorspace;
@@ -116,7 +118,9 @@ namespace TurboJpegWrapper
         public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var jpegBufSize = (ulong)jpegBuf.Length;
             fixed (byte* jpegPtr = jpegBuf)
@@ -139,7 +143,9 @@ namespace TurboJpegWrapper
         public unsafe Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var targetFormat = TJUtils.ConvertPixelFormat(destPixelFormat);
             int width;
@@ -172,7 +178,9 @@ namespace TurboJpegWrapper
         public unsafe Bitmap Decompress(byte[] jpegBuf, PixelFormat destPixelFormat, TJFlags flags)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var jpegBufSize = (ulong)jpegBuf.Length;
             fixed (byte* jpegPtr = jpegBuf)
@@ -256,12 +264,16 @@ namespace TurboJpegWrapper
         {
 
             if (this.isDisposed)
+            {
                 return;
+            }
 
             lock (this.@lock)
             {
                 if (this.isDisposed)
+                {
                     return;
+                }
 
                 this.Dispose(true);
                 GC.SuppressFinalize(this);

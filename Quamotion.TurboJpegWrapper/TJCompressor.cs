@@ -55,7 +55,9 @@ namespace TurboJpegWrapper
         public byte[] Compress(Bitmap srcImage, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var pixelFormat = srcImage.PixelFormat;
 
@@ -115,7 +117,9 @@ namespace TurboJpegWrapper
         public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var tjPixelFormat = TJUtils.ConvertPixelFormat(pixelFormat);
             CheckOptionsCompatibilityAndThrow(subSamp, tjPixelFormat);
@@ -191,7 +195,9 @@ namespace TurboJpegWrapper
         public unsafe byte[] Compress(byte[] srcBuf, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
+            {
                 throw new ObjectDisposedException("this");
+            }
 
             var tjPixelFormat = TJUtils.ConvertPixelFormat(pixelFormat);
             CheckOptionsCompatibilityAndThrow(subSamp, tjPixelFormat);
@@ -239,12 +245,16 @@ namespace TurboJpegWrapper
         {
 
             if (this.isDisposed)
+            {
                 return;
+            }
 
             lock (this.@lock)
             {
                 if (this.isDisposed)
+                {
                     return;
+                }
 
                 this.Dispose(true);
                 GC.SuppressFinalize(this);

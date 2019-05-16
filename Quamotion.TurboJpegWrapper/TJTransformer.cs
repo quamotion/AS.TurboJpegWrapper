@@ -44,9 +44,14 @@ namespace TurboJpegWrapper
         public byte[][] Transform(IntPtr jpegBuf, ulong jpegBufSize, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
+            {
                 throw new ArgumentNullException("transforms");
+            }
+
             if (transforms.Length == 0)
+            {
                 throw new ArgumentException("Transforms can not be empty", "transforms");
+            }
 
             // ReSharper disable once ExceptionNotDocumented
             var count = transforms.Length;
@@ -148,16 +153,24 @@ namespace TurboJpegWrapper
             if (desiredCoordinate == realCoordinate)
             {
                 if (realCoordinate + desiredSize < imageSize)
+                {
                     return desiredSize;
+                }
                 else
+                {
                     return imageSize - realCoordinate;
+                }
             }
             else
             {
                 if (realCoordinate + delta + desiredSize < imageSize)
+                {
                     return desiredSize + delta;
+                }
                 else
+                {
                     return imageSize - realCoordinate;
+                }
             }
         }
 
@@ -172,9 +185,14 @@ namespace TurboJpegWrapper
         public unsafe byte[][] Transform(byte[] jpegBuf, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
+            {
                 throw new ArgumentNullException("transforms");
+            }
+
             if (transforms.Length == 0)
+            {
                 throw new ArgumentException("Transforms can not be empty", "transforms");
+            }
 
             fixed (byte* jpegPtr = jpegBuf)
             {
@@ -190,12 +208,16 @@ namespace TurboJpegWrapper
         {
 
             if (this.isDisposed)
+            {
                 return;
+            }
 
             lock (this.@lock)
             {
                 if (this.isDisposed)
+                {
                     return;
+                }
 
                 this.Dispose(true);
                 GC.SuppressFinalize(this);

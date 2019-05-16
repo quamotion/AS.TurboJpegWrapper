@@ -89,7 +89,10 @@ namespace TurboJpegWrapper
         public static void FreePtr(IntPtr ptr, bool isComAllocated = false)
         {
             if (ptr == IntPtr.Zero)
+            {
                 return;
+            }
+
             if (isComAllocated)
             {
                 Marshal.FreeCoTaskMem(ptr);
