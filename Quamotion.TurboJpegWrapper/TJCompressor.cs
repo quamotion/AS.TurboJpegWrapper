@@ -25,7 +25,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJCompressor()
         {
-            this.compressorHandle = TurboJpegImport.tjInitCompress();
+            this.compressorHandle = TurboJpegImport.TjInitCompress();
 
             if (this.compressorHandle == IntPtr.Zero)
             {
@@ -125,7 +125,7 @@ namespace TurboJpegWrapper
             ulong bufSize = 0;
             try
             {
-                var result = TurboJpegImport.tjCompress2(
+                var result = TurboJpegImport.TjCompress2(
                     this.compressorHandle,
                     srcPtr,
                     width,
@@ -149,7 +149,7 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                TurboJpegImport.tjFree(buf);
+                TurboJpegImport.TjFree(buf);
             }
         }
 
@@ -204,7 +204,7 @@ namespace TurboJpegWrapper
             {
                 fixed (byte* srcBufPtr = srcBuf)
                 {
-                    var result = TurboJpegImport.tjCompress2(
+                    var result = TurboJpegImport.TjCompress2(
                         this.compressorHandle,
                         (IntPtr)srcBufPtr,
                         width,
@@ -228,7 +228,7 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                TurboJpegImport.tjFree(buf);
+                TurboJpegImport.TjFree(buf);
             }
         }
 
@@ -266,7 +266,7 @@ namespace TurboJpegWrapper
             // in the constructor), we shouldn't free it either.
             if (this.compressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this.compressorHandle);
+                TurboJpegImport.TjDestroy(this.compressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).

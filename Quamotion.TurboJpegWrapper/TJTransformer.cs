@@ -24,7 +24,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJTransformer()
         {
-            this.transformHandle = TurboJpegImport.tjInitTransform();
+            this.transformHandle = TurboJpegImport.TjInitTransform();
 
             if (this.transformHandle == IntPtr.Zero)
             {
@@ -62,7 +62,7 @@ namespace TurboJpegWrapper
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.tjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.TjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -76,7 +76,7 @@ namespace TurboJpegWrapper
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
 
-            var tjTransforms = new tjtransform[count];
+            var tjTransforms = new TjTransform[count];
             for (var i = 0; i < count; i++)
             {
                 var x = CorrectRegionCoordinate(transforms[i].Region.X, mcuSize.Width);
@@ -84,26 +84,26 @@ namespace TurboJpegWrapper
                 var w = CorrectRegionSize(transforms[i].Region.X, x, transforms[i].Region.W, width);
                 var h = CorrectRegionSize(transforms[i].Region.Y, y, transforms[i].Region.H, height);
 
-                tjTransforms[i] = new tjtransform
+                tjTransforms[i] = new TjTransform
                 {
-                    op = (int)transforms[i].Operation,
-                    options = (int)transforms[i].Options,
-                    r = new TJRegion
+                    Op = (int)transforms[i].Operation,
+                    Options = (int)transforms[i].Options,
+                    R = new TJRegion
                     {
                         X = x,
                         Y = y,
                         W = w,
                         H = h,
                     },
-                    data = transforms[i].CallbackData,
-                    customFilter = transforms[i].CustomFilter,
+                    Data = transforms[i].CallbackData,
+                    CustomFilter = transforms[i].CustomFilter,
                 };
             }
 
             var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.tjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.TjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -119,7 +119,7 @@ namespace TurboJpegWrapper
                     Marshal.Copy(ptr, item, 0, (int)size);
                     result.Add(item);
 
-                    TurboJpegImport.tjFree(ptr);
+                    TurboJpegImport.TjFree(ptr);
                 }
 
                 return result.ToArray();
@@ -233,7 +233,7 @@ namespace TurboJpegWrapper
             // in the constructor), we shouldn't free it either.
             if (this.transformHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this.transformHandle);
+                TurboJpegImport.TjDestroy(this.transformHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
