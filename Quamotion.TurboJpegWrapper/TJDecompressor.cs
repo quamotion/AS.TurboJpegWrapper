@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
-
     /// <summary>
     /// Implements compression of RGB, CMYK, grayscale images to the jpeg format.
     /// </summary>

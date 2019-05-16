@@ -63,7 +63,6 @@ namespace TurboJpegWrapper
 
             var width = srcImage.Width;
             var height = srcImage.Height;
-            // ReSharper disable once ExceptionNotDocumented
             var srcData = srcImage.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, pixelFormat);
 
             var stride = srcData.Stride;
@@ -75,7 +74,6 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                // ReSharper disable once ExceptionNotDocumented
                 srcImage.UnlockBits(srcData);
             }
         }
@@ -146,7 +144,6 @@ namespace TurboJpegWrapper
                 }
 
                 var jpegBuf = new byte[bufSize];
-                // ReSharper disable once ExceptionNotDocumentedOptional
                 Marshal.Copy(buf, jpegBuf, 0, (int)bufSize);
                 return jpegBuf;
             }
@@ -226,7 +223,6 @@ namespace TurboJpegWrapper
                 }
 
                 var jpegBuf = new byte[bufSize];
-                // ReSharper disable once ExceptionNotDocumentedOptional
                 Marshal.Copy(buf, jpegBuf, 0, (int)bufSize);
                 return jpegBuf;
             }

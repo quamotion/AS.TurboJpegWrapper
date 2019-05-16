@@ -6,8 +6,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace TurboJpegWrapper
 {
     static class TurboJpegImport
