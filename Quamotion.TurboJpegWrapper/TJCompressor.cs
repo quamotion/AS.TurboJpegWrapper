@@ -52,7 +52,7 @@ namespace TurboJpegWrapper
         /// <param name="srcImage"> Source image to be converted. </param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
-        /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
@@ -65,10 +65,10 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        public byte[] Compress(Bitmap srcImage, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
+        public byte[] Compress(Bitmap srcImage, TJSubsamplingOption subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
             {
@@ -115,7 +115,7 @@ namespace TurboJpegWrapper
         /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
-        /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
@@ -127,10 +127,10 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
+        public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOption subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
             {
@@ -193,7 +193,7 @@ namespace TurboJpegWrapper
         /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
-        /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
@@ -207,10 +207,10 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        public unsafe byte[] Compress(byte[] srcBuf, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
+        public unsafe byte[] Compress(byte[] srcBuf, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOption subSamp, int quality, TJFlags flags)
         {
             if (this.isDisposed)
             {
@@ -280,19 +280,19 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOptions subSamp, TJPixelFormats srcFormat)
+        private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOption subSamp, TJPixelFormat srcFormat)
         {
-            if (srcFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+            if (srcFormat == TJPixelFormat.Gray && subSamp != TJSubsamplingOption.Gray)
             {
                 throw new NotSupportedException(
-                    $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
+                    $"Subsampling differ from {TJSubsamplingOption.Gray} for pixel format {TJPixelFormat.Gray} is not supported");
             }
         }
 
-        private void Dispose(bool callFromUserCode)
+        protected virtual void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
             {

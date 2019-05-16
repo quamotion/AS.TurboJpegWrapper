@@ -34,7 +34,7 @@ namespace TurboJpegWrapper.Tests
         {
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
-                var result = _decompressor.Decompress(data.Item2, format, TJFlags.NONE);
+                var result = _decompressor.Decompress(data.Item2, format, TJFlags.None);
                 Assert.NotNull(result);
 
                 var file = Path.Combine(OutDirectory, $"{Path.GetFileNameWithoutExtension(data.Item1)}_{format}.bmp");
@@ -52,7 +52,7 @@ namespace TurboJpegWrapper.Tests
             foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
             {
                 var dataPtr = TJUtils.CopyDataToPointer(data.Item2);
-                var result = _decompressor.Decompress(dataPtr, (ulong)data.Item2.Length, format, TJFlags.NONE);
+                var result = _decompressor.Decompress(dataPtr, (ulong)data.Item2.Length, format, TJFlags.None);
                 Assert.NotNull(result);
                 TJUtils.FreePtr(dataPtr);
             }

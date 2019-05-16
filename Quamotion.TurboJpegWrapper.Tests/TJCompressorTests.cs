@@ -32,12 +32,12 @@ namespace TurboJpegWrapper.Tests
         [Theory, CombinatorialData]
         public void CompressBitmap(
             [CombinatorialValues
-            (TJSubsamplingOptions.TJSAMP_GRAY,
-            TJSubsamplingOptions.TJSAMP_411,
-            TJSubsamplingOptions.TJSAMP_420,
-            TJSubsamplingOptions.TJSAMP_440,
-            TJSubsamplingOptions.TJSAMP_422,
-            TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
+            (TJSubsamplingOption.Gray,
+            TJSubsamplingOption.Chrominance411,
+            TJSubsamplingOption.Chrominance420,
+            TJSubsamplingOption.Chrominance440,
+            TJSubsamplingOption.Chrominance422,
+            TJSubsamplingOption.Chrominance444)]TJSubsamplingOption options,
             [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             var imageidx = 0;
@@ -47,7 +47,7 @@ namespace TurboJpegWrapper.Tests
                 {
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
 
-                    var result = _compressor.Compress(bitmap, options, quality, TJFlags.NONE);
+                    var result = _compressor.Compress(bitmap, options, quality, TJFlags.None);
 
                     Assert.NotNull(result);
 
@@ -65,12 +65,12 @@ namespace TurboJpegWrapper.Tests
         [Theory, CombinatorialData]
         public void CompressIntPtr(
             [CombinatorialValues
-            (TJSubsamplingOptions.TJSAMP_GRAY,
-            TJSubsamplingOptions.TJSAMP_411,
-            TJSubsamplingOptions.TJSAMP_420,
-            TJSubsamplingOptions.TJSAMP_440,
-            TJSubsamplingOptions.TJSAMP_422,
-            TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
+            (TJSubsamplingOption.Gray,
+            TJSubsamplingOption.Chrominance411,
+            TJSubsamplingOption.Chrominance420,
+            TJSubsamplingOption.Chrominance440,
+            TJSubsamplingOption.Chrominance422,
+            TJSubsamplingOption.Chrominance444)]TJSubsamplingOption options,
             [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
@@ -82,7 +82,7 @@ namespace TurboJpegWrapper.Tests
                         bitmap.PixelFormat);
 
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
-                    var result = _compressor.Compress(data.Scan0, data.Stride, data.Width, data.Height, data.PixelFormat, options, quality, TJFlags.NONE);
+                    var result = _compressor.Compress(data.Scan0, data.Stride, data.Width, data.Height, data.PixelFormat, options, quality, TJFlags.None);
                     Assert.NotNull(result);
 
                 }
@@ -100,12 +100,12 @@ namespace TurboJpegWrapper.Tests
         [Theory, CombinatorialData]
         public void CompressByteArray(
             [CombinatorialValues
-            (TJSubsamplingOptions.TJSAMP_GRAY,
-            TJSubsamplingOptions.TJSAMP_411,
-            TJSubsamplingOptions.TJSAMP_420,
-            TJSubsamplingOptions.TJSAMP_440,
-            TJSubsamplingOptions.TJSAMP_422,
-            TJSubsamplingOptions.TJSAMP_444)]TJSubsamplingOptions options,
+            (TJSubsamplingOption.Gray,
+            TJSubsamplingOption.Chrominance411,
+            TJSubsamplingOption.Chrominance420,
+            TJSubsamplingOption.Chrominance440,
+            TJSubsamplingOption.Chrominance422,
+            TJSubsamplingOption.Chrominance444)]TJSubsamplingOption options,
             [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]int quality)
         {
             foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
@@ -126,7 +126,7 @@ namespace TurboJpegWrapper.Tests
                     bitmap.UnlockBits(data);
 
                     Trace.WriteLine($"Options: {options}; Quality: {quality}");
-                    var result = _compressor.Compress(buf, stride, width, height, pixelFormat, options, quality, TJFlags.NONE);
+                    var result = _compressor.Compress(buf, stride, width, height, pixelFormat, options, quality, TJFlags.None);
                     Assert.NotNull(result);
                 }
                 finally

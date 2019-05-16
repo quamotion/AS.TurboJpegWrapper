@@ -55,7 +55,7 @@ namespace TurboJpegWrapper
         /// <returns>Raw pixel data of specified format.</returns>
         /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
-        public unsafe byte[] Decompress(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
+        public unsafe byte[] Decompress(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormat destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             int outBufSize;
             this.GetImageInfo(jpegBuf, jpegBufSize, destPixelFormat, out width, out height, out stride, out outBufSize);
@@ -82,7 +82,7 @@ namespace TurboJpegWrapper
         /// <param name="width">Width of image in pixels.</param>
         /// <param name="height">Height of image in pixels.</param>
         /// <param name="stride">Bytes per line in the destination image.</param>
-        public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
+        public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormat destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
             {
@@ -143,7 +143,7 @@ namespace TurboJpegWrapper
         /// <returns>Raw pixel data of specified format.</returns>
         /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
-        public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
+        public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormat destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
             {
@@ -241,7 +241,7 @@ namespace TurboJpegWrapper
         /// <param name="bufSize">
         /// The size of a buffer that can receive the uncompressed JPEG image.
         /// </param>
-        public void GetImageInfo(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, out int width, out int height, out int stride, out int bufSize)
+        public void GetImageInfo(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormat destPixelFormat, out int width, out int height, out int stride, out int bufSize)
         {
             int subsampl;
             int colorspace;
@@ -274,7 +274,7 @@ namespace TurboJpegWrapper
         /// <returns>
         /// The size of a buffer that can hold the uncompressed image.
         /// </returns>
-        public int GetBufferSize(int height, int width, TJPixelFormats destPixelFormat)
+        public int GetBufferSize(int height, int width, TJPixelFormat destPixelFormat)
         {
             int stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             return stride * height;
@@ -313,7 +313,7 @@ namespace TurboJpegWrapper
             return palette;
         }
 
-        private void Dispose(bool callFromUserCode)
+        protected virtual void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
             {

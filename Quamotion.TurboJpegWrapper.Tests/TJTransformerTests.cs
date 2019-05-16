@@ -33,12 +33,12 @@ namespace TurboJpegWrapper.Tests
                 {
                         new TJTransformDescription
                         {
-                            Operation = TJTransformOperations.TJXOP_NONE,
-                            Options = TJTransformOptions.GRAY,
+                            Operation = TJTransformOperation.None,
+                            Options = TJTransformOptions.Gray,
                             Region = TJRegion.Empty
                         }
                     };
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
 
                 Assert.NotNull(result);
                 Assert.Single(result);
@@ -57,8 +57,8 @@ namespace TurboJpegWrapper.Tests
                 {
                         new TJTransformDescription
                         {
-                            Operation = TJTransformOperations.TJXOP_NONE,
-                            Options = TJTransformOptions.CROP,
+                            Operation = TJTransformOperation.None,
+                            Options = TJTransformOptions.Crop,
                             Region = new TJRegion
                             {
                                 X = 0,
@@ -81,7 +81,7 @@ namespace TurboJpegWrapper.Tests
                         //}
                     };
 
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
                 Assert.NotNull(result);
                 Assert.NotNull(result.Length == 1);
 
@@ -102,8 +102,8 @@ namespace TurboJpegWrapper.Tests
                 {
                         new TJTransformDescription
                         {
-                            Operation = TJTransformOperations.TJXOP_NONE,
-                            Options = TJTransformOptions.CROP,
+                            Operation = TJTransformOperation.None,
+                            Options = TJTransformOptions.Crop,
                             Region = new TJRegion
                             {
                                 X = 0,
@@ -114,8 +114,8 @@ namespace TurboJpegWrapper.Tests
                         },
                         new TJTransformDescription
                         {
-                            Operation = TJTransformOperations.TJXOP_NONE,
-                            Options = TJTransformOptions.CROP,
+                            Operation = TJTransformOperation.None,
+                            Options = TJTransformOptions.Crop,
                             Region = new TJRegion
                             {
                                 X = 50,
@@ -126,7 +126,7 @@ namespace TurboJpegWrapper.Tests
                         },
                     };
 
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
+                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
                 Assert.NotNull(result);
                 Assert.NotEmpty(result);
 

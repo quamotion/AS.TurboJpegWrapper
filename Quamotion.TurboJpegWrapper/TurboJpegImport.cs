@@ -21,20 +21,20 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Pixel size (in bytes) for a given pixel format.
         /// </summary>
-        public static readonly Dictionary<TJPixelFormats, int> PixelSizes = new Dictionary<TJPixelFormats, int>
+        public static readonly Dictionary<TJPixelFormat, int> PixelSizes = new Dictionary<TJPixelFormat, int>
         {
-            { TJPixelFormats.TJPF_RGB, 3 },
-            { TJPixelFormats.TJPF_BGR, 3 },
-            { TJPixelFormats.TJPF_RGBX, 4 },
-            { TJPixelFormats.TJPF_BGRX, 4 },
-            { TJPixelFormats.TJPF_XBGR, 4 },
-            { TJPixelFormats.TJPF_XRGB, 4 },
-            { TJPixelFormats.TJPF_GRAY, 1 },
-            { TJPixelFormats.TJPF_RGBA, 4 },
-            { TJPixelFormats.TJPF_BGRA, 4 },
-            { TJPixelFormats.TJPF_ABGR, 4 },
-            { TJPixelFormats.TJPF_ARGB, 4 },
-            { TJPixelFormats.TJPF_CMYK, 4 },
+            { TJPixelFormat.RGB, 3 },
+            { TJPixelFormat.BGR, 3 },
+            { TJPixelFormat.RGBX, 4 },
+            { TJPixelFormat.BGRX, 4 },
+            { TJPixelFormat.XBGR, 4 },
+            { TJPixelFormat.XRGB, 4 },
+            { TJPixelFormat.Gray, 1 },
+            { TJPixelFormat.RGBA, 4 },
+            { TJPixelFormat.BGRA, 4 },
+            { TJPixelFormat.ABGR, 4 },
+            { TJPixelFormat.ARGB, 4 },
+            { TJPixelFormat.CMYK, 4 },
         };
 
         /// <summary>
@@ -48,14 +48,14 @@ namespace TurboJpegWrapper
         /// <item><description>32x8 for 4:1:1</description></item>
         /// </list>
         /// </summary>
-        public static readonly Dictionary<TJSubsamplingOptions, Size> MCUSizes = new Dictionary<TJSubsamplingOptions, Size>
+        public static readonly Dictionary<TJSubsamplingOption, Size> MCUSizes = new Dictionary<TJSubsamplingOption, Size>
         {
-            { TJSubsamplingOptions.TJSAMP_GRAY, new Size(8, 8) },
-            { TJSubsamplingOptions.TJSAMP_444, new Size(8, 8) },
-            { TJSubsamplingOptions.TJSAMP_422, new Size(16, 8) },
-            { TJSubsamplingOptions.TJSAMP_420, new Size(16, 16) },
-            { TJSubsamplingOptions.TJSAMP_440, new Size(8, 16) },
-            { TJSubsamplingOptions.TJSAMP_411, new Size(32, 8) },
+            { TJSubsamplingOption.Gray, new Size(8, 8) },
+            { TJSubsamplingOption.Chrominance444, new Size(8, 8) },
+            { TJSubsamplingOption.Chrominance422, new Size(16, 8) },
+            { TJSubsamplingOption.Chrominance420, new Size(16, 16) },
+            { TJSubsamplingOption.Chrominance440, new Size(8, 16) },
+            { TJSubsamplingOption.Chrominance411, new Size(32, 8) },
         };
 
         private const string UnmanagedLibrary = "turbojpeg";
@@ -214,7 +214,7 @@ namespace TurboJpegWrapper
         ///
         /// <param name="height">Height (in pixels) of the source image.</param>
         ///
-        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="TJPixelFormats"/> "Pixel formats").</param>
+        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="TJPixelFormat"/> "Pixel formats").</param>
         ///
         /// <param name="jpegBuf">
         /// Address of a pointer to an image buffer that will receive the JPEG image.
@@ -249,7 +249,7 @@ namespace TurboJpegWrapper
         ///
         /// <param name="jpegSubsamp">
         /// The level of chrominance subsampling to be used when
-        /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         ///
         /// <param name="jpegQual">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
@@ -274,7 +274,7 @@ namespace TurboJpegWrapper
         /// <param name="height">Height (in pixels) of the image.</param>
         /// <param name="jpegSubsamp">
         /// The level of chrominance subsampling to be used when
-        /// generating the JPEG image(see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// generating the JPEG image(see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         /// <returns>
         /// The maximum size of the buffer (in bytes) required to hold the image,
@@ -300,10 +300,10 @@ namespace TurboJpegWrapper
         /// <param name="height">Pointer to an integer variable that will receive the height (in pixels) of the JPEG image.</param>
         /// <param name="jpegSubsamp">
         /// Pointer to an integer variable that will receive the level of chrominance subsampling used
-        /// when the JPEG image was compressed (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
+        /// when the JPEG image was compressed (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
         /// </param>
         /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants,
-        /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)</param>
+        /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpace"/> "JPEG colorspaces".)</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
         public static int TjDecompressHeader(
             IntPtr handle,
@@ -377,7 +377,7 @@ namespace TurboJpegWrapper
         /// If this is different than the height of the JPEG image being decompressed, then TurboJPEG will use scaling in the JPEG decompressor to generate the largest possible image that will fit within the desired height.
         /// If <paramref name="height"/> is set to 0, then only the width will be considered when determining the scaled image size.
         /// </param>
-        /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormats"/> "Pixel formats".)</param>
+        /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormat"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
         public static int TjDecompress(

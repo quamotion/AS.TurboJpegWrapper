@@ -13,7 +13,7 @@ namespace TurboJpegWrapper
     /// <summary>
     /// Class for loseless transform jpeg images.
     /// </summary>
-    public class TJTransformer
+    public class TJTransformer : IDisposable
     {
         private readonly object @lock = new object();
         private IntPtr transformHandle;
@@ -88,7 +88,7 @@ namespace TurboJpegWrapper
             }
 
             Size mcuSize;
-            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOptions)subsampl, out mcuSize))
+            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOption)subsampl, out mcuSize))
             {
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
