@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <AdditionalFiles Include="../Quamotion.TurboJpegWrapper/stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TestUtils.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,8 +12,17 @@ using System.Reflection;
 
 namespace TurboJpegWrapper.Tests
 {
-    static class TestUtils
+    internal static class TestUtils
     {
+        public static string BinPath
+        {
+            get
+            {
+                var path = Assembly.GetExecutingAssembly().Location;
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         public static IEnumerable<Bitmap> GetTestImages(string searchPattern)
         {
             var path = Assembly.GetExecutingAssembly().Location;
@@ -30,6 +44,7 @@ namespace TurboJpegWrapper.Tests
                 {
                     continue;
                 }
+
                 yield return bmp;
             }
         }
@@ -42,15 +57,6 @@ namespace TurboJpegWrapper.Tests
             {
                 Debug.WriteLine($"Input file is {file}");
                 yield return new Tuple<string, byte[]>(file, File.ReadAllBytes(file));
-            }
-        }
-
-        public static string BinPath
-        {
-            get
-            {
-                var path = Assembly.GetExecutingAssembly().Location;
-                return Path.GetDirectoryName(path);
             }
         }
     }
