@@ -14,9 +14,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJDecompressor : IDisposable
     {
+        private readonly object @lock = new object();
         private IntPtr decompressorHandle = IntPtr.Zero;
         private bool isDisposed;
-        private readonly object @lock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TJDecompressor"/> class.
@@ -32,6 +32,14 @@ namespace TurboJpegWrapper
             {
                 TJUtils.GetErrorAndThrow();
             }
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TJDecompressor"/> class.
+        /// </summary>
+        ~TJDecompressor()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -62,6 +70,18 @@ namespace TurboJpegWrapper
             return buf;
         }
 
+        /// <summary>
+        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
+        /// </summary>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
+        /// <param name="outBuf">The buffer into which to store the decompressed JPEG image.</param>
+        /// <param name="outBufSize">Size of <paramref name="outBuf"/> (in bytes).</param>
+        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <param name="width">Width of image in pixels.</param>
+        /// <param name="height">Height of image in pixels.</param>
+        /// <param name="stride">Bytes per line in the destination image.</param>
         public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
@@ -260,16 +280,6 @@ namespace TurboJpegWrapper
             return stride * height;
         }
 
-        private ColorPalette FixPaletteToGrayscale(ColorPalette palette)
-        {
-            for (var index = 0; index < palette.Entries.Length; ++index)
-            {
-                palette.Entries[index] = Color.FromArgb(index, index, index);
-            }
-
-            return palette;
-        }
-
         /// <summary>
         /// Releases resources.
         /// </summary>
@@ -293,6 +303,16 @@ namespace TurboJpegWrapper
             }
         }
 
+        private ColorPalette FixPaletteToGrayscale(ColorPalette palette)
+        {
+            for (var index = 0; index < palette.Entries.Length; ++index)
+            {
+                palette.Entries[index] = Color.FromArgb(index, index, index);
+            }
+
+            return palette;
+        }
+
         private void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
@@ -310,14 +330,6 @@ namespace TurboJpegWrapper
                 // (i.e. make calling Dispose twice a safe thing to do).
                 this.decompressorHandle = IntPtr.Zero;
             }
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="TJDecompressor"/> class.
-        /// </summary>
-        ~TJDecompressor()
-        {
-            this.Dispose(false);
         }
     }
 }

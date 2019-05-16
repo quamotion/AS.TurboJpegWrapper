@@ -18,9 +18,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJCompressor : IDisposable
     {
+        private readonly object @lock = new object();
         private IntPtr compressorHandle;
         private bool isDisposed;
-        private readonly object @lock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TJCompressor"/> class.
@@ -36,6 +36,14 @@ namespace TurboJpegWrapper
             {
                 TJUtils.GetErrorAndThrow();
             }
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TJCompressor"/> class.
+        /// </summary>
+        ~TJCompressor()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -269,6 +277,21 @@ namespace TurboJpegWrapper
             }
         }
 
+        /// <exception cref="NotSupportedException">
+        /// Some parameters' values are incompatible:
+        /// <list type="bullet">
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// </list>
+        /// </exception>
+        private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOptions subSamp, TJPixelFormats srcFormat)
+        {
+            if (srcFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+            {
+                throw new NotSupportedException(
+                    $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
+            }
+        }
+
         private void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
@@ -286,28 +309,6 @@ namespace TurboJpegWrapper
                 // (i.e. make calling Dispose twice a safe thing to do).
                 this.compressorHandle = IntPtr.Zero;
             }
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="TJCompressor"/> class.
-        /// </summary>
-        ~TJCompressor()
-        {
-            this.Dispose(false);
-        }
-
-        /// <exception cref="NotSupportedException">
-        /// Some parameters' values are incompatible:
-        /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
-        /// </list>
-        /// </exception>
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOptions subSamp, TJPixelFormats srcFormat)
-        {
-            if (srcFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
-                throw new NotSupportedException(
-                    $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
         }
     }
 }
