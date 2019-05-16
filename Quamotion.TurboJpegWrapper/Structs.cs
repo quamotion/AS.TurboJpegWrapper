@@ -4,44 +4,45 @@ using System.Runtime.InteropServices;
 namespace TurboJpegWrapper
 {
     /// <summary>
-    /// Scaling factor
+    /// Scaling factor.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     struct tjscalingfactor
     {
         /// <summary>
-        /// Numerator
+        /// Numerator.
         /// </summary>
         public int num { get; set; }
 
         /// <summary>
-        /// Denominator
+        /// Denominator.
         /// </summary>
         public int denom { get; set; }
     }
 
-
     /// <summary>
-    /// Lossless transform
+    /// Lossless transform.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public  struct tjtransform
+    public struct tjtransform
     {
         /// <summary>
-        /// Cropping region
+        /// Cropping region.
         /// </summary>
         public TJRegion r { get; set; }
+
         /// <summary>
-        /// One of the <see cref="TJTransformOperations"/> "transform operations"
+        /// One of the <see cref="TJTransformOperations"/> "transform operations".
         /// </summary>
         public int op { get; set; }
+
         /// <summary>
-        /// The bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options"
+        /// The bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options".
         /// </summary>
         public int options { get; set; }
 
         /// <summary>
-        /// Arbitrary data that can be accessed within the body of the callback function
+        /// Arbitrary data that can be accessed within the body of the callback function.
         /// </summary>
         public IntPtr data { get; set; }
 
@@ -75,7 +76,7 @@ namespace TurboJpegWrapper
     /// </param>
     /// <param name="planeRegion">
     /// <see cref="TJRegion"/> structure containing the width and height of
-    /// the component plane to which <paramref name="coeffs"/> belongs
+    /// the component plane to which <paramref name="coeffs"/> belongs.
     /// </param>
     /// <param name="componentIndex">
     /// ID number of the component plane to which
@@ -85,17 +86,16 @@ namespace TurboJpegWrapper
     /// <param name="transformIndex">
     /// ID number of the transformed image to which
     /// <paramref name="coeffs"/> belongs.  This is the same as the index of the transform
-    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.tjTransform"/> 
+    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.tjTransform"/>.
     /// </param>
     /// <param name="transform">
     /// A pointer to a <see cref="tjtransform"/> structure that specifies the
-    /// parameters and/or cropping region for this transform
+    /// parameters and/or cropping region for this transform.
     /// </param>
     /// <returns>0 if the callback was successful, or -1 if an error occurred.</returns>
     /// <remarks>
     /// Original signature is:
-    /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c></para> 
+    /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c>.</para>
     /// </remarks>
     public delegate int CustomFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
-
 }

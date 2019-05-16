@@ -6,7 +6,7 @@ using System;
 namespace TurboJpegWrapper
 {
     /// <summary>
-    /// JPEG colorspaces
+    /// JPEG colorspaces.
     /// </summary>
     public enum TJColorSpaces
     {
@@ -32,7 +32,7 @@ namespace TurboJpegWrapper
         /// optionally subsampled for the purposes of reducing bandwidth or disk
         /// space.  YCbCr is the most common JPEG colorspace, and YCbCr JPEG images
         /// can be compressed from and decompressed to any of the extended RGB pixel
-        /// formats or grayscale, or they can be decompressed to YUV planar images. 
+        /// formats or grayscale, or they can be decompressed to YUV planar images.
         /// </summary>
         TJCS_YCbCr,
 
@@ -41,7 +41,7 @@ namespace TurboJpegWrapper
         /// component), and any color data from the source image is discarded.
         /// Grayscale JPEG images can be compressed from and decompressed to any of
         /// the extended RGB pixel formats or grayscale, or they can be decompressed
-        /// to YUV planar images. 
+        /// to YUV planar images.
         /// </summary>
         TJCS_GRAY,
 
@@ -62,8 +62,8 @@ namespace TurboJpegWrapper
         /// perceptual loss.  YCCK JPEG images can only be compressed from and
         /// decompressed to CMYK pixels.
         /// </summary>
-        TJCS_YCCK
-    };
+        TJCS_YCCK,
+    }
 
     /// <summary>
     /// Chrominance subsampling options.
@@ -102,7 +102,7 @@ namespace TurboJpegWrapper
 
         /// <summary>
         /// 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
-        /// chrominance component for every 1x2 block of pixels in the source image. 
+        /// chrominance component for every 1x2 block of pixels in the source image.
         /// </summary>
         /// <remarks>4:4:0 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
         TJSAMP_440,
@@ -117,11 +117,11 @@ namespace TurboJpegWrapper
         /// horizontal features.
         /// </summary>
         /// <remarks> 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
-        TJSAMP_411
-    };
+        TJSAMP_411,
+    }
 
     /// <summary>
-    /// Pixel formats
+    /// Pixel formats.
     /// </summary>
     public enum TJPixelFormats
     {
@@ -131,19 +131,22 @@ namespace TurboJpegWrapper
         /// address within each pixel.
         /// </summary>
         TJPF_RGB = 0,
+
         /// <summary>
         /// BGR pixel format.  The red, green, and blue components in the image are
         /// stored in 3-byte pixels in the order B, G, R from lowest to highest byte
         /// address within each pixel.
         /// </summary>
         TJPF_BGR,
+
         /// <summary>
         /// RGBX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from lowest to highest byte
         /// address within each pixel.  The X component is ignored when compressing
-        /// and undefined when decompressing. 
+        /// and undefined when decompressing.
         /// </summary>
         TJPF_RGBX,
+
         /// <summary>
         /// BGRX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from lowest to highest byte
@@ -151,13 +154,15 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing.
         ///  </summary>
         TJPF_BGRX,
+
         /// <summary>
         /// XBGR pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from highest to lowest byte
         /// address within each pixel.  The X component is ignored when compressing
-        /// and undefined when decompressing. 
+        /// and undefined when decompressing.
         /// </summary>
         TJPF_XBGR,
+
         /// <summary>
         /// XRGB pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from highest to lowest byte
@@ -165,35 +170,41 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing.
         /// </summary>
         TJPF_XRGB,
+
         /// <summary>
         /// Grayscale pixel format.  Each 1-byte pixel represents a luminance
         /// (brightness) level from 0 to 255.
         /// </summary>
         TJPF_GRAY,
+
         /// <summary>
         /// RGBA pixel format.  This is the same as <see cref="TJPF_RGBX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_RGBA,
+
         /// <summary>
         /// BGRA pixel format.  This is the same as <see cref="TJPF_BGRX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_BGRA,
+
         /// <summary>
         /// ABGR pixel format.  This is the same as <see cref="TJPF_XBGR"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_ABGR,
+
         /// <summary>
         /// ARGB pixel format.  This is the same as <see cref="TJPF_XRGB"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_ARGB,
+
         /// <summary>
         /// CMYK pixel format.  Unlike RGB, which is an additive color model used
         /// primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
@@ -207,13 +218,13 @@ namespace TurboJpegWrapper
         /// be defined with a simple formula.  Thus, such a conversion is out of scope
         /// for a codec library.  However, the TurboJPEG API allows for compressing
         /// CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
-        /// JPEG images into CMYK pixels. 
+        /// JPEG images into CMYK pixels.
         /// </summary>
-        TJPF_CMYK
-    };
+        TJPF_CMYK,
+    }
 
     /// <summary>
-    /// Flags for turbo jpeg
+    /// Flags for turbo jpeg.
     /// </summary>
     [Flags]
     public enum TJFlags
@@ -222,34 +233,39 @@ namespace TurboJpegWrapper
         /// Flags not set
         /// </summary>
         NONE = 0,
+
         /// <summary>
-        /// The uncompressed source/destination image is stored in bottom-up (Windows, OpenGL) order, 
+        /// The uncompressed source/destination image is stored in bottom-up (Windows, OpenGL) order,
         /// not top-down (X11) order.
         /// </summary>
         BOTTOMUP = 2,
+
         /// <summary>
-        /// When decompressing an image that was compressed using chrominance subsampling, 
-        /// use the fastest chrominance upsampling algorithm available in the underlying codec.  
-        /// The default is to use smooth upsampling, which creates a smooth transition between 
+        /// When decompressing an image that was compressed using chrominance subsampling,
+        /// use the fastest chrominance upsampling algorithm available in the underlying codec.
+        /// The default is to use smooth upsampling, which creates a smooth transition between
         /// neighboring chrominance components in order to reduce upsampling artifacts in the decompressed image.
         /// </summary>
         FASTUPSAMPLE = 256,
+
         /// <summary>
-        /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.tjCompress2"/> or #tjTransform(), 
-        /// this flag will cause those functions to generate an error 
-        /// if the JPEG image buffer is invalid or too small rather than attempting to allocate or reallocate that buffer.  
+        /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.tjCompress2"/> or #tjTransform(),
+        /// this flag will cause those functions to generate an error
+        /// if the JPEG image buffer is invalid or too small rather than attempting to allocate or reallocate that buffer.
         /// This reproduces the behavior of earlier versions of TurboJPEG.
         /// </summary>
         NOREALLOC = 1024,
+
         /// <summary>
         /// Use the fastest DCT/IDCT algorithm available in the underlying codec.  The
         /// default if this flag is not specified is implementation-specific.  For
         /// example, the implementation of TurboJPEG for libjpeg[-turbo] uses the fast
         /// algorithm by default when compressing, because this has been shown to have
         /// only a very slight effect on accuracy, but it uses the accurate algorithm
-        /// when decompressing, because this has been shown to have a larger effect. 
+        /// when decompressing, because this has been shown to have a larger effect.
         /// </summary>
         FASTDCT = 2048,
+
         /// <summary>
         /// Use the most accurate DCT/IDCT algorithm available in the underlying codec.
         /// The default if this flag is not specified is implementation-specific.  For
@@ -258,11 +274,11 @@ namespace TurboJpegWrapper
         /// only a very slight effect on accuracy, but it uses the accurate algorithm
         /// when decompressing, because this has been shown to have a larger effect.
         /// </summary>
-        ACCURATEDCT = 4096
+        ACCURATEDCT = 4096,
     }
 
     /// <summary>
-    /// Transform operations for <see cref="TurboJpegImport.tjTransform"/>
+    /// Transform operations for <see cref="TurboJpegImport.tjTransform"/>.
     /// </summary>
     public enum TJTransformOperations
     {
@@ -291,7 +307,7 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Transverse transpose image (flip/mirror along upper right to lower left
         /// axis.)  This transform is imperfect if there are any partial MCU blocks in
-        /// the image (see <see cref="TJTransformOptions.PERFECT"/>.) 
+        /// the image (see <see cref="TJTransformOptions.PERFECT"/>.)
         /// </summary>
         TJXOP_TRANSVERSE,
 
@@ -311,11 +327,11 @@ namespace TurboJpegWrapper
         /// Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
         /// if there are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.PERFECT"/>.)
         /// </summary>
-        TJXOP_ROT270
-    };
+        TJXOP_ROT270,
+    }
 
     /// <summary>
-    /// Transformation options
+    /// Transformation options.
     /// </summary>
     [Flags]
     public enum TJTransformOptions
@@ -323,7 +339,7 @@ namespace TurboJpegWrapper
         /// <summary>
         /// This option will cause <see cref="TurboJpegImport.tjTransform"/> to return an error if the transform is
         /// not perfect.  Lossless transforms operate on MCU blocks, whose size depends
-        /// on the level of chrominance subsampling used  
+        /// on the level of chrominance subsampling used
         /// If the image's width or height is not evenly divisible
         /// by the MCU block size, then there will be partial MCU blocks on the right
         /// and/or bottom edges.  It is not possible to move these partial MCU blocks to
@@ -352,7 +368,7 @@ namespace TurboJpegWrapper
         /// <summary>
         /// This option will prevent <see cref="TurboJpegImport.tjTransform"/> from outputting a JPEG image for
         /// this particular transform (this can be used in conjunction with a custom
-        /// filter to capture the transformed DCT coefficients without transcoding them.) 
+        /// filter to capture the transformed DCT coefficients without transcoding them.)
         /// </summary>
         NOOUTPUT = 16,
     }

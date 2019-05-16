@@ -6,58 +6,63 @@ using System.Runtime.InteropServices;
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
+
     /// <summary>
-    /// Class for loseless transform jpeg images
+    /// Class for loseless transform jpeg images.
     /// </summary>
     public class TJTransformer
     {
-        private IntPtr _transformHandle;
-        private bool _isDisposed;
-        private readonly object _lock = new object();
+        private IntPtr transformHandle;
+        private bool isDisposed;
+        private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJTransformer"/>
+        /// Creates new instance of <see cref="TJTransformer"/>.
         /// </summary>
         /// <exception cref="TJException">
-        /// Throws if internal compressor instance can not be created
+        /// Throws if internal compressor instance can not be created.
         /// </exception>
         public TJTransformer()
         {
-            _transformHandle = TurboJpegImport.tjInitTransform();
+            this.transformHandle = TurboJpegImport.tjInitTransform();
 
-            if (_transformHandle == IntPtr.Zero)
+            if (this.transformHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
             }
         }
 
-        /// <summary>Transforms input image into one or several destinations</summary>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
-        /// <param name="transforms">Array of transform descriptions to be applied to the source image </param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Array of transformed jpeg images</returns>
+        /// <summary>Transforms input image into one or several destinations.</summary>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
+        /// <param name="transforms">Array of transform descriptions to be applied to the source image. </param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Array of transformed jpeg images.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="transforms"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Transforms can not be empty</exception>
-        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
+        /// <exception cref="ArgumentException">Transforms can not be empty.</exception>
+        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails. </exception>
         public byte[][] Transform(IntPtr jpegBuf, ulong jpegBufSize, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
+            {
                 throw new ArgumentNullException("transforms");
+            }
+
             if (transforms.Length == 0)
+            {
                 throw new ArgumentException("Transforms can not be empty", "transforms");
+            }
 
             // ReSharper disable once ExceptionNotDocumented
             var count = transforms.Length;
             var destBufs = new IntPtr[count];
             var destSizes = new ulong[count];
 
-
             int subsampl;
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.tjDecompressHeader(_transformHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.tjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -71,8 +76,6 @@ namespace TurboJpegWrapper
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
 
-
-
             var tjTransforms = new tjtransform[count];
             for (var i = 0; i < count; i++)
             {
@@ -80,7 +83,6 @@ namespace TurboJpegWrapper
                 var y = CorrectRegionCoordinate(transforms[i].Region.Y, mcuSize.Height);
                 var w = CorrectRegionSize(transforms[i].Region.X, x, transforms[i].Region.W, width);
                 var h = CorrectRegionSize(transforms[i].Region.Y, y, transforms[i].Region.H, height);
-
 
                 tjTransforms[i] = new tjtransform
                 {
@@ -91,16 +93,17 @@ namespace TurboJpegWrapper
                         X = x,
                         Y = y,
                         W = w,
-                        H = h
+                        H = h,
                     },
                     data = transforms[i].CallbackData,
-                    customFilter = transforms[i].CustomFilter
+                    customFilter = transforms[i].CustomFilter,
                 };
             }
-            var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
+
+            var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.tjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -118,8 +121,8 @@ namespace TurboJpegWrapper
 
                     TurboJpegImport.tjFree(ptr);
                 }
-                return result.ToArray();
 
+                return result.ToArray();
             }
             finally
             {
@@ -128,7 +131,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Correct region coordinate to be evenly divisible by the MCU block dimension
+        /// Correct region coordinate to be evenly divisible by the MCU block dimension.
         /// </summary>
         /// <returns></returns>
         private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
@@ -139,65 +142,82 @@ namespace TurboJpegWrapper
             {
                 realCoordinate = realCoordinate - remainder < 0 ? 0 : realCoordinate - remainder;
             }
+
             return realCoordinate;
         }
+
         private static int CorrectRegionSize(int desiredCoordinate, int realCoordinate, int desiredSize, int imageSize)
         {
             var delta = desiredCoordinate - realCoordinate;
             if (desiredCoordinate == realCoordinate)
             {
                 if (realCoordinate + desiredSize < imageSize)
+                {
                     return desiredSize;
+                }
                 else
+                {
                     return imageSize - realCoordinate;
+                }
             }
             else
             {
                 if (realCoordinate + delta + desiredSize < imageSize)
+                {
                     return desiredSize + delta;
+                }
                 else
+                {
                     return imageSize - realCoordinate;
+                }
             }
         }
 
-
-        /// <summary>Transforms input image into one or several destinations</summary>
-        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="transforms">Array of transform descriptions to be applied to the source image </param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Array of transformed jpeg images</returns>
+        /// <summary>Transforms input image into one or several destinations.</summary>
+        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="transforms">Array of transform descriptions to be applied to the source image. </param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Array of transformed jpeg images.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="transforms"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Transforms can not be empty</exception>
-        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
+        /// <exception cref="ArgumentException">Transforms can not be empty.</exception>
+        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails. </exception>
         public unsafe byte[][] Transform(byte[] jpegBuf, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
+            {
                 throw new ArgumentNullException("transforms");
+            }
+
             if (transforms.Length == 0)
+            {
                 throw new ArgumentException("Transforms can not be empty", "transforms");
+            }
 
             fixed (byte* jpegPtr = jpegBuf)
             {
-                return Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
+                return this.Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
             }
         }
 
         /// <summary>
-        /// Releases resources
+        /// Releases resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
-
-            if (_isDisposed)
-                return;
-
-            lock (_lock)
+            if (this.isDisposed)
             {
-                if (_isDisposed)
-                    return;
+                return;
+            }
 
-                Dispose(true);
+            lock (this.@lock)
+            {
+                if (this.isDisposed)
+                {
+                    return;
+                }
+
+                this.Dispose(true);
                 GC.SuppressFinalize(this);
             }
         }
@@ -206,18 +226,18 @@ namespace TurboJpegWrapper
         {
             if (callFromUserCode)
             {
-                _isDisposed = true;
+                this.isDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
-            if (_transformHandle != IntPtr.Zero)
+            if (this.transformHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(_transformHandle);
+                TurboJpegImport.tjDestroy(this.transformHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
-                _transformHandle = IntPtr.Zero;
+                this.transformHandle = IntPtr.Zero;
             }
         }
 
@@ -226,7 +246,7 @@ namespace TurboJpegWrapper
         /// </summary>
         ~TJTransformer()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
     }
 }
