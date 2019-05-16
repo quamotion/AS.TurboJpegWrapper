@@ -8,7 +8,7 @@ namespace TurboJpegWrapper
     // ReSharper disable once InconsistentNaming
 
     /// <summary>
-    /// Class for loseless transform jpeg images
+    /// Class for loseless transform jpeg images.
     /// </summary>
     public class TJTransformer
     {
@@ -17,10 +17,10 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJTransformer"/>
+        /// Creates new instance of <see cref="TJTransformer"/>.
         /// </summary>
         /// <exception cref="TJException">
-        /// Throws if internal compressor instance can not be created
+        /// Throws if internal compressor instance can not be created.
         /// </exception>
         public TJTransformer()
         {
@@ -32,15 +32,15 @@ namespace TurboJpegWrapper
             }
         }
 
-        /// <summary>Transforms input image into one or several destinations</summary>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
-        /// <param name="transforms">Array of transform descriptions to be applied to the source image </param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Array of transformed jpeg images</returns>
+        /// <summary>Transforms input image into one or several destinations.</summary>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
+        /// <param name="transforms">Array of transform descriptions to be applied to the source image. </param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Array of transformed jpeg images.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="transforms"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Transforms can not be empty</exception>
-        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
+        /// <exception cref="ArgumentException">Transforms can not be empty.</exception>
+        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails. </exception>
         public byte[][] Transform(IntPtr jpegBuf, ulong jpegBufSize, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
@@ -129,7 +129,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Correct region coordinate to be evenly divisible by the MCU block dimension
+        /// Correct region coordinate to be evenly divisible by the MCU block dimension.
         /// </summary>
         /// <returns></returns>
         private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
@@ -163,14 +163,14 @@ namespace TurboJpegWrapper
         }
 
 
-        /// <summary>Transforms input image into one or several destinations</summary>
-        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="transforms">Array of transform descriptions to be applied to the source image </param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Array of transformed jpeg images</returns>
+        /// <summary>Transforms input image into one or several destinations.</summary>
+        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="transforms">Array of transform descriptions to be applied to the source image. </param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Array of transformed jpeg images.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="transforms"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Transforms can not be empty</exception>
-        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
+        /// <exception cref="ArgumentException">Transforms can not be empty.</exception>
+        /// <exception cref="TJException"> Throws if low level turbo jpeg function fails. </exception>
         public unsafe byte[][] Transform(byte[] jpegBuf, TJTransformDescription[] transforms, TJFlags flags)
         {
             if (transforms == null)
@@ -185,9 +185,9 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Releases resources
+        /// Releases resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
 

@@ -5,7 +5,7 @@ namespace TurboJpegWrapper
     // ReSharper disable once InconsistentNaming
 
     /// <summary>
-    /// Cropping region
+    /// Cropping region.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct TJRegion
@@ -32,7 +32,7 @@ namespace TurboJpegWrapper
         public int H { get; set; }
 
         /// <summary>
-        /// Returns empty region which is interpreted as full image region
+        /// Returns empty region which is interpreted as full image region.
         /// </summary>
         public static TJRegion Empty { get { return new TJRegion();} }
     }

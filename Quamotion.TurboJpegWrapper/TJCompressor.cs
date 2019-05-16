@@ -9,7 +9,7 @@ namespace TurboJpegWrapper
     // ReSharper disable once InconsistentNaming
 
     /// <summary>
-    /// Implements compression of RGB, CMYK, grayscale images to the jpeg format
+    /// Implements compression of RGB, CMYK, grayscale images to the jpeg format.
     /// </summary>
     public class TJCompressor : IDisposable
     {
@@ -18,10 +18,10 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJCompressor"/>
+        /// Creates new instance of <see cref="TJCompressor"/>.
         /// </summary>
         /// <exception cref="TJException">
-        /// Throws if internal compressor instance can not be created
+        /// Throws if internal compressor instance can not be created.
         /// </exception>
         public TJCompressor()
         {
@@ -34,18 +34,18 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Compresses input image to the jpeg format with specified quality
+        /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
-        /// <param name="srcImage"> Source image to be converted </param>
+        /// <param name="srcImage"> Source image to be converted. </param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
         /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
-        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <remarks>Only <see cref="PixelFormat.Format24bppRgb"/>, <see cref="PixelFormat.Format32bppArgb"/>, <see cref="PixelFormat.Format8bppIndexed"/> pixel formats are supported</remarks>
-        /// <exception cref="TJException"> Throws if compress function failed </exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <remarks>Only <see cref="PixelFormat.Format24bppRgb"/>, <see cref="PixelFormat.Format32bppArgb"/>, <see cref="PixelFormat.Format8bppIndexed"/> pixel formats are supported.</remarks>
+        /// <exception cref="TJException"> Throws if compress function failed. </exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
@@ -81,7 +81,7 @@ namespace TurboJpegWrapper
 
 
         /// <summary>
-        /// Compresses input image to the jpeg format with specified quality
+        /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
         /// <param name="srcPtr">
         /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
@@ -96,17 +96,17 @@ namespace TurboJpegWrapper
         /// Setting this parameter to 0 is the equivalent of setting it to
         /// <c>width * BytesPerPixel</c>.
         /// </param>
-        /// <param name="width">Width (in pixels) of the source image</param>
-        /// <param name="height">Height (in pixels) of the source image</param>
-        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats")</param>
+        /// <param name="width">Width (in pixels) of the source image.</param>
+        /// <param name="height">Height (in pixels) of the source image.</param>
+        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
         /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
-        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <exception cref="TJException"> Throws if compress function failed </exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <exception cref="TJException"> Throws if compress function failed. </exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
@@ -155,7 +155,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Compresses input image to the jpeg format with specified quality
+        /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
         /// <param name="srcBuf">
         /// Image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
@@ -170,19 +170,19 @@ namespace TurboJpegWrapper
         /// Setting this parameter to 0 is the equivalent of setting it to
         /// <c>width * BytesPerPixel</c>.
         /// </param>
-        /// <param name="width">Width (in pixels) of the source image</param>
-        /// <param name="height">Height (in pixels) of the source image</param>
-        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats")</param>
+        /// <param name="width">Width (in pixels) of the source image.</param>
+        /// <param name="height">Height (in pixels) of the source image.</param>
+        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
         /// <param name="subSamp">
         /// The level of chrominance subsampling to be used when
         /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
-        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
         /// <exception cref="TJException">
-        /// Throws if compress function failed
+        /// Throws if compress function failed.
         /// </exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         /// <exception cref="NotSupportedException"> 
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
@@ -233,9 +233,9 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Releases resources
+        /// Releases resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
 

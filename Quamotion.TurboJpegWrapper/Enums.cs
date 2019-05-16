@@ -6,7 +6,7 @@ using System;
 namespace TurboJpegWrapper
 {
     /// <summary>
-    /// JPEG colorspaces
+    /// JPEG colorspaces.
     /// </summary>
     public enum TJColorSpaces
     {
@@ -121,7 +121,7 @@ namespace TurboJpegWrapper
     };
 
     /// <summary>
-    /// Pixel formats
+    /// Pixel formats.
     /// </summary>
     public enum TJPixelFormats
     {
@@ -224,7 +224,7 @@ namespace TurboJpegWrapper
     };
 
     /// <summary>
-    /// Flags for turbo jpeg
+    /// Flags for turbo jpeg.
     /// </summary>
     [Flags]
     public enum TJFlags
@@ -278,7 +278,7 @@ namespace TurboJpegWrapper
     }
 
     /// <summary>
-    /// Transform operations for <see cref="TurboJpegImport.tjTransform"/>
+    /// Transform operations for <see cref="TurboJpegImport.tjTransform"/>.
     /// </summary>
     public enum TJTransformOperations
     {
@@ -331,7 +331,7 @@ namespace TurboJpegWrapper
     };
 
     /// <summary>
-    /// Transformation options
+    /// Transformation options.
     /// </summary>
     [Flags]
     public enum TJTransformOptions

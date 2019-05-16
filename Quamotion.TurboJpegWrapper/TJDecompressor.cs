@@ -8,7 +8,7 @@ namespace TurboJpegWrapper
     // ReSharper disable once InconsistentNaming
 
     /// <summary>
-    /// Implements compression of RGB, CMYK, grayscale images to the jpeg format
+    /// Implements compression of RGB, CMYK, grayscale images to the jpeg format.
     /// </summary>
     public class TJDecompressor : IDisposable
     {
@@ -17,10 +17,10 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJDecompressor"/>
+        /// Creates new instance of <see cref="TJDecompressor"/>.
         /// </summary>
         /// <exception cref="TJException">
-        /// Throws if internal compressor instance can not be created
+        /// Throws if internal compressor instance can not be created.
         /// </exception>
         public TJDecompressor()
         {
@@ -35,16 +35,16 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <param name="width">Width of image in pixels</param>
-        /// <param name="height">Height of image in pixels</param>
-        /// <param name="stride">Bytes per line in the destination image</param>
-        /// <returns>Raw pixel data of specified format</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <param name="width">Width of image in pixels.</param>
+        /// <param name="height">Height of image in pixels.</param>
+        /// <param name="stride">Bytes per line in the destination image.</param>
+        /// <returns>Raw pixel data of specified format.</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         public unsafe byte[] Decompress(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             int outBufSize;
@@ -104,15 +104,15 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
-        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
+        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <param name="width">Width of image in pixels</param>
-        /// <param name="height">Height of image in pixels</param>
-        /// <param name="stride">Bytes per line in the destination image</param>
-        /// <returns>Raw pixel data of specified format</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <param name="width">Width of image in pixels.</param>
+        /// <param name="height">Height of image in pixels.</param>
+        /// <param name="stride">Bytes per line in the destination image.</param>
+        /// <returns>Raw pixel data of specified format.</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (this.isDisposed)
@@ -128,14 +128,14 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
-        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Decompressed image of specified format</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
-        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Decompressed image of specified format.</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
+        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed.</exception>
         public unsafe Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
         {
             if (this.isDisposed)
@@ -161,13 +161,13 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
-        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified</param>
+        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
         /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
-        /// <returns>Decompressed image of specified format</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
-        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>Decompressed image of specified format.</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
+        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed.</exception>
         public unsafe Bitmap Decompress(byte[] jpegBuf, PixelFormat destPixelFormat, TJFlags flags)
         {
             if (this.isDisposed)
@@ -187,16 +187,16 @@ namespace TurboJpegWrapper
         /// Pointer to a buffer containing a JPEG image.  This buffer is not modified.
         /// </param>
         /// <param name="jpegBufSize">
-        /// Size of the JPEG image (in bytes)
+        /// Size of the JPEG image (in bytes).
         /// </param>
         /// <param name="destPixelFormat">
         /// The pixel format of the uncompressed image.
         /// </param>
         /// <param name="width">
-        /// Pointer to an integer variable that will receive the width (in pixels) of the JPEG image
+        /// Pointer to an integer variable that will receive the width (in pixels) of the JPEG image.
         /// </param>
         /// <param name="height">
-        /// Pointer to an integer variable that will receive the height (in pixels) of the JPEG image
+        /// Pointer to an integer variable that will receive the height (in pixels) of the JPEG image.
         /// </param>
         /// <param name="stride">
         /// Pointer to an integer variable that will receive the stride (in bytes) of the JPEG image.
@@ -247,9 +247,9 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Releases resources
+        /// Releases resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
 

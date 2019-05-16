@@ -6,7 +6,7 @@ namespace TurboJpegWrapper
     class NativeMethods
     {
         /// <summary>
-        /// The name of the <c>kernel32</c> library
+        /// The name of the <c>kernel32</c> library.
         /// </summary>
         private const string Kernel32 = "kernel32";
 
