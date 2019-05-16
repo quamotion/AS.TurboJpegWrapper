@@ -206,7 +206,6 @@ namespace TurboJpegWrapper
         /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
-
             if (this.isDisposed)
             {
                 return;
