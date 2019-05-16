@@ -23,9 +23,9 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJTransformer()
         {
-            _transformHandle = TurboJpegImport.tjInitTransform();
+            this._transformHandle = TurboJpegImport.tjInitTransform();
 
-            if (_transformHandle == IntPtr.Zero)
+            if (this._transformHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
             }
@@ -57,7 +57,7 @@ namespace TurboJpegWrapper
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.tjDecompressHeader(_transformHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.tjDecompressHeader(this._transformHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -100,7 +100,7 @@ namespace TurboJpegWrapper
             var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.tjTransform(this._transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -178,7 +178,7 @@ namespace TurboJpegWrapper
 
             fixed (byte* jpegPtr = jpegBuf)
             {
-                return Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
+                return this.Transform((IntPtr)jpegPtr, (ulong)jpegBuf.Length, transforms, flags);
             }
         }
 
@@ -189,15 +189,15 @@ namespace TurboJpegWrapper
         public void Dispose()
         {
 
-            if (_isDisposed)
+            if (this._isDisposed)
                 return;
 
-            lock (_lock)
+            lock (this._lock)
             {
-                if (_isDisposed)
+                if (this._isDisposed)
                     return;
 
-                Dispose(true);
+                this.Dispose(true);
                 GC.SuppressFinalize(this);
             }
         }
@@ -206,18 +206,18 @@ namespace TurboJpegWrapper
         {
             if (callFromUserCode)
             {
-                _isDisposed = true;
+                this._isDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
-            if (_transformHandle != IntPtr.Zero)
+            if (this._transformHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(_transformHandle);
+                TurboJpegImport.tjDestroy(this._transformHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
-                _transformHandle = IntPtr.Zero;
+                this._transformHandle = IntPtr.Zero;
             }
         }
 
@@ -226,7 +226,7 @@ namespace TurboJpegWrapper
         /// </summary>
         ~TJTransformer()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
     }
 }
