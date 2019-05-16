@@ -7,7 +7,7 @@ namespace TurboJpegWrapper
     /// Scaling factor.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    struct TjScalingFactor
+    internal struct TjScalingFactor
     {
         /// <summary>
         /// Numerator.

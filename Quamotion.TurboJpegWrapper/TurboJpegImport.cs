@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    static class TurboJpegImport
+    internal static class TurboJpegImport
     {
         private const string UnmanagedLibrary = "turbojpeg";
 

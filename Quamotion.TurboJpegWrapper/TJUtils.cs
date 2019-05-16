@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
-    static class TJUtils
+    internal static class TJUtils
     {
         ///<summary>
         /// Retrieves last error from underlying turbo-jpeg library and throws exception.</summary>

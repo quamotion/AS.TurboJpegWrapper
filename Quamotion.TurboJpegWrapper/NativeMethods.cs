@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    class NativeMethods
+    internal class NativeMethods
     {
         /// <summary>
         /// The name of the <c>kernel32</c> library.
