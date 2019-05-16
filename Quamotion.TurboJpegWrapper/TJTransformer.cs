@@ -147,7 +147,9 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Correct region coordinate to be evenly divisible by the MCU block dimension.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The aligned region coordinate.
+        /// </returns>
         private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
         {
             var realCoordinate = desiredCoordinate;

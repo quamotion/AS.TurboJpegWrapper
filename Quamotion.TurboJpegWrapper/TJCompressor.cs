@@ -43,6 +43,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <remarks>Only <see cref="PixelFormat.Format24bppRgb"/>, <see cref="PixelFormat.Format32bppArgb"/>, <see cref="PixelFormat.Format8bppIndexed"/> pixel formats are supported.</remarks>
         /// <exception cref="TJException"> Throws if compress function failed. </exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
@@ -103,6 +106,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <exception cref="TJException"> Throws if compress function failed. </exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         /// <exception cref="NotSupportedException">
@@ -178,6 +184,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <exception cref="TJException">
         /// Throws if compress function failed.
         /// </exception>

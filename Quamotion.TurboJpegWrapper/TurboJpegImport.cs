@@ -153,7 +153,9 @@ namespace TurboJpegWrapper
         /// </summary>
         /// <param name="dimension">Dimension to scale.</param>
         /// <param name="scalingFactor">Scaling factor.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The scaled value of <paramref name="dimension"/> using the given scaling factor.
+        /// </returns>
         public static int TJSCALED(int dimension, TjScalingFactor scalingFactor)
         {
             return (dimension * scalingFactor.Num + scalingFactor.Denom - 1) / scalingFactor.Denom;
