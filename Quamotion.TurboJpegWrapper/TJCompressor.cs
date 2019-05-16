@@ -12,9 +12,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJCompressor : IDisposable
     {
-        private IntPtr _compressorHandle;
-        private bool _isDisposed;
-        private readonly object _lock = new object();
+        private IntPtr compressorHandle;
+        private bool isDisposed;
+        private readonly object @lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJCompressor"/>
@@ -24,9 +24,9 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJCompressor()
         {
-            this._compressorHandle = TurboJpegImport.tjInitCompress();
+            this.compressorHandle = TurboJpegImport.tjInitCompress();
 
-            if (this._compressorHandle == IntPtr.Zero)
+            if (this.compressorHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
             }
@@ -53,7 +53,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public byte[] Compress(Bitmap srcImage, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var pixelFormat = srcImage.PixelFormat;
@@ -114,7 +114,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var tjPixelFormat = TJUtils.ConvertPixelFormat(pixelFormat);
@@ -125,7 +125,7 @@ namespace TurboJpegWrapper
             try
             {
                 var result = TurboJpegImport.tjCompress2(
-                    this._compressorHandle,
+                    this.compressorHandle,
                     srcPtr,
                     width,
                     stride,
@@ -190,7 +190,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public unsafe byte[] Compress(byte[] srcBuf, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var tjPixelFormat = TJUtils.ConvertPixelFormat(pixelFormat);
@@ -203,7 +203,7 @@ namespace TurboJpegWrapper
                 fixed (byte* srcBufPtr = srcBuf)
                 {
                     var result = TurboJpegImport.tjCompress2(
-                        this._compressorHandle,
+                        this.compressorHandle,
                         (IntPtr)srcBufPtr,
                         width,
                         stride,
@@ -238,12 +238,12 @@ namespace TurboJpegWrapper
         public void Dispose()
         {
 
-            if (this._isDisposed)
+            if (this.isDisposed)
                 return;
 
-            lock (this._lock)
+            lock (this.@lock)
             {
-                if (this._isDisposed)
+                if (this.isDisposed)
                     return;
 
                 this.Dispose(true);
@@ -255,18 +255,18 @@ namespace TurboJpegWrapper
         {
             if (callFromUserCode)
             {
-                this._isDisposed = true;
+                this.isDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
-            if (this._compressorHandle != IntPtr.Zero)
+            if (this.compressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this._compressorHandle);
+                TurboJpegImport.tjDestroy(this.compressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
-                this._compressorHandle = IntPtr.Zero;
+                this.compressorHandle = IntPtr.Zero;
             }
         }
 

@@ -11,9 +11,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJDecompressor : IDisposable
     {
-        private IntPtr _decompressorHandle = IntPtr.Zero;
-        private bool _isDisposed;
-        private readonly object _lock = new object();
+        private IntPtr decompressorHandle = IntPtr.Zero;
+        private bool isDisposed;
+        private readonly object @lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJDecompressor"/>
@@ -23,9 +23,9 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJDecompressor()
         {
-            this._decompressorHandle = TurboJpegImport.tjInitDecompress();
+            this.decompressorHandle = TurboJpegImport.tjInitDecompress();
 
-            if (this._decompressorHandle == IntPtr.Zero)
+            if (this.decompressorHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
             }
@@ -61,12 +61,12 @@ namespace TurboJpegWrapper
 
         public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             int subsampl;
             int colorspace;
-            var funcResult = TurboJpegImport.tjDecompressHeader(this._decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.tjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -84,7 +84,7 @@ namespace TurboJpegWrapper
             }
 
             funcResult = TurboJpegImport.tjDecompress(
-                this._decompressorHandle,
+                this.decompressorHandle,
                 jpegBuf,
                 jpegBufSize,
                 outBuf,
@@ -114,7 +114,7 @@ namespace TurboJpegWrapper
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
         public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var jpegBufSize = (ulong)jpegBuf.Length;
@@ -137,7 +137,7 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
         public unsafe Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var targetFormat = TJUtils.ConvertPixelFormat(destPixelFormat);
@@ -169,7 +169,7 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed</exception>
         public unsafe Bitmap Decompress(byte[] jpegBuf, PixelFormat destPixelFormat, TJFlags flags)
         {
-            if (this._isDisposed)
+            if (this.isDisposed)
                 throw new ObjectDisposedException("this");
 
             var jpegBufSize = (ulong)jpegBuf.Length;
@@ -208,7 +208,7 @@ namespace TurboJpegWrapper
             int subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.tjDecompressHeader(this._decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.tjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
@@ -252,12 +252,12 @@ namespace TurboJpegWrapper
         public void Dispose()
         {
 
-            if (this._isDisposed)
+            if (this.isDisposed)
                 return;
 
-            lock (this._lock)
+            lock (this.@lock)
             {
-                if (this._isDisposed)
+                if (this.isDisposed)
                     return;
 
                 this.Dispose(true);
@@ -269,18 +269,18 @@ namespace TurboJpegWrapper
         {
             if (callFromUserCode)
             {
-                this._isDisposed = true;
+                this.isDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
-            if (this._decompressorHandle != IntPtr.Zero)
+            if (this.decompressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this._decompressorHandle);
+                TurboJpegImport.tjDestroy(this.decompressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
-                this._decompressorHandle = IntPtr.Zero;
+                this.decompressorHandle = IntPtr.Zero;
             }
         }
 

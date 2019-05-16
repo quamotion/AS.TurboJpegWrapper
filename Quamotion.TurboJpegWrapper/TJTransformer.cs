@@ -11,9 +11,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJTransformer
     {
-        private IntPtr _transformHandle;
-        private bool _isDisposed;
-        private readonly object _lock = new object();
+        private IntPtr transformHandle;
+        private bool isDisposed;
+        private readonly object @lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJTransformer"/>
@@ -23,9 +23,9 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJTransformer()
         {
-            this._transformHandle = TurboJpegImport.tjInitTransform();
+            this.transformHandle = TurboJpegImport.tjInitTransform();
 
-            if (this._transformHandle == IntPtr.Zero)
+            if (this.transformHandle == IntPtr.Zero)
             {
                 TJUtils.GetErrorAndThrow();
             }
@@ -57,7 +57,7 @@ namespace TurboJpegWrapper
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.tjDecompressHeader(this._transformHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.tjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -100,7 +100,7 @@ namespace TurboJpegWrapper
             var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.tjTransform(this._transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.tjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -189,12 +189,12 @@ namespace TurboJpegWrapper
         public void Dispose()
         {
 
-            if (this._isDisposed)
+            if (this.isDisposed)
                 return;
 
-            lock (this._lock)
+            lock (this.@lock)
             {
-                if (this._isDisposed)
+                if (this.isDisposed)
                     return;
 
                 this.Dispose(true);
@@ -206,18 +206,18 @@ namespace TurboJpegWrapper
         {
             if (callFromUserCode)
             {
-                this._isDisposed = true;
+                this.isDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
-            if (this._transformHandle != IntPtr.Zero)
+            if (this.transformHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this._transformHandle);
+                TurboJpegImport.tjDestroy(this.transformHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
-                this._transformHandle = IntPtr.Zero;
+                this.transformHandle = IntPtr.Zero;
             }
         }
 
