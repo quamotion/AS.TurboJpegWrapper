@@ -91,10 +91,10 @@ namespace TurboJpegWrapper
                         X = x,
                         Y = y,
                         W = w,
-                        H = h
+                        H = h,
                     },
                     data = transforms[i].CallbackData,
-                    customFilter = transforms[i].CustomFilter
+                    customFilter = transforms[i].CustomFilter,
                 };
             }
             var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);

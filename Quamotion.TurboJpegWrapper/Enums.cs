@@ -62,7 +62,7 @@ namespace TurboJpegWrapper
         /// perceptual loss.  YCCK JPEG images can only be compressed from and
         /// decompressed to CMYK pixels.
         /// </summary>
-        TJCS_YCCK
+        TJCS_YCCK,
     };
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace TurboJpegWrapper
         /// horizontal features.
         /// </summary>
         /// <remarks> 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
-        TJSAMP_411
+        TJSAMP_411,
     };
 
     /// <summary>
@@ -209,7 +209,7 @@ namespace TurboJpegWrapper
         /// CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
         /// JPEG images into CMYK pixels. 
         /// </summary>
-        TJPF_CMYK
+        TJPF_CMYK,
     };
 
     /// <summary>
@@ -258,7 +258,7 @@ namespace TurboJpegWrapper
         /// only a very slight effect on accuracy, but it uses the accurate algorithm
         /// when decompressing, because this has been shown to have a larger effect.
         /// </summary>
-        ACCURATEDCT = 4096
+        ACCURATEDCT = 4096,
     }
 
     /// <summary>
@@ -311,7 +311,7 @@ namespace TurboJpegWrapper
         /// Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
         /// if there are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.PERFECT"/>.)
         /// </summary>
-        TJXOP_ROT270
+        TJXOP_ROT270,
     };
 
     /// <summary>
