@@ -17,7 +17,7 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJTransformer"/>.
+        /// Initializes a new instance of the <see cref="TJTransformer"/> class.
         /// </summary>
         /// <exception cref="TJException">
         /// Throws if internal compressor instance can not be created.
