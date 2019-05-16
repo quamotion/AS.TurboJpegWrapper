@@ -14,6 +14,11 @@ namespace TurboJpegWrapper
     public struct TJRegion
     {
         /// <summary>
+        /// Gets an empty region which is interpreted as full image region.
+        /// </summary>
+        public static TJRegion Empty { get { return new TJRegion(); } }
+
+        /// <summary>
         /// Gets or sets the left boundary of the cropping region.
         /// </summary>
         public int X { get; set; }
@@ -34,10 +39,5 @@ namespace TurboJpegWrapper
         /// setting it to the height of the source JPEG image - y.
         /// </summary>
         public int H { get; set; }
-
-        /// <summary>
-        /// Gets an empty region which is interpreted as full image region.
-        /// </summary>
-        public static TJRegion Empty { get { return new TJRegion(); } }
     }
 }

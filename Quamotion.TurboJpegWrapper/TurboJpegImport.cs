@@ -15,6 +15,46 @@ namespace TurboJpegWrapper
 {
     internal static class TurboJpegImport
     {
+        /// <summary>
+        /// Pixel size (in bytes) for a given pixel format.
+        /// </summary>
+        public static readonly Dictionary<TJPixelFormats, int> PixelSizes = new Dictionary<TJPixelFormats, int>
+        {
+            { TJPixelFormats.TJPF_RGB, 3 },
+            { TJPixelFormats.TJPF_BGR, 3 },
+            { TJPixelFormats.TJPF_RGBX, 4 },
+            { TJPixelFormats.TJPF_BGRX, 4 },
+            { TJPixelFormats.TJPF_XBGR, 4 },
+            { TJPixelFormats.TJPF_XRGB, 4 },
+            { TJPixelFormats.TJPF_GRAY, 1 },
+            { TJPixelFormats.TJPF_RGBA, 4 },
+            { TJPixelFormats.TJPF_BGRA, 4 },
+            { TJPixelFormats.TJPF_ABGR, 4 },
+            { TJPixelFormats.TJPF_ARGB, 4 },
+            { TJPixelFormats.TJPF_CMYK, 4 },
+        };
+
+        /// <summary>
+        /// MCU block width (in pixels) for a given level of chrominance subsampling.
+        /// MCU block sizes:
+        /// <list type="bullet">
+        /// <item><description>8x8 for no subsampling or grayscale</description></item>
+        /// <item><description>16x8 for 4:2:2</description></item>
+        /// <item><description>8x16 for 4:4:0</description></item>
+        /// <item><description>16x16 for 4:2:0</description></item>
+        /// <item><description>32x8 for 4:1:1</description></item>
+        /// </list>
+        /// </summary>
+        public static readonly Dictionary<TJSubsamplingOptions, Size> MCUSizes = new Dictionary<TJSubsamplingOptions, Size>
+        {
+            { TJSubsamplingOptions.TJSAMP_GRAY, new Size(8, 8) },
+            { TJSubsamplingOptions.TJSAMP_444, new Size(8, 8) },
+            { TJSubsamplingOptions.TJSAMP_422, new Size(16, 8) },
+            { TJSubsamplingOptions.TJSAMP_420, new Size(16, 16) },
+            { TJSubsamplingOptions.TJSAMP_440, new Size(8, 16) },
+            { TJSubsamplingOptions.TJSAMP_411, new Size(32, 8) },
+        };
+
         private const string UnmanagedLibrary = "turbojpeg";
 
 #if NET45
@@ -100,46 +140,6 @@ namespace TurboJpegWrapper
             }
         }
 #endif
-
-        /// <summary>
-        /// Pixel size (in bytes) for a given pixel format.
-        /// </summary>
-        public static readonly Dictionary<TJPixelFormats, int> PixelSizes = new Dictionary<TJPixelFormats, int>
-        {
-            { TJPixelFormats.TJPF_RGB, 3 },
-            { TJPixelFormats.TJPF_BGR, 3 },
-            { TJPixelFormats.TJPF_RGBX, 4 },
-            { TJPixelFormats.TJPF_BGRX, 4 },
-            { TJPixelFormats.TJPF_XBGR, 4 },
-            { TJPixelFormats.TJPF_XRGB, 4 },
-            { TJPixelFormats.TJPF_GRAY, 1 },
-            { TJPixelFormats.TJPF_RGBA, 4 },
-            { TJPixelFormats.TJPF_BGRA, 4 },
-            { TJPixelFormats.TJPF_ABGR, 4 },
-            { TJPixelFormats.TJPF_ARGB, 4 },
-            { TJPixelFormats.TJPF_CMYK, 4 },
-        };
-
-        /// <summary>
-        /// MCU block width (in pixels) for a given level of chrominance subsampling.
-        /// MCU block sizes:
-        /// <list type="bullet">
-        /// <item><description>8x8 for no subsampling or grayscale</description></item>
-        /// <item><description>16x8 for 4:2:2</description></item>
-        /// <item><description>8x16 for 4:4:0</description></item>
-        /// <item><description>16x16 for 4:2:0</description></item>
-        /// <item><description>32x8 for 4:1:1</description></item>
-        /// </list>
-        /// </summary>
-        public static readonly Dictionary<TJSubsamplingOptions, Size> MCUSizes = new Dictionary<TJSubsamplingOptions, Size>
-        {
-            { TJSubsamplingOptions.TJSAMP_GRAY, new Size(8, 8) },
-            { TJSubsamplingOptions.TJSAMP_444, new Size(8, 8) },
-            { TJSubsamplingOptions.TJSAMP_422, new Size(16, 8) },
-            { TJSubsamplingOptions.TJSAMP_420, new Size(16, 16) },
-            { TJSubsamplingOptions.TJSAMP_440, new Size(8, 16) },
-            { TJSubsamplingOptions.TJSAMP_411, new Size(32, 8) },
-        };
 
         /// <summary>
         /// This is port of TJPAD macros from turbojpeg.h
@@ -325,12 +325,6 @@ namespace TurboJpegWrapper
             }
         }
 
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int TjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
-
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int TjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
-
         /// <summary>
         /// Returns a list of fractional scaling factors that the JPEG decompressor in this implementation of TurboJPEG supports.
         /// </summary>
@@ -393,12 +387,6 @@ namespace TurboJpegWrapper
                     throw new InvalidOperationException("Invalid platform. Can not find proper function");
             }
         }
-
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
-        private static extern int TjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
-
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
-        private static extern int TjDecompress2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
 
         /// <summary>
         /// Allocate an image buffer for use with TurboJPEG.  You should always use
@@ -520,6 +508,34 @@ namespace TurboJpegWrapper
             return result;
         }
 
+        /// <summary>
+        /// Destroy a TurboJPEG compressor, decompressor, or transformer instance.
+        /// </summary>
+        /// <param name="handle">a handle to a TurboJPEG compressor, decompressor or transformer instance.</param>
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDestroy")]
+        public static extern int TjDestroy(IntPtr handle);
+
+        /// <summary>
+        /// Returns a descriptive error message explaining why the last command failed.
+        /// </summary>
+        /// <returns>A descriptive error message explaining why the last command failed.</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "tjGetErrorStr")]
+        [return: MarshalAs(UnmanagedType.LPStr)]
+        public static extern string TjGetErrorStr();
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
+        private static extern int TjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
+        private static extern int TjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
+        private static extern int TjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
+        private static extern int TjDecompress2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
+
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
         private static extern int TjTransform_x86(
             IntPtr handle,
@@ -541,21 +557,5 @@ namespace TurboJpegWrapper
             uint[] dstSizes,
             IntPtr transforms,
             int flags);
-
-        /// <summary>
-        /// Destroy a TurboJPEG compressor, decompressor, or transformer instance.
-        /// </summary>
-        /// <param name="handle">a handle to a TurboJPEG compressor, decompressor or transformer instance.</param>
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDestroy")]
-        public static extern int TjDestroy(IntPtr handle);
-
-        /// <summary>
-        /// Returns a descriptive error message explaining why the last command failed.
-        /// </summary>
-        /// <returns>A descriptive error message explaining why the last command failed.</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "tjGetErrorStr")]
-        [return: MarshalAs(UnmanagedType.LPStr)]
-        public static extern string TjGetErrorStr();
     }
 }

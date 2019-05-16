@@ -15,9 +15,9 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJTransformer
     {
+        private readonly object @lock = new object();
         private IntPtr transformHandle;
         private bool isDisposed;
-        private readonly object @lock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TJTransformer"/> class.
@@ -33,6 +33,14 @@ namespace TurboJpegWrapper
             {
                 TJUtils.GetErrorAndThrow();
             }
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TJTransformer"/> class.
+        /// </summary>
+        ~TJTransformer()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>Transforms input image into one or several destinations.</summary>
@@ -147,51 +155,6 @@ namespace TurboJpegWrapper
             }
         }
 
-        /// <summary>
-        /// Correct region coordinate to be evenly divisible by the MCU block dimension.
-        /// </summary>
-        /// <returns>
-        /// The aligned region coordinate.
-        /// </returns>
-        private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
-        {
-            var realCoordinate = desiredCoordinate;
-            var remainder = realCoordinate % mcuBlockSize;
-            if (remainder != 0)
-            {
-                realCoordinate = realCoordinate - remainder < 0 ? 0 : realCoordinate - remainder;
-            }
-
-            return realCoordinate;
-        }
-
-        private static int CorrectRegionSize(int desiredCoordinate, int realCoordinate, int desiredSize, int imageSize)
-        {
-            var delta = desiredCoordinate - realCoordinate;
-            if (desiredCoordinate == realCoordinate)
-            {
-                if (realCoordinate + desiredSize < imageSize)
-                {
-                    return desiredSize;
-                }
-                else
-                {
-                    return imageSize - realCoordinate;
-                }
-            }
-            else
-            {
-                if (realCoordinate + delta + desiredSize < imageSize)
-                {
-                    return desiredSize + delta;
-                }
-                else
-                {
-                    return imageSize - realCoordinate;
-                }
-            }
-        }
-
         /// <summary>Transforms input image into one or several destinations.</summary>
         /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
         /// <param name="transforms">Array of transform descriptions to be applied to the source image. </param>
@@ -241,6 +204,51 @@ namespace TurboJpegWrapper
             }
         }
 
+        /// <summary>
+        /// Correct region coordinate to be evenly divisible by the MCU block dimension.
+        /// </summary>
+        /// <returns>
+        /// The aligned region coordinate.
+        /// </returns>
+        private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
+        {
+            var realCoordinate = desiredCoordinate;
+            var remainder = realCoordinate % mcuBlockSize;
+            if (remainder != 0)
+            {
+                realCoordinate = realCoordinate - remainder < 0 ? 0 : realCoordinate - remainder;
+            }
+
+            return realCoordinate;
+        }
+
+        private static int CorrectRegionSize(int desiredCoordinate, int realCoordinate, int desiredSize, int imageSize)
+        {
+            var delta = desiredCoordinate - realCoordinate;
+            if (desiredCoordinate == realCoordinate)
+            {
+                if (realCoordinate + desiredSize < imageSize)
+                {
+                    return desiredSize;
+                }
+                else
+                {
+                    return imageSize - realCoordinate;
+                }
+            }
+            else
+            {
+                if (realCoordinate + delta + desiredSize < imageSize)
+                {
+                    return desiredSize + delta;
+                }
+                else
+                {
+                    return imageSize - realCoordinate;
+                }
+            }
+        }
+
         private void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
@@ -258,14 +266,6 @@ namespace TurboJpegWrapper
                 // (i.e. make calling Dispose twice a safe thing to do).
                 this.transformHandle = IntPtr.Zero;
             }
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="TJTransformer"/> class.
-        /// </summary>
-        ~TJTransformer()
-        {
-            this.Dispose(false);
         }
     }
 }
