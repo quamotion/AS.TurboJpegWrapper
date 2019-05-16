@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TJException.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace TurboJpegWrapper
 {
@@ -10,7 +15,7 @@ namespace TurboJpegWrapper
     public class TJException : Exception
     {
         /// <summary>
-        /// Creates new instance of <see cref="TJException"/>.
+        /// Creates new instance of the <see cref="TJException"/> class.
         /// </summary>
         /// <param name="error">Error message from underlying turbo jpeg library.</param>
         public TJException(string error) : base(error)

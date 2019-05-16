@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TJCompressor.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -18,7 +23,7 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJCompressor"/>.
+        /// Initializes a new instance of the <see cref="TJCompressor"/> class.
         /// </summary>
         /// <exception cref="TJException">
         /// Throws if internal compressor instance can not be created.
@@ -43,6 +48,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <remarks>Only <see cref="PixelFormat.Format24bppRgb"/>, <see cref="PixelFormat.Format32bppArgb"/>, <see cref="PixelFormat.Format8bppIndexed"/> pixel formats are supported.</remarks>
         /// <exception cref="TJException"> Throws if compress function failed. </exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
@@ -103,6 +111,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <exception cref="TJException"> Throws if compress function failed. </exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         /// <exception cref="NotSupportedException">
@@ -178,6 +189,9 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
         /// <exception cref="TJException">
         /// Throws if compress function failed.
         /// </exception>
@@ -275,7 +289,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Finalizer
+        /// Finalizes an instance of the <see cref="TJCompressor"/> class.
         /// </summary>
         ~TJCompressor()
         {

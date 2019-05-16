@@ -1,12 +1,15 @@
-﻿using System;
+﻿// <copyright file="TJTransformer.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
-
     /// <summary>
     /// Class for loseless transform jpeg images.
     /// </summary>
@@ -17,7 +20,7 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJTransformer"/>.
+        /// Initializes a new instance of the <see cref="TJTransformer"/> class.
         /// </summary>
         /// <exception cref="TJException">
         /// Throws if internal compressor instance can not be created.
@@ -62,8 +65,14 @@ namespace TurboJpegWrapper
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.transformHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             if (funcResult == -1)
             {
@@ -103,8 +112,16 @@ namespace TurboJpegWrapper
             var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.TjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
-                    destSizes, transformsPtr, (int)flags);
+                funcResult = TurboJpegImport.TjTransform(
+                    this.transformHandle,
+                    jpegBuf,
+                    jpegBufSize,
+                    count,
+                    destBufs,
+                    destSizes,
+                    transformsPtr,
+                    (int)flags);
+
                 if (funcResult == -1)
                 {
                     TJUtils.GetErrorAndThrow();
@@ -133,7 +150,9 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Correct region coordinate to be evenly divisible by the MCU block dimension.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The aligned region coordinate.
+        /// </returns>
         private static int CorrectRegionCoordinate(int desiredCoordinate, int mcuBlockSize)
         {
             var realCoordinate = desiredCoordinate;
@@ -242,7 +261,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Finalizer
+        /// Finalizes an instance of the <see cref="TJTransformer"/> class.
         /// </summary>
         ~TJTransformer()
         {

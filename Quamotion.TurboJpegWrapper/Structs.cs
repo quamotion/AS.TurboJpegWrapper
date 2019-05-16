@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="Structs.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
@@ -7,7 +12,7 @@ namespace TurboJpegWrapper
     /// Scaling factor.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    struct TjScalingFactor
+    internal struct TjScalingFactor
     {
         /// <summary>
         /// Numerator.

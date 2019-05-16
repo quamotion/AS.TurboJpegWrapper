@@ -1,9 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿// <copyright file="TJRegion.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
-
     /// <summary>
     /// Cropping region.
     /// </summary>

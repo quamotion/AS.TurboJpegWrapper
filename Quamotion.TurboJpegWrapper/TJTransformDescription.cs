@@ -1,9 +1,12 @@
-﻿using System;
+﻿// <copyright file="TJTransformDescription.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
-
     /// <summary>
     /// Structure describing transformation of source image.
     /// </summary>

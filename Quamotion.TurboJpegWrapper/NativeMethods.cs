@@ -1,9 +1,14 @@
-﻿using System;
+﻿// <copyright file="NativeMethods.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    class NativeMethods
+    internal class NativeMethods
     {
         /// <summary>
         /// The name of the <c>kernel32</c> library.

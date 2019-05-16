@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TJDecompressor.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -14,7 +19,7 @@ namespace TurboJpegWrapper
         private readonly object @lock = new object();
 
         /// <summary>
-        /// Creates new instance of <see cref="TJDecompressor"/>.
+        /// Initializes a new instance of the <see cref="TJDecompressor"/> class.
         /// </summary>
         /// <exception cref="TJException">
         /// Throws if internal compressor instance can not be created.
@@ -66,8 +71,14 @@ namespace TurboJpegWrapper
 
             int subsampl;
             int colorspace;
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.decompressorHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             if (funcResult == -1)
             {
@@ -215,8 +226,14 @@ namespace TurboJpegWrapper
             int subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.decompressorHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             bufSize = stride * height;
@@ -296,7 +313,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Finalizer
+        /// Finalizes an instance of the <see cref="TJDecompressor"/> class.
         /// </summary>
         ~TJDecompressor()
         {

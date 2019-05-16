@@ -1,5 +1,7 @@
-﻿// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Global
+﻿// <copyright file="Enums.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
 
 using System;
 

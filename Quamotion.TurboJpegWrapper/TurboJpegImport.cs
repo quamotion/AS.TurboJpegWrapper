@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TurboJpegImport.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    static class TurboJpegImport
+    internal static class TurboJpegImport
     {
         private const string UnmanagedLibrary = "turbojpeg";
 
@@ -153,7 +158,9 @@ namespace TurboJpegWrapper
         /// </summary>
         /// <param name="dimension">Dimension to scale.</param>
         /// <param name="scalingFactor">Scaling factor.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The scaled value of <paramref name="dimension"/> using the given scaling factor.
+        /// </returns>
         public static int TJSCALED(int dimension, TjScalingFactor scalingFactor)
         {
             return (dimension * scalingFactor.Num + scalingFactor.Denom - 1) / scalingFactor.Denom;
@@ -283,16 +290,34 @@ namespace TurboJpegWrapper
         /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants,
         /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
-        public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width,
-            out int height, out int jpegSubsamp, out int jpegColorspace)
+        public static int TjDecompressHeader(
+            IntPtr handle,
+            IntPtr jpegBuf,
+            ulong jpegSize,
+            out int width,
+            out int height,
+            out int jpegSubsamp,
+            out int jpegColorspace)
         {
             switch (IntPtr.Size)
             {
                 case 4:
-                    return TjDecompressHeader3_x86(handle, jpegBuf, (uint)jpegSize, out width, out height, out jpegSubsamp,
+                    return TjDecompressHeader3_x86(
+                        handle,
+                        jpegBuf,
+                        (uint)jpegSize,
+                        out width,
+                        out height,
+                        out jpegSubsamp,
                         out jpegColorspace);
                 case 8:
-                    return TjDecompressHeader3_x64(handle, jpegBuf, jpegSize, out width, out height, out jpegSubsamp,
+                    return TjDecompressHeader3_x64(
+                        handle,
+                        jpegBuf,
+                        jpegSize,
+                        out width,
+                        out height,
+                        out jpegSubsamp,
                         out jpegColorspace);
 
                 default:
@@ -346,8 +371,16 @@ namespace TurboJpegWrapper
         /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormats"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
-        public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width,
-            int pitch, int height, int pixelFormat, int flags)
+        public static int TjDecompress(
+            IntPtr handle,
+            IntPtr jpegBuf,
+            ulong jpegSize,
+            IntPtr dstBuf,
+            int width,
+            int pitch,
+            int height,
+            int pixelFormat,
+            int flags)
         {
             switch (IntPtr.Size)
             {
@@ -450,8 +483,15 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="flags">flags the bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
-        public static int TjTransform(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
-          ulong[] dstSizes, IntPtr transforms, int flags)
+        public static int TjTransform(
+            IntPtr handle,
+            IntPtr jpegBuf,
+            ulong jpegSize,
+            int n,
+            IntPtr[] dstBufs,
+            ulong[] dstSizes,
+            IntPtr transforms,
+            int flags)
         {
             var intSizes = new uint[dstSizes.Length];
             for (var i = 0; i < dstSizes.Length; i++)
@@ -481,12 +521,26 @@ namespace TurboJpegWrapper
         }
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
-        private static extern int TjTransform_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, int n, IntPtr[] dstBufs,
-         uint[] dstSizes, IntPtr transforms, int flags);
+        private static extern int TjTransform_x86(
+            IntPtr handle,
+            IntPtr jpegBuf,
+            uint jpegSize,
+            int n,
+            IntPtr[] dstBufs,
+            uint[] dstSizes,
+            IntPtr transforms,
+            int flags);
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
-        private static extern int TjTransform_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
-         uint[] dstSizes, IntPtr transforms, int flags);
+        private static extern int TjTransform_x64(
+            IntPtr handle,
+            IntPtr jpegBuf,
+            ulong jpegSize,
+            int n,
+            IntPtr[] dstBufs,
+            uint[] dstSizes,
+            IntPtr transforms,
+            int flags);
 
         /// <summary>
         /// Destroy a TurboJPEG compressor, decompressor, or transformer instance.
