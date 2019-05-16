@@ -56,12 +56,12 @@ namespace TurboJpegWrapper
         {
             if (transforms == null)
             {
-                throw new ArgumentNullException("transforms");
+                throw new ArgumentNullException(nameof(transforms));
             }
 
             if (transforms.Length == 0)
             {
-                throw new ArgumentException("Transforms can not be empty", "transforms");
+                throw new ArgumentException("Transforms can not be empty", nameof(transforms));
             }
 
             // ReSharper disable once ExceptionNotDocumented
@@ -167,12 +167,12 @@ namespace TurboJpegWrapper
         {
             if (transforms == null)
             {
-                throw new ArgumentNullException("transforms");
+                throw new ArgumentNullException(nameof(transforms));
             }
 
             if (transforms.Length == 0)
             {
-                throw new ArgumentException("Transforms can not be empty", "transforms");
+                throw new ArgumentException("Transforms can not be empty", nameof(transforms));
             }
 
             fixed (byte* jpegPtr = jpegBuf)
