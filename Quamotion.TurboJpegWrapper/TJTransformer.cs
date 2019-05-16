@@ -141,6 +141,7 @@ namespace TurboJpegWrapper
             }
             return realCoordinate;
         }
+
         private static int CorrectRegionSize(int desiredCoordinate, int realCoordinate, int desiredSize, int imageSize)
         {
             var delta = desiredCoordinate - realCoordinate;
