@@ -144,7 +144,7 @@ namespace TurboJpegWrapper
         /// <returns>Padded width.</returns>
         public static int TJPAD(int width)
         {
-            return ((width) + 3) & (~3);
+            return (width + 3) & (~3);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace TurboJpegWrapper
         /// <returns></returns>
         public static int TJSCALED(int dimension, tjscalingfactor scalingFactor)
         {
-            return ((dimension * scalingFactor.num + scalingFactor.denom - 1) / scalingFactor.denom);
+            return (dimension * scalingFactor.num + scalingFactor.denom - 1) / scalingFactor.denom;
         }
 
         /// <summary>
