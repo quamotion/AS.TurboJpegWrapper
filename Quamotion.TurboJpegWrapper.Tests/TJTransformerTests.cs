@@ -41,7 +41,7 @@ namespace TurboJpegWrapper.Tests
                 var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
 
                 Assert.NotNull(result);
-                Assert.NotNull(result.Length == 1);
+                Assert.Single(result);
 
                 var file = Path.Combine(OutDirectory, "gray_" + Path.GetFileName(data.Item1));
                 File.WriteAllBytes(file, result[0]);
@@ -128,7 +128,7 @@ namespace TurboJpegWrapper.Tests
 
                 var result = _transformer.Transform(data.Item2, transforms, TJFlags.NONE);
                 Assert.NotNull(result);
-                Assert.NotNull(result.Length == 1);
+                Assert.NotEmpty(result);
 
                 for (var idx = 0; idx < result.Length; idx++)
                 {
