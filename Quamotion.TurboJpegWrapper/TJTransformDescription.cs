@@ -15,7 +15,7 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Gets or sets the transform operation.
         /// </summary>
-        public TJTransformOperations Operation { get; set; }
+        public TJTransformOperation Operation { get; set; }
 
         /// <summary>
         /// Gets or sets the transform options.

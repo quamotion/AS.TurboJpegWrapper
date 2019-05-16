@@ -13,7 +13,7 @@ namespace TurboJpegWrapper
     /// <summary>
     /// Class for loseless transform jpeg images.
     /// </summary>
-    public class TJTransformer
+    public class TJTransformer : IDisposable
     {
         private readonly object @lock = new object();
         private IntPtr transformHandle;
@@ -56,12 +56,12 @@ namespace TurboJpegWrapper
         {
             if (transforms == null)
             {
-                throw new ArgumentNullException("transforms");
+                throw new ArgumentNullException(nameof(transforms));
             }
 
             if (transforms.Length == 0)
             {
-                throw new ArgumentException("Transforms can not be empty", "transforms");
+                throw new ArgumentException("Transforms can not be empty", nameof(transforms));
             }
 
             // ReSharper disable once ExceptionNotDocumented
@@ -88,7 +88,7 @@ namespace TurboJpegWrapper
             }
 
             Size mcuSize;
-            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOptions)subsampl, out mcuSize))
+            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOption)subsampl, out mcuSize))
             {
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
@@ -167,12 +167,12 @@ namespace TurboJpegWrapper
         {
             if (transforms == null)
             {
-                throw new ArgumentNullException("transforms");
+                throw new ArgumentNullException(nameof(transforms));
             }
 
             if (transforms.Length == 0)
             {
-                throw new ArgumentException("Transforms can not be empty", "transforms");
+                throw new ArgumentException("Transforms can not be empty", nameof(transforms));
             }
 
             fixed (byte* jpegPtr = jpegBuf)
