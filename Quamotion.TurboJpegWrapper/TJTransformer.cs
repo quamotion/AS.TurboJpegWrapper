@@ -1,12 +1,15 @@
-﻿using System;
+﻿// <copyright file="TJTransformer.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
-
     /// <summary>
     /// Class for loseless transform jpeg images.
     /// </summary>

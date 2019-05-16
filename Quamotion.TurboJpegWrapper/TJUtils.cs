@@ -1,11 +1,15 @@
-﻿using System;
+﻿// <copyright file="TJUtils.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
-    // ReSharper disable once InconsistentNaming
     internal static class TJUtils
     {
         ///<summary>
