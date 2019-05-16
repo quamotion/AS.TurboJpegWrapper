@@ -53,7 +53,6 @@ namespace TurboJpegWrapper
             var destBufs = new IntPtr[count];
             var destSizes = new ulong[count];
 
-
             int subsampl;
             int colorspace;
             int width;
@@ -72,8 +71,6 @@ namespace TurboJpegWrapper
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
 
-
-
             var tjTransforms = new tjtransform[count];
             for (var i = 0; i < count; i++)
             {
@@ -81,7 +78,6 @@ namespace TurboJpegWrapper
                 var y = CorrectRegionCoordinate(transforms[i].Region.Y, mcuSize.Height);
                 var w = CorrectRegionSize(transforms[i].Region.X, x, transforms[i].Region.W, width);
                 var h = CorrectRegionSize(transforms[i].Region.Y, y, transforms[i].Region.H, height);
-
 
                 tjTransforms[i] = new tjtransform
                 {
@@ -161,7 +157,6 @@ namespace TurboJpegWrapper
                     return imageSize - realCoordinate;
             }
         }
-
 
         /// <summary>Transforms input image into one or several destinations.</summary>
         /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>

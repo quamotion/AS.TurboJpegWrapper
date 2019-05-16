@@ -20,7 +20,6 @@ namespace TurboJpegWrapper
         public int denom { get; set; }
     }
 
-
     /// <summary>
     /// Lossless transform.
     /// </summary>

@@ -79,7 +79,6 @@ namespace TurboJpegWrapper
             }
         }
 
-
         /// <summary>
         /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
@@ -270,7 +269,6 @@ namespace TurboJpegWrapper
                 this.compressorHandle = IntPtr.Zero;
             }
         }
-
 
         /// <summary>
         /// Finalizer

@@ -47,7 +47,6 @@ namespace TurboJpegWrapper
             return IntPtr.Size == sizeof(int) ? "x86" : "x64";
         }
 
-
         /// <summary>
         /// Converts array of managed structures to the unmanaged pointer.
         /// </summary>
@@ -81,7 +80,6 @@ namespace TurboJpegWrapper
             Marshal.Copy(data, 0, res, data.Length);
             return res;
         }
-
 
         /// <summary>
         /// Frees unmanaged pointer using allocator.
