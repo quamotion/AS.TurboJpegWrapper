@@ -286,8 +286,10 @@ namespace TurboJpegWrapper
         private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOptions subSamp, TJPixelFormats srcFormat)
         {
             if (srcFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+            {
                 throw new NotSupportedException(
                     $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
+            }
         }
 
         private void Dispose(bool callFromUserCode)

@@ -13,6 +13,9 @@ using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
 {
+    /// <summary>
+    /// P/Invoke declarations for turbojpeg.
+    /// </summary>
     internal static class TurboJpegImport
     {
         /// <summary>
@@ -64,6 +67,9 @@ namespace TurboJpegWrapper
         }
 #endif
 
+        /// <summary>
+        /// Gets a value indicating whether the turbojpeg native library could be found.
+        /// </summary>
         public static bool LibraryFound
         {
             get;
@@ -74,11 +80,20 @@ namespace TurboJpegWrapper
 #endif
 
 #if NET45
+        /// <summary>
+        /// Attempts to load the native library.
+        /// </summary>
         public static void Load()
         {
             Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
         }
 
+        /// <summary>
+        /// Attempst to load the native library.
+        /// </summary>
+        /// <param name="directory">
+        /// The path to the directory in which the native library is located.
+        /// </param>
         public static void Load(string directory)
         {
             if (directory == null)
@@ -163,7 +178,7 @@ namespace TurboJpegWrapper
         /// </returns>
         public static int TJSCALED(int dimension, TjScalingFactor scalingFactor)
         {
-            return (dimension * scalingFactor.Num + scalingFactor.Denom - 1) / scalingFactor.Denom;
+            return ((dimension * scalingFactor.Num) + scalingFactor.Denom - 1) / scalingFactor.Denom;
         }
 
         /// <summary>
