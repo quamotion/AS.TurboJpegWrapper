@@ -104,18 +104,18 @@ namespace TurboJpegWrapper
         /// </summary>
         public static readonly Dictionary<TJPixelFormats, int> PixelSizes = new Dictionary<TJPixelFormats, int>
         {
-            { TJPixelFormats.TJPF_RGB, 3},
-            { TJPixelFormats.TJPF_BGR, 3},
-            { TJPixelFormats.TJPF_RGBX, 4},
-            { TJPixelFormats.TJPF_BGRX, 4},
-            { TJPixelFormats.TJPF_XBGR, 4},
-            { TJPixelFormats.TJPF_XRGB, 4},
-            { TJPixelFormats.TJPF_GRAY, 1},
-            { TJPixelFormats.TJPF_RGBA, 4},
-            { TJPixelFormats.TJPF_BGRA, 4},
-            { TJPixelFormats.TJPF_ABGR, 4},
-            { TJPixelFormats.TJPF_ARGB, 4},
-            { TJPixelFormats.TJPF_CMYK, 4},
+            { TJPixelFormats.TJPF_RGB, 3 },
+            { TJPixelFormats.TJPF_BGR, 3 },
+            { TJPixelFormats.TJPF_RGBX, 4 },
+            { TJPixelFormats.TJPF_BGRX, 4 },
+            { TJPixelFormats.TJPF_XBGR, 4 },
+            { TJPixelFormats.TJPF_XRGB, 4 },
+            { TJPixelFormats.TJPF_GRAY, 1 },
+            { TJPixelFormats.TJPF_RGBA, 4 },
+            { TJPixelFormats.TJPF_BGRA, 4 },
+            { TJPixelFormats.TJPF_ABGR, 4 },
+            { TJPixelFormats.TJPF_ARGB, 4 },
+            { TJPixelFormats.TJPF_CMYK, 4 },
         };
 
         /// <summary>

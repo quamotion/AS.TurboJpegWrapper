@@ -24,7 +24,7 @@ namespace TurboJpegWrapper
     /// Lossless transform.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public  struct tjtransform
+    public struct tjtransform
     {
         /// <summary>
         /// Cropping region.

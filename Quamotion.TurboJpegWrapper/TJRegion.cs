@@ -34,6 +34,6 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Returns empty region which is interpreted as full image region.
         /// </summary>
-        public static TJRegion Empty { get { return new TJRegion();} }
+        public static TJRegion Empty { get { return new TJRegion(); } }
     }
 }

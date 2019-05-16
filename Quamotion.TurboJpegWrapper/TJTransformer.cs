@@ -94,7 +94,7 @@ namespace TurboJpegWrapper
                     customFilter = transforms[i].CustomFilter,
                 };
             }
-            var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
+            var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
                 funcResult = TurboJpegImport.tjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
