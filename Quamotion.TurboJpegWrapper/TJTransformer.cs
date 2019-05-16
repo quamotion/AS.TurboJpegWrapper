@@ -62,8 +62,14 @@ namespace TurboJpegWrapper
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.transformHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.transformHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             if (funcResult == -1)
             {
@@ -103,8 +109,16 @@ namespace TurboJpegWrapper
             var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.TjTransform(this.transformHandle, jpegBuf, jpegBufSize, count, destBufs,
-                    destSizes, transformsPtr, (int)flags);
+                funcResult = TurboJpegImport.TjTransform(
+                    this.transformHandle,
+                    jpegBuf,
+                    jpegBufSize,
+                    count,
+                    destBufs,
+                    destSizes,
+                    transformsPtr,
+                    (int)flags);
+
                 if (funcResult == -1)
                 {
                     TJUtils.GetErrorAndThrow();

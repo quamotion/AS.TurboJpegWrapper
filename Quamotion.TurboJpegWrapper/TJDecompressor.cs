@@ -66,8 +66,14 @@ namespace TurboJpegWrapper
 
             int subsampl;
             int colorspace;
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.decompressorHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             if (funcResult == -1)
             {
@@ -215,8 +221,14 @@ namespace TurboJpegWrapper
             int subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
-                out width, out height, out subsampl, out colorspace);
+            var funcResult = TurboJpegImport.TjDecompressHeader(
+                this.decompressorHandle,
+                jpegBuf,
+                jpegBufSize,
+                out width,
+                out height,
+                out subsampl,
+                out colorspace);
 
             stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             bufSize = stride * height;
