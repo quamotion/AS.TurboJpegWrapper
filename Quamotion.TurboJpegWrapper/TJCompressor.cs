@@ -84,14 +84,14 @@ namespace TurboJpegWrapper
         /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
         /// <param name="srcPtr">
-        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
+        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
         /// This buffer is not modified.
         /// </param>
         /// <param name="stride">
-        /// Bytes per line in the source image.  
-        /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded, 
+        /// Bytes per line in the source image.
+        /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded,
         /// or <c>TJPAD(width * BytesPerPixel</c> if each line of the image
-        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.  
+        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.
         /// You can also be clever and use this parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to
         /// <c>width * BytesPerPixel</c>.
@@ -158,14 +158,14 @@ namespace TurboJpegWrapper
         /// Compresses input image to the jpeg format with specified quality.
         /// </summary>
         /// <param name="srcBuf">
-        /// Image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
+        /// Image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
         /// This buffer is not modified.
         /// </param>
         /// <param name="stride">
-        /// Bytes per line in the source image.  
-        /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded, 
+        /// Bytes per line in the source image.
+        /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded,
         /// or <c>TJPAD(width * BytesPerPixel</c> if each line of the image
-        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.  
+        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.
         /// You can also be clever and use this parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to
         /// <c>width * BytesPerPixel</c>.
@@ -183,7 +183,7 @@ namespace TurboJpegWrapper
         /// Throws if compress function failed.
         /// </exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
-        /// <exception cref="NotSupportedException"> 
+        /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
         /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
@@ -196,7 +196,7 @@ namespace TurboJpegWrapper
 
             var tjPixelFormat = TJUtils.ConvertPixelFormat(pixelFormat);
             CheckOptionsCompatibilityAndThrow(subSamp, tjPixelFormat);
-            
+
             var buf = IntPtr.Zero;
             ulong bufSize = 0;
             try
@@ -280,7 +280,7 @@ namespace TurboJpegWrapper
             this.Dispose(false);
         }
 
-        /// <exception cref="NotSupportedException"> 
+        /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
         /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>

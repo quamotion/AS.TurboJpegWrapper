@@ -166,7 +166,7 @@ namespace TurboJpegWrapper
         /// Create a TurboJPEG compressor instance.
         /// </summary>
         /// <returns>
-        /// handle to the newly-created instance, or <see cref="IntPtr.Zero"/> 
+        /// handle to the newly-created instance, or <see cref="IntPtr.Zero"/>
         /// if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr tjInitCompress();
@@ -175,28 +175,28 @@ namespace TurboJpegWrapper
         /// Compress an RGB, grayscale, or CMYK image into a JPEG image.
         /// </summary>
         /// <param name="handle">A handle to a TurboJPEG compressor or transformer instance.</param>
-        /// 
+        ///
         /// <param name="srcBuf">
-        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
+        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
         /// This buffer is not modified.
         /// </param>
-        /// 
+        ///
         /// <param name="width">Width (in pixels) of the source image.</param>
-        /// 
+        ///
         /// <param name="pitch">
-        /// Bytes per line in the source image.  
-        /// Normally, this should be <c>width * tjPixelSize[pixelFormat]</c> if the image is unpadded, 
+        /// Bytes per line in the source image.
+        /// Normally, this should be <c>width * tjPixelSize[pixelFormat]</c> if the image is unpadded,
         /// or <c>TJPAD(width * tjPixelSize[pixelFormat])</c> if each line of the image
-        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.  
+        /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.
         /// You can also be clever and use this parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to
         /// <c>width * tjPixelSize[pixelFormat]</c>.
         /// </param>
-        /// 
+        ///
         /// <param name="height">Height (in pixels) of the source image.</param>
-        /// 
+        ///
         /// <param name="pixelFormat">Pixel format of the source image (see <see cref="TJPixelFormats"/> "Pixel formats").</param>
-        /// 
+        ///
         /// <param name="jpegBuf">
         /// Address of a pointer to an image buffer that will receive the JPEG image.
         /// TurboJPEG has the ability to reallocate the JPEG buffer
@@ -213,30 +213,30 @@ namespace TurboJpegWrapper
         /// This should ensure that the buffer never has to be re-allocated (setting <see cref="TJFlags.NOREALLOC"/> guarantees this.).</description>
         /// </item>
         /// </list>
-        /// If you choose option 1, <paramref name="jpegSize"/> should be set to the size of your pre-allocated buffer.  
+        /// If you choose option 1, <paramref name="jpegSize"/> should be set to the size of your pre-allocated buffer.
         /// In any case, unless you have set <see cref="TJFlags.NOREALLOC"/>,
         /// you should always check <paramref name="jpegBuf"/> upon return from this function, as it may have changed.
         /// </param>
-        /// 
+        ///
         /// <param name="jpegSize">
         /// Pointer to an unsigned long variable that holds the size of the JPEG image buffer.
-        /// If <paramref name="jpegBuf"/> points to a pre-allocated buffer, 
+        /// If <paramref name="jpegBuf"/> points to a pre-allocated buffer,
         /// then <paramref name="jpegSize"/> should be set to the size of the buffer.
-        /// Upon return, <paramref name="jpegSize"/> will contain the size of the JPEG image (in bytes.)  
+        /// Upon return, <paramref name="jpegSize"/> will contain the size of the JPEG image (in bytes.)
         /// If <paramref name="jpegBuf"/> points to a JPEG image buffer that is being
-        /// reused from a previous call to one of the JPEG compression functions, 
+        /// reused from a previous call to one of the JPEG compression functions,
         /// then <paramref name="jpegSize"/> is ignored.
         /// </param>
-        /// 
+        ///
         /// <param name="jpegSubsamp">
         /// The level of chrominance subsampling to be used when
         /// generating the JPEG image (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
-        /// 
+        ///
         /// <param name="jpegQual">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
-        /// 
+        ///
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
-        /// 
+        ///
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tjCompress2(IntPtr handle, IntPtr srcBuf, int width, int pitch, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags);
@@ -258,7 +258,7 @@ namespace TurboJpegWrapper
         /// generating the JPEG image(see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
         /// <returns>
-        /// The maximum size of the buffer (in bytes) required to hold the image, 
+        /// The maximum size of the buffer (in bytes) required to hold the image,
         /// or -1 if the arguments are out of bounds.
         /// </returns>
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
@@ -280,10 +280,10 @@ namespace TurboJpegWrapper
         /// <param name="width">Pointer to an integer variable that will receive the width (in pixels) of the JPEG image.</param>
         /// <param name="height">Pointer to an integer variable that will receive the height (in pixels) of the JPEG image.</param>
         /// <param name="jpegSubsamp">
-        /// Pointer to an integer variable that will receive the level of chrominance subsampling used 
+        /// Pointer to an integer variable that will receive the level of chrominance subsampling used
         /// when the JPEG image was compressed (see <see cref="TJSubsamplingOptions"/> "Chrominance subsampling options".)
         /// </param>
-        /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants, 
+        /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants,
         /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
         public static int tjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width,
@@ -325,24 +325,24 @@ namespace TurboJpegWrapper
         /// <param name="jpegSize">Size of the JPEG image (in bytes).</param>
         /// <param name="dstBuf">
         /// Pointer to an image buffer that will receive the decompressed image.
-        /// This buffer should normally be <c> pitch * scaledHeight</c> bytes in size, 
-        /// where <c>scaledHeight</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image height and one of the scaling factors returned by <see cref="tjGetScalingFactors"/>.  
+        /// This buffer should normally be <c> pitch * scaledHeight</c> bytes in size,
+        /// where <c>scaledHeight</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image height and one of the scaling factors returned by <see cref="tjGetScalingFactors"/>.
         /// The <paramref name="dstBuf"/> pointer may also be used to decompress into a specific region of a larger buffer.
         /// </param>
         /// <param name="width">
-        /// Desired width (in pixels) of the destination image.  
+        /// Desired width (in pixels) of the destination image.
         /// If this is different than the width of the JPEG image being decompressed, then TurboJPEG will use scaling in the JPEG decompressor to generate the largest possible image that will fit within the desired width.
         /// If <paramref name="width"/> is set to 0, then only the height will be considered when determining the scaled image size.
         /// </param>
         /// <param name="pitch">
-        /// Bytes per line in the destination image.  Normally, this is <c>scaledWidth* tjPixelSize[pixelFormat]</c> if the decompressed image is unpadded, else <c>TJPAD(scaledWidth * tjPixelSize[pixelFormat])</c> if each line of the decompressed image is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps. 
+        /// Bytes per line in the destination image.  Normally, this is <c>scaledWidth* tjPixelSize[pixelFormat]</c> if the decompressed image is unpadded, else <c>TJPAD(scaledWidth * tjPixelSize[pixelFormat])</c> if each line of the decompressed image is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.
         /// <remarks>Note: <c>scaledWidth</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image width and one of the scaling factors returned by <see cref="tjGetScalingFactors"/>
         /// </remarks>
         /// You can also be clever and use the pitch parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to <c>scaledWidth* tjPixelSize[pixelFormat]</c>.
         /// </param>
         /// <param name="height">
-        /// Desired height (in pixels) of the destination image.  
+        /// Desired height (in pixels) of the destination image.
         /// If this is different than the height of the JPEG image being decompressed, then TurboJPEG will use scaling in the JPEG decompressor to generate the largest possible image that will fit within the desired height.
         /// If <paramref name="height"/> is set to 0, then only the width will be considered when determining the scaled image size.
         /// </param>
@@ -386,7 +386,7 @@ namespace TurboJpegWrapper
         /// Free an image buffer previously allocated by TurboJPEG.  You should always
         /// use this function to free JPEG destination buffer(s) that were automatically
         /// (re)allocated by <see cref="tjCompress2"/> or <see cref="tjTransform"/> or that were manually
-        /// allocated using <see cref="tjAlloc"/>. 
+        /// allocated using <see cref="tjAlloc"/>.
         /// </summary>
         /// <param name="buffer">Address of the buffer to free.</param>
         /// <seealso cref="tjAlloc"/>
@@ -435,15 +435,15 @@ namespace TurboJpegWrapper
         /// This should ensure that the buffer never has to be re-allocated (setting <see cref="TJFlags.NOREALLOC"/> guarantees this.).</description>
         /// </item>
         /// </list>
-        /// If you choose option 1, <paramref name="dstSizes"/>[i] should be set to the size of your pre-allocated buffer.  
+        /// If you choose option 1, <paramref name="dstSizes"/>[i] should be set to the size of your pre-allocated buffer.
         /// In any case, unless you have set <see cref="TJFlags.NOREALLOC"/>,
         /// you should always check <paramref name="dstBufs"/>[i] upon return from this function, as it may have changed.
         /// </param>
         /// <param name="dstSizes">
         /// Pointer to an array of <paramref name="n"/> unsigned long variables that will
-        /// receive the actual sizes (in bytes) of each transformed JPEG image.  
-        /// If <paramref name="dstBufs"/>[i] points to a pre-allocated buffer, 
-        /// then <paramref name="dstSizes"/>[i] should be set to the size of the buffer.  
+        /// receive the actual sizes (in bytes) of each transformed JPEG image.
+        /// If <paramref name="dstBufs"/>[i] points to a pre-allocated buffer,
+        /// then <paramref name="dstSizes"/>[i] should be set to the size of the buffer.
         /// Upon return, <paramref name="dstSizes"/>[i] will contain the size of the JPEG image (in bytes.)
         /// </param>
         /// <param name="transforms">

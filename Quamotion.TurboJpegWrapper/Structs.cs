@@ -87,7 +87,7 @@ namespace TurboJpegWrapper
     /// <param name="transformIndex">
     /// ID number of the transformed image to which
     /// <paramref name="coeffs"/> belongs.  This is the same as the index of the transform
-    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.tjTransform"/>. 
+    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.tjTransform"/>.
     /// </param>
     /// <param name="transform">
     /// A pointer to a <see cref="tjtransform"/> structure that specifies the
@@ -96,7 +96,7 @@ namespace TurboJpegWrapper
     /// <returns>0 if the callback was successful, or -1 if an error occurred.</returns>
     /// <remarks>
     /// Original signature is:
-    /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c>.</para> 
+    /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c>.</para>
     /// </remarks>
     public delegate int CustomFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
 
