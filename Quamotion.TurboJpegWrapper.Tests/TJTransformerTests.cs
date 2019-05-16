@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="TJTransformerTests.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.IO;
 using Xunit;
 
@@ -6,22 +11,27 @@ namespace TurboJpegWrapper.Tests
 {
     public class TJTransformerTests : IDisposable
     {
-        private TJTransformer _transformer;
-        private string OutDirectory { get { return Path.Combine(TestUtils.BinPath, "transform_images_out"); } }
+        private TJTransformer transformer;
 
         public TJTransformerTests()
         {
-            _transformer = new TJTransformer();
-            if (Directory.Exists(OutDirectory))
+            this.transformer = new TJTransformer();
+            if (Directory.Exists(this.OutDirectory))
             {
-                Directory.Delete(OutDirectory, true);
+                Directory.Delete(this.OutDirectory, true);
             }
-            Directory.CreateDirectory(OutDirectory);
+
+            Directory.CreateDirectory(this.OutDirectory);
+        }
+
+        private string OutDirectory
+        {
+            get { return Path.Combine(TestUtils.BinPath, "transform_images_out"); }
         }
 
         public void Dispose()
         {
-            _transformer.Dispose();
+            this.transformer.Dispose();
         }
 
         [Fact]
@@ -31,19 +41,19 @@ namespace TurboJpegWrapper.Tests
             {
                 var transforms = new[]
                 {
-                        new TJTransformDescription
-                        {
-                            Operation = TJTransformOperation.None,
-                            Options = TJTransformOptions.Gray,
-                            Region = TJRegion.Empty
-                        }
-                    };
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
+                    new TJTransformDescription
+                    {
+                        Operation = TJTransformOperation.None,
+                        Options = TJTransformOptions.Gray,
+                        Region = TJRegion.Empty,
+                    },
+                };
+                var result = this.transformer.Transform(data.Item2, transforms, TJFlags.None);
 
                 Assert.NotNull(result);
                 Assert.Single(result);
 
-                var file = Path.Combine(OutDirectory, "gray_" + Path.GetFileName(data.Item1));
+                var file = Path.Combine(this.OutDirectory, "gray_" + Path.GetFileName(data.Item1));
                 File.WriteAllBytes(file, result[0]);
             }
         }
@@ -55,39 +65,27 @@ namespace TurboJpegWrapper.Tests
             {
                 var transforms = new[]
                 {
-                        new TJTransformDescription
+                    new TJTransformDescription
+                    {
+                        Operation = TJTransformOperation.None,
+                        Options = TJTransformOptions.Crop,
+                        Region = new TJRegion
                         {
-                            Operation = TJTransformOperation.None,
-                            Options = TJTransformOptions.Crop,
-                            Region = new TJRegion
-                            {
-                                X = 0,
-                                Y = 0,
-                                W = 50,
-                                H = 50
-                            }
+                            X = 0,
+                            Y = 0,
+                            W = 50,
+                            H = 50,
                         },
-                        //new TJTransformDescription
-                        //{
-                        //    Operation = TJTransformOperations.TJXOP_NONE,
-                        //    Options = TJTransformOptions.CROP,
-                        //    Region = new TJRegion
-                        //    {
-                        //        X = 50,
-                        //        Y = 50,
-                        //        W = 50,
-                        //        H = 50
-                        //    }
-                        //}
-                    };
+                    },
+                };
 
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
+                var result = this.transformer.Transform(data.Item2, transforms, TJFlags.None);
                 Assert.NotNull(result);
-                Assert.NotNull(result.Length == 1);
+                Assert.NotEmpty(result);
 
                 for (var idx = 0; idx < result.Length; idx++)
                 {
-                    var file = Path.Combine(OutDirectory, $"crop_s_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
+                    var file = Path.Combine(this.OutDirectory, $"crop_s_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
                     File.WriteAllBytes(file, result[0]);
                 }
             }
@@ -100,39 +98,39 @@ namespace TurboJpegWrapper.Tests
             {
                 var transforms = new[]
                 {
-                        new TJTransformDescription
+                    new TJTransformDescription
+                    {
+                        Operation = TJTransformOperation.None,
+                        Options = TJTransformOptions.Crop,
+                        Region = new TJRegion
                         {
-                            Operation = TJTransformOperation.None,
-                            Options = TJTransformOptions.Crop,
-                            Region = new TJRegion
-                            {
-                                X = 0,
-                                Y = 0,
-                                W = 100,
-                                H = 100
-                            },
+                            X = 0,
+                            Y = 0,
+                            W = 100,
+                            H = 100,
                         },
-                        new TJTransformDescription
+                    },
+                    new TJTransformDescription
+                    {
+                        Operation = TJTransformOperation.None,
+                        Options = TJTransformOptions.Crop,
+                        Region = new TJRegion
                         {
-                            Operation = TJTransformOperation.None,
-                            Options = TJTransformOptions.Crop,
-                            Region = new TJRegion
-                            {
-                                X = 50,
-                                Y = 0,
-                                W = 100,
-                                H = 100
-                            }
+                            X = 50,
+                            Y = 0,
+                            W = 100,
+                            H = 100,
                         },
-                    };
+                    },
+                };
 
-                var result = _transformer.Transform(data.Item2, transforms, TJFlags.None);
+                var result = this.transformer.Transform(data.Item2, transforms, TJFlags.None);
                 Assert.NotNull(result);
                 Assert.NotEmpty(result);
 
                 for (var idx = 0; idx < result.Length; idx++)
                 {
-                    var file = Path.Combine(OutDirectory, $"crop_m_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
+                    var file = Path.Combine(this.OutDirectory, $"crop_m_{Path.GetFileNameWithoutExtension(data.Item1)}_{idx}.jpg");
                     File.WriteAllBytes(file, result[idx]);
                 }
             }
