@@ -72,7 +72,6 @@ namespace TurboJpegWrapper
             try
             {
                 return this.Compress(srcPtr, stride, width, height, pixelFormat, subSamp, quality, flags);
-
             }
             finally
             {
@@ -301,5 +300,4 @@ namespace TurboJpegWrapper
                     $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
         }
     }
-
 }

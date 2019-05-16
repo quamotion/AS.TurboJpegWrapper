@@ -123,7 +123,6 @@ namespace TurboJpegWrapper
                 }
 
                 return result.ToArray();
-
             }
             finally
             {

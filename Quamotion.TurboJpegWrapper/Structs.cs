@@ -98,5 +98,4 @@ namespace TurboJpegWrapper
     /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c>.</para>
     /// </remarks>
     public delegate int CustomFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
-
 }

@@ -305,7 +305,5 @@ namespace TurboJpegWrapper
         {
             this.Dispose(false);
         }
-
     }
-
 }

@@ -95,7 +95,6 @@ namespace TurboJpegWrapper
             {
                 throw new NotSupportedException("Quamotion.TurboJpegWrapper is supported on Windows (.NET FX, .NET Core), Linux (.NET Core) and OS X (.NET Core)");
             }
-
         }
 #endif
 
