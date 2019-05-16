@@ -131,12 +131,14 @@ namespace TurboJpegWrapper
         /// address within each pixel.
         /// </summary>
         TJPF_RGB = 0,
+
         /// <summary>
         /// BGR pixel format.  The red, green, and blue components in the image are
         /// stored in 3-byte pixels in the order B, G, R from lowest to highest byte
         /// address within each pixel.
         /// </summary>
         TJPF_BGR,
+
         /// <summary>
         /// RGBX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from lowest to highest byte
@@ -144,6 +146,7 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing. 
         /// </summary>
         TJPF_RGBX,
+
         /// <summary>
         /// BGRX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from lowest to highest byte
@@ -151,6 +154,7 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing.
         ///  </summary>
         TJPF_BGRX,
+
         /// <summary>
         /// XBGR pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from highest to lowest byte
@@ -158,6 +162,7 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing. 
         /// </summary>
         TJPF_XBGR,
+
         /// <summary>
         /// XRGB pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from highest to lowest byte
@@ -165,35 +170,41 @@ namespace TurboJpegWrapper
         /// and undefined when decompressing.
         /// </summary>
         TJPF_XRGB,
+
         /// <summary>
         /// Grayscale pixel format.  Each 1-byte pixel represents a luminance
         /// (brightness) level from 0 to 255.
         /// </summary>
         TJPF_GRAY,
+
         /// <summary>
         /// RGBA pixel format.  This is the same as <see cref="TJPF_RGBX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_RGBA,
+
         /// <summary>
         /// BGRA pixel format.  This is the same as <see cref="TJPF_BGRX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_BGRA,
+
         /// <summary>
         /// ABGR pixel format.  This is the same as <see cref="TJPF_XBGR"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_ABGR,
+
         /// <summary>
         /// ARGB pixel format.  This is the same as <see cref="TJPF_XRGB"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
         TJPF_ARGB,
+
         /// <summary>
         /// CMYK pixel format.  Unlike RGB, which is an additive color model used
         /// primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
@@ -222,11 +233,13 @@ namespace TurboJpegWrapper
         /// Flags not set
         /// </summary>
         NONE = 0,
+
         /// <summary>
         /// The uncompressed source/destination image is stored in bottom-up (Windows, OpenGL) order, 
         /// not top-down (X11) order.
         /// </summary>
         BOTTOMUP = 2,
+
         /// <summary>
         /// When decompressing an image that was compressed using chrominance subsampling, 
         /// use the fastest chrominance upsampling algorithm available in the underlying codec.  
@@ -234,6 +247,7 @@ namespace TurboJpegWrapper
         /// neighboring chrominance components in order to reduce upsampling artifacts in the decompressed image.
         /// </summary>
         FASTUPSAMPLE = 256,
+
         /// <summary>
         /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.tjCompress2"/> or #tjTransform(), 
         /// this flag will cause those functions to generate an error 
@@ -241,6 +255,7 @@ namespace TurboJpegWrapper
         /// This reproduces the behavior of earlier versions of TurboJPEG.
         /// </summary>
         NOREALLOC = 1024,
+
         /// <summary>
         /// Use the fastest DCT/IDCT algorithm available in the underlying codec.  The
         /// default if this flag is not specified is implementation-specific.  For
@@ -250,6 +265,7 @@ namespace TurboJpegWrapper
         /// when decompressing, because this has been shown to have a larger effect. 
         /// </summary>
         FASTDCT = 2048,
+
         /// <summary>
         /// Use the most accurate DCT/IDCT algorithm available in the underlying codec.
         /// The default if this flag is not specified is implementation-specific.  For

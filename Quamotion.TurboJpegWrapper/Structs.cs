@@ -31,10 +31,12 @@ namespace TurboJpegWrapper
         /// Cropping region
         /// </summary>
         public TJRegion r { get; set; }
+
         /// <summary>
         /// One of the <see cref="TJTransformOperations"/> "transform operations"
         /// </summary>
         public int op { get; set; }
+
         /// <summary>
         /// The bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options"
         /// </summary>

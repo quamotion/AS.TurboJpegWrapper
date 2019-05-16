@@ -3,6 +3,7 @@
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
+
     /// <summary>
     /// Exception thrown then internal error in the underlying turbo jpeg library is occured
     /// </summary>

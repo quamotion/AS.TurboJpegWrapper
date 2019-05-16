@@ -16,6 +16,7 @@ namespace TurboJpegWrapper
             var error = TurboJpegImport.tjGetErrorStr();
             throw new TJException(error);
         }
+
         /// <summary>
         /// Converts pixel format from <see cref="PixelFormat"/> to <see cref="TJPixelFormats"/>
         /// </summary>

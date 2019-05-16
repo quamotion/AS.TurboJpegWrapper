@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
+
     /// <summary>
     /// Implements compression of RGB, CMYK, grayscale images to the jpeg format
     /// </summary>

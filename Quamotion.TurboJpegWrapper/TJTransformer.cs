@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 namespace TurboJpegWrapper
 {
     // ReSharper disable once InconsistentNaming
+
     /// <summary>
     /// Class for loseless transform jpeg images
     /// </summary>

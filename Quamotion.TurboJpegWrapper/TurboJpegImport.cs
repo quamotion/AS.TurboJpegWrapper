@@ -117,6 +117,7 @@ namespace TurboJpegWrapper
             { TJPixelFormats.TJPF_ARGB, 4},
             { TJPixelFormats.TJPF_CMYK, 4},
         };
+
         /// <summary>
         /// MCU block width (in pixels) for a given level of chrominance subsampling.
         /// MCU block sizes:
