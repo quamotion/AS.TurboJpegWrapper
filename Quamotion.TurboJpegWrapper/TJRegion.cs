@@ -16,7 +16,13 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Gets an empty region which is interpreted as full image region.
         /// </summary>
-        public static TJRegion Empty { get { return new TJRegion(); } }
+        public static TJRegion Empty
+        {
+            get
+            {
+                return default(TJRegion);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the left boundary of the cropping region.
