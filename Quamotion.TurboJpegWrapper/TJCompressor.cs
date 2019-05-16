@@ -275,7 +275,7 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
-        /// Finalizer
+        /// Finalizes an instance of the <see cref="TJCompressor"/> class.
         /// </summary>
         ~TJCompressor()
         {
