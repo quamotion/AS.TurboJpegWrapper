@@ -63,7 +63,7 @@ namespace TurboJpegWrapper
         /// decompressed to CMYK pixels.
         /// </summary>
         TJCS_YCCK,
-    };
+    }
 
     /// <summary>
     /// Chrominance subsampling options.
@@ -118,7 +118,7 @@ namespace TurboJpegWrapper
         /// </summary>
         /// <remarks> 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
         TJSAMP_411,
-    };
+    }
 
     /// <summary>
     /// Pixel formats.
@@ -221,7 +221,7 @@ namespace TurboJpegWrapper
         /// JPEG images into CMYK pixels.
         /// </summary>
         TJPF_CMYK,
-    };
+    }
 
     /// <summary>
     /// Flags for turbo jpeg.
@@ -328,7 +328,7 @@ namespace TurboJpegWrapper
         /// if there are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.PERFECT"/>.)
         /// </summary>
         TJXOP_ROT270,
-    };
+    }
 
     /// <summary>
     /// Transformation options.
