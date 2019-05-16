@@ -15,12 +15,12 @@ namespace TurboJpegWrapper
     internal struct TjScalingFactor
     {
         /// <summary>
-        /// Numerator.
+        /// Gets or sets the numerator.
         /// </summary>
         public int Num { get; set; }
 
         /// <summary>
-        /// Denominator.
+        /// Gets or sets the denominator.
         /// </summary>
         public int Denom { get; set; }
     }
@@ -32,27 +32,27 @@ namespace TurboJpegWrapper
     public struct TjTransform
     {
         /// <summary>
-        /// Cropping region.
+        /// Gets or sets the cropping region.
         /// </summary>
         public TJRegion R { get; set; }
 
         /// <summary>
-        /// One of the <see cref="TJTransformOperations"/> "transform operations".
+        /// Gets or sets one of the <see cref="TJTransformOperations"/> "transform operations".
         /// </summary>
         public int Op { get; set; }
 
         /// <summary>
-        /// The bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options".
+        /// Gets or sets the bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options".
         /// </summary>
         public int Options { get; set; }
 
         /// <summary>
-        /// Arbitrary data that can be accessed within the body of the callback function.
+        /// Gets or sets arbitrary data that can be accessed within the body of the callback function.
         /// </summary>
         public IntPtr Data { get; set; }
 
         /// <summary>
-        /// A callback function that can be used to modify the DCT coefficients
+        /// Gets or sets a callback function that can be used to modify the DCT coefficients
         /// after they are losslessly transformed but before they are transcoded to a
         /// new JPEG image.  This allows for custom filters or other transformations
         /// to be applied in the frequency domain.

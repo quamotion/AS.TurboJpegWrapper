@@ -13,27 +13,27 @@ namespace TurboJpegWrapper
     public struct TJTransformDescription
     {
         /// <summary>
-        /// Transform operation.
+        /// Gets or sets the transform operation.
         /// </summary>
         public TJTransformOperations Operation { get; set; }
 
         /// <summary>
-        /// Transform options.
+        /// Gets or sets the transform options.
         /// </summary>
         public TJTransformOptions Options { get; set; }
 
         /// <summary>
-        /// Transform region.
+        /// Gets or sets the region to transform.
         /// </summary>
         public TJRegion Region { get; set; }
 
         /// <summary>
-        /// Callback data.
+        /// Gets or sets callback data.
         /// </summary>
         public IntPtr CallbackData { get; set; }
 
         /// <summary>
-        /// Custom filter delegate.
+        /// Gets or sets the custom filter delegate.
         /// </summary>
         public CustomFilter CustomFilter { get; set; }
     }
