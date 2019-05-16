@@ -21,7 +21,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJDecompressor()
         {
-            this.decompressorHandle = TurboJpegImport.tjInitDecompress();
+            this.decompressorHandle = TurboJpegImport.TjInitDecompress();
 
             if (this.decompressorHandle == IntPtr.Zero)
             {
@@ -66,7 +66,7 @@ namespace TurboJpegWrapper
 
             int subsampl;
             int colorspace;
-            var funcResult = TurboJpegImport.tjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -83,7 +83,7 @@ namespace TurboJpegWrapper
                 throw new ArgumentOutOfRangeException(nameof(outBufSize));
             }
 
-            funcResult = TurboJpegImport.tjDecompress(
+            funcResult = TurboJpegImport.TjDecompress(
                 this.decompressorHandle,
                 jpegBuf,
                 jpegBufSize,
@@ -215,7 +215,7 @@ namespace TurboJpegWrapper
             int subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.tjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.TjDecompressHeader(this.decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
@@ -287,7 +287,7 @@ namespace TurboJpegWrapper
             // in the constructor), we shouldn't free it either.
             if (this.decompressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(this.decompressorHandle);
+                TurboJpegImport.TjDestroy(this.decompressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).

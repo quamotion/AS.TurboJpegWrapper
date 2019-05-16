@@ -154,9 +154,9 @@ namespace TurboJpegWrapper
         /// <param name="dimension">Dimension to scale.</param>
         /// <param name="scalingFactor">Scaling factor.</param>
         /// <returns></returns>
-        public static int TJSCALED(int dimension, tjscalingfactor scalingFactor)
+        public static int TJSCALED(int dimension, TjScalingFactor scalingFactor)
         {
-            return (dimension * scalingFactor.num + scalingFactor.denom - 1) / scalingFactor.denom;
+            return (dimension * scalingFactor.Num + scalingFactor.Denom - 1) / scalingFactor.Denom;
         }
 
         /// <summary>
@@ -164,9 +164,9 @@ namespace TurboJpegWrapper
         /// </summary>
         /// <returns>
         /// handle to the newly-created instance, or <see cref="IntPtr.Zero"/>
-        /// if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr tjInitCompress();
+        /// if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjInitCompress")]
+        public static extern IntPtr TjInitCompress();
 
         /// <summary>
         /// Compress an RGB, grayscale, or CMYK image into a JPEG image.
@@ -200,13 +200,13 @@ namespace TurboJpegWrapper
         /// to accommodate the size of the JPEG image.  Thus, you can choose to:
         /// <list type="number">
         /// <item>
-        /// <description>pre-allocate the JPEG buffer with an arbitrary size using <see cref="tjAlloc"/> and let TurboJPEG grow the buffer as needed</description>
+        /// <description>pre-allocate the JPEG buffer with an arbitrary size using <see cref="TjAlloc"/> and let TurboJPEG grow the buffer as needed</description>
         /// </item>
         /// <item>
         /// <description>set <paramref name="jpegBuf"/> to NULL to tell TurboJPEG to allocate the buffer for you</description>
         /// </item>
         /// <item>
-        /// <description>pre-allocate the buffer to a "worst case" size determined by calling <see cref="tjBufSize"/>.
+        /// <description>pre-allocate the buffer to a "worst case" size determined by calling <see cref="TjBufSize"/>.
         /// This should ensure that the buffer never has to be re-allocated (setting <see cref="TJFlags.NOREALLOC"/> guarantees this.).</description>
         /// </item>
         /// </list>
@@ -234,9 +234,9 @@ namespace TurboJpegWrapper
         ///
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
         ///
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int tjCompress2(IntPtr handle, IntPtr srcBuf, int width, int pitch, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags);
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjCompress2")]
+        public static extern int TjCompress2(IntPtr handle, IntPtr srcBuf, int width, int pitch, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags);
 
         /// <summary>
         /// The maximum size of the buffer (in bytes) required to hold a JPEG image with
@@ -258,15 +258,15 @@ namespace TurboJpegWrapper
         /// The maximum size of the buffer (in bytes) required to hold the image,
         /// or -1 if the arguments are out of bounds.
         /// </returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern long tjBufSize(int width, int height, int jpegSubsamp);
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjBufSize")]
+        public static extern long TjBufSize(int width, int height, int jpegSubsamp);
 
         /// <summary>
         ///  Create a TurboJPEG decompressor instance.
         /// </summary>
-        /// <returns>A handle to the newly-created instance, or NULL if an error occurred(see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr tjInitDecompress();
+        /// <returns>A handle to the newly-created instance, or NULL if an error occurred(see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjInitDecompress")]
+        public static extern IntPtr TjInitDecompress();
 
         /// <summary>
         /// Retrieve information about a JPEG image without decompressing it.
@@ -282,17 +282,17 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="jpegColorspace">Pointer to an integer variable that will receive one of the JPEG colorspace constants,
         /// indicating the colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)</param>
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        public static int tjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width,
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width,
             out int height, out int jpegSubsamp, out int jpegColorspace)
         {
             switch (IntPtr.Size)
             {
                 case 4:
-                    return tjDecompressHeader3_x86(handle, jpegBuf, (uint)jpegSize, out width, out height, out jpegSubsamp,
+                    return TjDecompressHeader3_x86(handle, jpegBuf, (uint)jpegSize, out width, out height, out jpegSubsamp,
                         out jpegColorspace);
                 case 8:
-                    return tjDecompressHeader3_x64(handle, jpegBuf, jpegSize, out width, out height, out jpegSubsamp,
+                    return TjDecompressHeader3_x64(handle, jpegBuf, jpegSize, out width, out height, out jpegSubsamp,
                         out jpegColorspace);
 
                 default:
@@ -301,18 +301,18 @@ namespace TurboJpegWrapper
         }
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int tjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
+        private static extern int TjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int tjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
+        private static extern int TjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
 
         /// <summary>
         /// Returns a list of fractional scaling factors that the JPEG decompressor in this implementation of TurboJPEG supports.
         /// </summary>
         /// <param name="numscalingfactors">Pointer to an integer variable that will receive the number of elements in the list.</param>
-        /// <returns>A pointer to a list of fractional scaling factors, or <see cref="IntPtr.Zero"/> if an error is encountered (see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr tjGetScalingFactors(out int numscalingfactors);
+        /// <returns>A pointer to a list of fractional scaling factors, or <see cref="IntPtr.Zero"/> if an error is encountered (see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjGetScalingFactors")]
+        public static extern IntPtr TjGetScalingFactors(out int numscalingfactors);
 
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
@@ -323,7 +323,7 @@ namespace TurboJpegWrapper
         /// <param name="dstBuf">
         /// Pointer to an image buffer that will receive the decompressed image.
         /// This buffer should normally be <c> pitch * scaledHeight</c> bytes in size,
-        /// where <c>scaledHeight</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image height and one of the scaling factors returned by <see cref="tjGetScalingFactors"/>.
+        /// where <c>scaledHeight</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image height and one of the scaling factors returned by <see cref="TjGetScalingFactors"/>.
         /// The <paramref name="dstBuf"/> pointer may also be used to decompress into a specific region of a larger buffer.
         /// </param>
         /// <param name="width">
@@ -333,7 +333,7 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="pitch">
         /// Bytes per line in the destination image.  Normally, this is <c>scaledWidth* tjPixelSize[pixelFormat]</c> if the decompressed image is unpadded, else <c>TJPAD(scaledWidth * tjPixelSize[pixelFormat])</c> if each line of the decompressed image is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.
-        /// <remarks>Note: <c>scaledWidth</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image width and one of the scaling factors returned by <see cref="tjGetScalingFactors"/>
+        /// <remarks>Note: <c>scaledWidth</c> can be determined by calling <see cref="TJSCALED"/> with the JPEG image width and one of the scaling factors returned by <see cref="TjGetScalingFactors"/>
         /// </remarks>
         /// You can also be clever and use the pitch parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to <c>scaledWidth* tjPixelSize[pixelFormat]</c>.
@@ -345,16 +345,16 @@ namespace TurboJpegWrapper
         /// </param>
         /// <param name="pixelFormat">Pixel format of the destination image (see <see cref="TJPixelFormats"/> "Pixel formats".)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        public static int tjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width,
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        public static int TjDecompress(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width,
             int pitch, int height, int pixelFormat, int flags)
         {
             switch (IntPtr.Size)
             {
                 case 4:
-                    return tjDecompress2_x86(handle, jpegBuf, (uint)jpegSize, dstBuf, width, pitch, height, pixelFormat, flags);
+                    return TjDecompress2_x86(handle, jpegBuf, (uint)jpegSize, dstBuf, width, pitch, height, pixelFormat, flags);
                 case 8:
-                    return tjDecompress2_x64(handle, jpegBuf, jpegSize, dstBuf, width, pitch, height, pixelFormat, flags);
+                    return TjDecompress2_x64(handle, jpegBuf, jpegSize, dstBuf, width, pitch, height, pixelFormat, flags);
 
                 default:
                     throw new InvalidOperationException("Invalid platform. Can not find proper function");
@@ -362,40 +362,40 @@ namespace TurboJpegWrapper
         }
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
-        private static extern int tjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
+        private static extern int TjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
-        private static extern int tjDecompress2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
+        private static extern int TjDecompress2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
 
         /// <summary>
         /// Allocate an image buffer for use with TurboJPEG.  You should always use
-        /// this function to allocate the JPEG destination buffer(s) for <see cref="tjCompress2"/>
-        /// and <see cref="tjTransform"/> unless you are disabling automatic buffer
+        /// this function to allocate the JPEG destination buffer(s) for <see cref="TjCompress2"/>
+        /// and <see cref="TjTransform"/> unless you are disabling automatic buffer
         /// (re)allocation (by setting <see cref="TJFlags.NOREALLOC"/>.)
         /// </summary>
         /// <param name="bytes">The number of bytes to allocate.</param>
         /// <returns>A pointer to a newly-allocated buffer with the specified number of bytes.</returns>
-        /// <seealso cref="tjFree"/>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr tjAlloc(int bytes);
+        /// <seealso cref="TjFree"/>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjAlloc")]
+        public static extern IntPtr TjAlloc(int bytes);
 
         /// <summary>
         /// Free an image buffer previously allocated by TurboJPEG.  You should always
         /// use this function to free JPEG destination buffer(s) that were automatically
-        /// (re)allocated by <see cref="tjCompress2"/> or <see cref="tjTransform"/> or that were manually
-        /// allocated using <see cref="tjAlloc"/>.
+        /// (re)allocated by <see cref="TjCompress2"/> or <see cref="TjTransform"/> or that were manually
+        /// allocated using <see cref="TjAlloc"/>.
         /// </summary>
         /// <param name="buffer">Address of the buffer to free.</param>
-        /// <seealso cref="tjAlloc"/>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void tjFree(IntPtr buffer);
+        /// <seealso cref="TjAlloc"/>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjFree")]
+        public static extern void TjFree(IntPtr buffer);
 
         /// <summary>
         /// Create a new TurboJPEG transformer instance.
         /// </summary>
-        /// <returns>@return a handle to the newly-created instance, or NULL if an error occurred(see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr tjInitTransform();
+        /// <returns>@return a handle to the newly-created instance, or NULL if an error occurred(see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjInitTransform")]
+        public static extern IntPtr TjInitTransform();
 
         /// <summary>
         /// Losslessly transform a JPEG image into another JPEG image.  Lossless
@@ -422,13 +422,13 @@ namespace TurboJpegWrapper
         /// to accommodate the size of the JPEG image.  Thus, you can choose to:
         /// <list type="number">
         /// <item>
-        /// <description>pre-allocate the JPEG buffer with an arbitrary size using <see cref="tjAlloc"/> and let TurboJPEG grow the buffer as needed</description>
+        /// <description>pre-allocate the JPEG buffer with an arbitrary size using <see cref="TjAlloc"/> and let TurboJPEG grow the buffer as needed</description>
         /// </item>
         /// <item>
         /// <description>set <paramref name="dstBufs"/>[i] to NULL to tell TurboJPEG to allocate the buffer for you</description>
         /// </item>
         /// <item>
-        /// <description>pre-allocate the buffer to a "worst case" size determined by calling <see cref="tjBufSize"/>.
+        /// <description>pre-allocate the buffer to a "worst case" size determined by calling <see cref="TjBufSize"/>.
         /// This should ensure that the buffer never has to be re-allocated (setting <see cref="TJFlags.NOREALLOC"/> guarantees this.).</description>
         /// </item>
         /// </list>
@@ -444,13 +444,13 @@ namespace TurboJpegWrapper
         /// Upon return, <paramref name="dstSizes"/>[i] will contain the size of the JPEG image (in bytes.)
         /// </param>
         /// <param name="transforms">
-        /// Pointer to an array of <see cref="tjtransform"/> structures, each of
+        /// Pointer to an array of <see cref="TurboJpegWrapper.TjTransform"/> structures, each of
         /// which specifies the transform parameters and/or cropping region for the
         /// corresponding transformed output image.
         /// </param>
         /// <param name="flags">flags the bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        public static int tjTransform(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        public static int TjTransform(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
           ulong[] dstSizes, IntPtr transforms, int flags)
         {
             var intSizes = new uint[dstSizes.Length];
@@ -463,10 +463,10 @@ namespace TurboJpegWrapper
             switch (IntPtr.Size)
             {
                 case 4:
-                    result = tjTransform_x86(handle, jpegBuf, (uint)jpegSize, n, dstBufs, intSizes, transforms, flags);
+                    result = TjTransform_x86(handle, jpegBuf, (uint)jpegSize, n, dstBufs, intSizes, transforms, flags);
                     break;
                 case 8:
-                    result = tjTransform_x64(handle, jpegBuf, jpegSize, n, dstBufs, intSizes, transforms, flags);
+                    result = TjTransform_x64(handle, jpegBuf, jpegSize, n, dstBufs, intSizes, transforms, flags);
                     break;
                 default:
                     throw new InvalidOperationException("Invalid platform. Can not find proper function");
@@ -481,27 +481,27 @@ namespace TurboJpegWrapper
         }
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
-        private static extern int tjTransform_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, int n, IntPtr[] dstBufs,
+        private static extern int TjTransform_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, int n, IntPtr[] dstBufs,
          uint[] dstSizes, IntPtr transforms, int flags);
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjTransform")]
-        private static extern int tjTransform_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
+        private static extern int TjTransform_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, int n, IntPtr[] dstBufs,
          uint[] dstSizes, IntPtr transforms, int flags);
 
         /// <summary>
         /// Destroy a TurboJPEG compressor, decompressor, or transformer instance.
         /// </summary>
         /// <param name="handle">a handle to a TurboJPEG compressor, decompressor or transformer instance.</param>
-        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>).</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int tjDestroy(IntPtr handle);
+        /// <returns>0 if successful, or -1 if an error occurred (see <see cref="TjGetErrorStr"/>).</returns>
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDestroy")]
+        public static extern int TjDestroy(IntPtr handle);
 
         /// <summary>
         /// Returns a descriptive error message explaining why the last command failed.
         /// </summary>
         /// <returns>A descriptive error message explaining why the last command failed.</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "tjGetErrorStr")]
         [return: MarshalAs(UnmanagedType.LPStr)]
-        public static extern string tjGetErrorStr();
+        public static extern string TjGetErrorStr();
     }
 }
