@@ -155,6 +155,7 @@ namespace TurboJpegWrapper
                     result.Palette = this.FixPaletteToGrayscale(result.Palette);
                 }
             }
+
             return result;
         }
 
@@ -243,6 +244,7 @@ namespace TurboJpegWrapper
             {
                 palette.Entries[index] = Color.FromArgb(index, index, index);
             }
+
             return palette;
         }
 

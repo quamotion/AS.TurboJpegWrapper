@@ -94,6 +94,7 @@ namespace TurboJpegWrapper
                     customFilter = transforms[i].CustomFilter,
                 };
             }
+
             var transformsPtr = TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
@@ -115,6 +116,7 @@ namespace TurboJpegWrapper
 
                     TurboJpegImport.tjFree(ptr);
                 }
+
                 return result.ToArray();
 
             }
@@ -136,6 +138,7 @@ namespace TurboJpegWrapper
             {
                 realCoordinate = realCoordinate - remainder < 0 ? 0 : realCoordinate - remainder;
             }
+
             return realCoordinate;
         }
 

@@ -461,6 +461,7 @@ namespace TurboJpegWrapper
             {
                 intSizes[i] = (uint)dstSizes[i];
             }
+
             int result;
             switch (IntPtr.Size)
             {
@@ -473,10 +474,12 @@ namespace TurboJpegWrapper
                 default:
                     throw new InvalidOperationException("Invalid platform. Can not find proper function");
             }
+
             for (var i = 0; i < dstSizes.Length; i++)
             {
                 dstSizes[i] = intSizes[i];
             }
+
             return result;
         }
 
