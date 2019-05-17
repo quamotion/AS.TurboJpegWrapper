@@ -70,7 +70,7 @@ jobs:
       publishLocation: 'Container'
     displayName: Publish
 
-- job: native_linux
+- job: native_ubuntu_16_04
   variables:
     TARGET: x86_64-unknown-linux-gnu
     RID: ubuntu.16.04-x64
@@ -105,11 +105,57 @@ jobs:
       publishLocation: 'Container'
     displayName: Publish
 
+- job: native_ubuntu_18_04
+  variables:
+    TARGET: x86_64-unknown-linux-gnu
+    RID: ubuntu.18.04-x64
+    CFLAGS: -fPIC
+  pool:
+    vmImage: 'ubuntu-16.04'
+  container:
+    image: ubuntu:18.04
+    options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+  steps:
+  - script: |
+      /tmp/docker exec -t -u 0 ci-container \
+      sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+    displayName: Set up sudo
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y lsb-release build-essential wget autotools-dev autoconf gcc libtool
+  - script: |
+      lsb_release -a
+    displayName: Check Ubuntu version
+  - script: |
+      sudo apt-get install -y nasm
+    displayName: Install nasm
+  - script: |
+      wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz -O libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz NASM=/usr/local/bin/nasm
+      tar xvf libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
+    displayName: Download sources
+  - script: |
+      cd libjpeg-turbo-${LIBJPEG_TURBO_VERSION}
+      autoreconf -fiv
+      cd ..
+      sh libjpeg-turbo-${LIBJPEG_TURBO_VERSION}/configure --prefix=${BUILD_ARTIFACTSTAGINGDIRECTORY}/libjpeg-turbo/$RID --host=$TARGET NASM=/usr/bin/nasm
+      make
+    displayName: Build
+  - script: |
+      make install
+    displayName: Install
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libjpeg-turbo'
+      artifactName: 'libjpeg-turbo'
+      publishLocation: 'Container'
+    displayName: Publish
+
 - job: test_windows
   dependsOn:
     - native_windows
     - native_macos
-    - native_linux
+    - native_ubuntu_16_04
+    - native_ubuntu_18_04
   pool:
     vmImage: 'VS2017-Win2016'
   steps:
@@ -139,7 +185,8 @@ jobs:
   dependsOn:
     - native_windows
     - native_macos
-    - native_linux
+    - native_ubuntu_16_04
+    - native_ubuntu_18_04
   pool:
     vmImage: 'xcode9-macos10.13'
   variables:
@@ -162,11 +209,11 @@ jobs:
       dotnet test -c Release
     displayName: Test
 
-- job: test_linux
+- job: test_ubuntu_16_04
   dependsOn:
     - native_windows
     - native_macos
-    - native_linux
+    - native_ubuntu_16_04
   variables:
     RID: ubuntu.16.04-x64
   pool:
