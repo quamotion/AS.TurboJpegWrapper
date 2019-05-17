@@ -1,5 +1,5 @@
 # .NET wrapper for libjpeg-turbo
-[![Build Status](https://dev.azure.com/qmfrederik/AS.TurboJpegWrapper/_apis/build/status/qmfrederik.AS.TurboJpegWrapper)](https://dev.azure.com/qmfrederik/AS.TurboJpegWrapper/_build/latest?definitionId=2)
+[![Build Status](https://dev.azure.com/qmfrederik/AS.TurboJpegWrapper/_apis/build/status/quamotion.AS.TurboJpegWrapper?branchName=master)](https://dev.azure.com/qmfrederik/AS.TurboJpegWrapper/_build/latest?definitionId=12&branchName=master)
 
 libjpeg-turbo is a JPEG image codec that uses processor instructions to accelerate JPEG compression
 and decompression.
