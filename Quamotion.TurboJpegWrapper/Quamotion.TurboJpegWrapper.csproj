@@ -32,7 +32,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(SYSTEM_ARTIFACTSDIRECTORY)' != ''">
     <!-- Native libraries; these files come from VSTS artifacts -->
     <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/win7-x64/bin/turbojpeg.dll">
       <PackagePath>runtimes/win-x64/native/%(Filename)%(Extension)</PackagePath>
@@ -48,6 +48,18 @@
     </Content>
     <Content Include="$(SYSTEM_ARTIFACTSDIRECTORY)/libjpeg-turbo/osx-x64/lib/libturbojpeg.dylib">
       <PackagePath>runtimes/osx-x64/native/%(Filename)%(Extension)</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <!-- Native libraries; dependencies on Windows -->
+    <Content Include="$(MSBuildProgramFiles32)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT\vcruntime140.dll">
+      <PackagePath>runtimes/win-x64/native/%(Filename)%(Extension)</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="$(MSBuildProgramFiles32)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\vcruntime140.dll">
+      <PackagePath>runtimes/win-x86/native/%(Filename)%(Extension)</PackagePath>
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
