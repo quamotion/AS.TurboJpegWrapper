@@ -220,7 +220,12 @@ jobs:
     vmImage: 'ubuntu-16.04'
   container:
     image: mcr.microsoft.com/dotnet/core/sdk:2.2-bionic
+    options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
   steps:
+  - script: |
+      /tmp/docker exec -t -u 0 ci-container \
+      sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+    displayName: Set up sudo
   - task: DownloadBuildArtifacts@0
     inputs:
       artifactName: libjpeg-turbo
