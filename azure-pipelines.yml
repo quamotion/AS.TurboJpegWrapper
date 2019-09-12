@@ -18,19 +18,15 @@ jobs:
     vmImage: 'vs2017-win2016'
   steps:
   - script: |
-      git clone https://github.com/libimobiledevice-win32/vcpkg
-      vcpkg\bootstrap-vcpkg.bat
-    displayName: Install vcpkg
-  - script: |
-      vcpkg\vcpkg version
-      vcpkg\vcpkg integrate install
+      %VCPKG_INSTALLATION_ROOT%\vcpkg version
+      %VCPKG_INSTALLATION_ROOT%\vcpkg integrate install
       set VCPKG_BUILD_TYPE=release
-      vcpkg\vcpkg install libjpeg-turbo:%BUILD_ARCH%-windows
+      %VCPKG_INSTALLATION_ROOT%\vcpkg install libjpeg-turbo:%BUILD_ARCH%-windows
     displayName: Install native dependencies
   - script: |
       mkdir %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\
-      copy vcpkg\installed\%BUILD_ARCH%-windows\bin\*.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\
-      copy vcpkg\installed\%BUILD_ARCH%-windows\share\libjpeg-turbo\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\libjpeg-turbo.copyright
+      copy %VCPKG_INSTALLATION_ROOT%\installed\%BUILD_ARCH%-windows\bin\*.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\
+      copy %VCPKG_INSTALLATION_ROOT%\installed\%BUILD_ARCH%-windows\share\libjpeg-turbo\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libjpeg-turbo\%RID%\bin\libjpeg-turbo.copyright
     displayName: 'Install'
   - task: PublishBuildArtifacts@1
     inputs:
