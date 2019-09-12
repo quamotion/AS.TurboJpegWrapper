@@ -535,9 +535,8 @@ namespace TurboJpegWrapper
         /// Returns a descriptive error message explaining why the last command failed.
         /// </summary>
         /// <returns>A descriptive error message explaining why the last command failed.</returns>
-        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "tjGetErrorStr")]
-        [return: MarshalAs(UnmanagedType.LPStr)]
-        public static extern string TjGetErrorStr();
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjGetErrorStr")]
+        public static extern IntPtr TjGetErrorStr();
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
         private static extern int TjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);

@@ -115,6 +115,12 @@ namespace TurboJpegWrapper.Tests
             }
         }
 
+        [Fact]
+        public void CompressInvalidIntPtr()
+        {
+            Assert.Throws<TJException>(() => this.compressor.Compress(IntPtr.Zero, 0, 0, 0, PixelFormat.Format32bppArgb, TJSubsamplingOption.Gray, 0, TJFlags.None));
+        }
+
         [Theory]
         [CombinatorialData]
         public void CompressByteArray(

@@ -17,7 +17,7 @@ namespace TurboJpegWrapper
         /// <exception cref="TJException"> Throws if low level turbo jpeg function fails. </exception>
         public static void GetErrorAndThrow()
         {
-            var error = TurboJpegImport.TjGetErrorStr();
+            var error = Marshal.PtrToStringAnsi(TurboJpegImport.TjGetErrorStr());
             throw new TJException(error);
         }
 
