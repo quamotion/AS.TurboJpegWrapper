@@ -209,24 +209,31 @@ jobs:
       dotnet test -c Release
     displayName: Test
 
-- job: test_ubuntu_16_04
+- job: test_ubuntu_18_04
   dependsOn:
     - native_windows
     - native_macos
     - native_ubuntu_16_04
   variables:
-    RID: ubuntu.16.04-x64
+    RID: ubuntu.18.04-x64
   pool:
     vmImage: 'ubuntu-16.04'
+  container:
+    image: mcr.microsoft.com/dotnet/core/sdk:2.2-bionic
+    options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
   steps:
+  - script: |
+      /tmp/docker exec -t -u 0 ci-container \
+      sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+    displayName: Set up sudo
   - task: DownloadBuildArtifacts@0
     inputs:
       artifactName: libjpeg-turbo
   - script: |
       sudo add-apt-repository ppa:quamotion/ppa
       sudo apt-get update
-      sudo apt-get install -y libgdiplus
-    displayName: Install libgdiplus
+      sudo apt-get install -y libc6-dev libgdiplus libcurl4
+    displayName: Install libgdiplus, libcurl
   - script: |
       dotnet restore
       dotnet build -c Release
