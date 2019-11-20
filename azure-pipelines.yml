@@ -148,7 +148,7 @@ jobs:
   - script: |
       sudo add-apt-repository ppa:quamotion/ppa
       sudo apt-get update
-      sudo apt-get install -y libc6-dev libgdiplus libcurl4 libjpeg-turbo8
+      sudo apt-get install -y libc6-dev libgdiplus libcurl4 libturbojpeg
     displayName: Install libgdiplus, libcurl
   - script: |
       dotnet restore
