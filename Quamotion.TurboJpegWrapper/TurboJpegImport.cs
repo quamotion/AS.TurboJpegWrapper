@@ -18,6 +18,7 @@ namespace TurboJpegWrapper
     /// </summary>
     internal static class TurboJpegImport
     {
+
         /// <summary>
         /// Pixel size (in bytes) for a given pixel format.
         /// </summary>
@@ -58,12 +59,19 @@ namespace TurboJpegWrapper
             { TJSubsamplingOption.Chrominance411, new Size(32, 8) },
         };
 
-        private const string UnmanagedLibrary = "turbojpeg";
+        public const string UnmanagedLibrary = "turbojpeg";
 
 #if NET45
         static TurboJpegImport()
         {
             Load();
+        }
+#endif
+
+#if !NET45 && !NETSTANDARD2_0
+        static TurboJpegImport()
+        {
+            LibraryResolver.EnsureRegistered();
         }
 #endif
 

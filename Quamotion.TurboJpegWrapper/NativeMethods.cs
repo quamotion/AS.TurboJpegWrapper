@@ -3,6 +3,7 @@
 // Copyright (c) Quamotion. All rights reserved.
 // </copyright>
 
+#if NETSTANDARD2_0 || NET45
 using System;
 using System.Runtime.InteropServices;
 
@@ -51,3 +52,4 @@ namespace TurboJpegWrapper
         public static extern IntPtr LoadLibrary(string dllToLoad);
     }
 }
+#endif
