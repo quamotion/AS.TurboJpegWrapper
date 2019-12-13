@@ -36,7 +36,8 @@ namespace TurboJpegWrapper
             // On Debian & Ubuntu, there are two out-of-the-box packages:
             // - libjpeg-turbo8 is the libjpeg-turbo, masquerading as the
             //   default jpeg library. It installs as libjpeg.so.8 and is
-            //   usually a slightly outdated version.
+            //   usually a slightly outdated version. Additionally, it also
+            //   does not export most of the tj* functions.
             // - libturbojpeg is the same library, but usually a more
             //   recent version. It installs as libturbojpeg.so.0
             //
@@ -44,25 +45,10 @@ namespace TurboJpegWrapper
             // libjpeg.so.62
             // libturbojpeg.so.0
             //
-            // Try the specialized version first, then fall back to the general
-            // purpose library.
+            // Require the specialized version.
             IntPtr lib = IntPtr.Zero;
 
             if (NativeLibrary.TryLoad("libturbojpeg.so.0", out lib))
-            {
-                return lib;
-            }
-
-            // Debian/Ubuntu general-purpose jpeg library (but usually
-            // libjpeg-turbo)
-            if (NativeLibrary.TryLoad("libjpeg.so.8", out lib))
-            {
-                return lib;
-            }
-
-            // CentOS/RHEL general-purpose jpeg library (but usually
-            // libjpeg-turbo)
-            if (NativeLibrary.TryLoad("libjpeg.so.62", out lib))
             {
                 return lib;
             }
