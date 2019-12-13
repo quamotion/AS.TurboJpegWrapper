@@ -100,7 +100,7 @@ jobs:
     - native_windows
     - native_macos
   pool:
-    vmImage: 'xcode9-macos10.13'
+    vmImage: 'macOS-10.14'
   variables:
     RID: osx-x64
   steps:
