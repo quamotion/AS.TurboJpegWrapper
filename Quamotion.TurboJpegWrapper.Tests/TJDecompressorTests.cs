@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.Drawing.Imaging;
 using System.IO;
 using Xunit;
@@ -70,6 +71,45 @@ namespace TurboJpegWrapper.Tests
                 Assert.NotNull(result);
                 TJUtils.FreePtr(dataPtr);
             }
+        }
+
+        [Theory]
+        [CombinatorialData]
+        public void DecompressSpan(
+            [CombinatorialValues(
+            TJPixelFormat.ABGR,
+            TJPixelFormat.RGB,
+            TJPixelFormat.Gray)]
+            TJPixelFormat format)
+        {
+            byte[] outBuf = ArrayPool<byte>.Shared.Rent(250 * 250 * 4);
+
+            foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
+            {
+                var dataSpan = data.Item2.AsSpan();
+                this.decompressor.Decompress(dataSpan, outBuf.AsSpan(), format, TJFlags.None, out int width, out int height, out int stride);
+            }
+
+            ArrayPool<byte>.Shared.Return(outBuf);
+        }
+
+        [Theory]
+        [CombinatorialData]
+        public void DecompressArray(
+            [CombinatorialValues(
+            TJPixelFormat.ABGR,
+            TJPixelFormat.RGB,
+            TJPixelFormat.Gray)]
+            TJPixelFormat format)
+        {
+            byte[] outBuf = ArrayPool<byte>.Shared.Rent(250 * 250 * 4);
+
+            foreach (var data in TestUtils.GetTestImagesData("*.jpg"))
+            {
+                this.decompressor.Decompress(data.Item2, outBuf, format, TJFlags.None, out int width, out int height, out int stride);
+            }
+
+            ArrayPool<byte>.Shared.Return(outBuf);
         }
     }
 }
