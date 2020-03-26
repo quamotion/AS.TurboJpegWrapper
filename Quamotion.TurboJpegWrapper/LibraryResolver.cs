@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="LibraryResolver.cs" company="Autonomic Systems, Quamotion">
+// Copyright (c) Autonomic Systems. All rights reserved.
+// Copyright (c) Quamotion. All rights reserved.
+// </copyright>
+
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -8,7 +13,7 @@ namespace TurboJpegWrapper
     {
         static LibraryResolver()
         {
-#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NET45
+#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NETSTANDARD2_1 && !NET45
             NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
 #endif
         }
@@ -18,7 +23,7 @@ namespace TurboJpegWrapper
             // Dummy call to trigger the static constructor
         }
 
-#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NET45
+#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NETSTANDARD2_1 && !NET45
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
             if (libraryName != TurboJpegImport.UnmanagedLibrary)
