@@ -163,5 +163,92 @@ namespace TurboJpegWrapper.Tests
                 }
             }
         }
+
+        [Theory]
+        [CombinatorialData]
+        public void CompressByteArrayToByteArray(
+            [CombinatorialValues(
+            TJSubsamplingOption.Gray,
+            TJSubsamplingOption.Chrominance411,
+            TJSubsamplingOption.Chrominance420,
+            TJSubsamplingOption.Chrominance440,
+            TJSubsamplingOption.Chrominance422,
+            TJSubsamplingOption.Chrominance444)]
+            TJSubsamplingOption options,
+            [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]
+            int quality)
+        {
+            foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
+            {
+                try
+                {
+                    var data = bitmap.LockBits(
+                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        ImageLockMode.ReadOnly,
+                        bitmap.PixelFormat);
+
+                    var stride = data.Stride;
+                    var width = data.Width;
+                    var height = data.Height;
+                    var pixelFormat = data.PixelFormat;
+
+                    var buf = new byte[stride * height];
+                    Marshal.Copy(data.Scan0, buf, 0, buf.Length);
+                    bitmap.UnlockBits(data);
+
+                    Trace.WriteLine($"Options: {options}; Quality: {quality}");
+                    byte[] target = new byte[this.compressor.GetBufferSize(width, height, options)];
+
+                    this.compressor.Compress(buf, target, stride, width, height, pixelFormat, options, quality, TJFlags.None);
+                }
+                finally
+                {
+                    bitmap.Dispose();
+                }
+            }
+        }
+
+        [Theory]
+        [CombinatorialData]
+        public unsafe void CompressSpanToSpan(
+            [CombinatorialValues(
+            TJSubsamplingOption.Gray,
+            TJSubsamplingOption.Chrominance411,
+            TJSubsamplingOption.Chrominance420,
+            TJSubsamplingOption.Chrominance440,
+            TJSubsamplingOption.Chrominance422,
+            TJSubsamplingOption.Chrominance444)]
+            TJSubsamplingOption options,
+            [CombinatorialValues(1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100)]
+            int quality)
+        {
+            foreach (var bitmap in TestUtils.GetTestImages("*.bmp"))
+            {
+                try
+                {
+                    var data = bitmap.LockBits(
+                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        ImageLockMode.ReadOnly,
+                        bitmap.PixelFormat);
+
+                    var stride = data.Stride;
+                    var width = data.Width;
+                    var height = data.Height;
+                    var pixelFormat = data.PixelFormat;
+
+                    Span<byte> buf = new Span<byte>((byte*)data.Scan0, stride * height);
+                    bitmap.UnlockBits(data);
+
+                    Trace.WriteLine($"Options: {options}; Quality: {quality}");
+                    Span<byte> target = new byte[this.compressor.GetBufferSize(width, height, options)];
+
+                    this.compressor.Compress(buf, target, stride, width, height, pixelFormat, options, quality, TJFlags.None);
+                }
+                finally
+                {
+                    bitmap.Dispose();
+                }
+            }
+        }
     }
 }
