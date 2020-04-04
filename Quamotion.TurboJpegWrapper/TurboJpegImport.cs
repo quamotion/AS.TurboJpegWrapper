@@ -18,7 +18,6 @@ namespace TurboJpegWrapper
     /// </summary>
     internal static class TurboJpegImport
     {
-
         /// <summary>
         /// Pixel size (in bytes) for a given pixel format.
         /// </summary>
@@ -578,6 +577,60 @@ namespace TurboJpegWrapper
             IntPtr[] dstBufs,
             uint[] dstSizes,
             IntPtr transforms,
+            int flags);
+
+        public static unsafe int TjCompressFromYUVPlanes(
+            IntPtr handle,
+            byte** srcPlanes,
+            int width,
+            int* strides,
+            int height,
+            int subsamp,
+            ref IntPtr jpegBuf,
+            ref uint jpegSize,
+            int jpegQual,
+            int flags)
+        {
+            switch (IntPtr.Size)
+            {
+                case 4:
+                    return TjCompressFromYUVPlanes_x86(handle, srcPlanes, width, strides, height, subsamp, ref jpegBuf, ref jpegSize, jpegQual, flags);
+
+                case 8:
+                    ulong s = (ulong)jpegSize;
+                    int ret = TjCompressFromYUVPlanes_x64(handle, srcPlanes, width, strides, height, subsamp, ref jpegBuf, ref s, jpegQual, flags);
+                    jpegSize = (uint)s;
+                    return ret;
+
+                default:
+                    throw new InvalidOperationException("Invalid platform. Can not find proper function");
+            }
+        }
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjCompressFromYUVPlanes")]
+        private static unsafe extern int TjCompressFromYUVPlanes_x86(
+            IntPtr handle,
+            byte** srcPlanes,
+            int width,
+            int* strides,
+            int height,
+            int subsamp,
+            ref IntPtr jpegBuf,
+            ref uint jpegSize,
+            int jpegQual,
+            int flags);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjCompressFromYUVPlanes")]
+        private static unsafe extern int TjCompressFromYUVPlanes_x64(
+            IntPtr handle,
+            byte** srcPlanes,
+            int width,
+            int* strides,
+            int height,
+            int subsamp,
+            ref IntPtr jpegBuf,
+            ref ulong jpegSize,
+            int jpegQual,
             int flags);
     }
 }

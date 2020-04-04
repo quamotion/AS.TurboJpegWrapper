@@ -86,6 +86,21 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
+        /// Allocate an image buffer for use with TurboJPEG.
+        /// </summary>
+        /// <param name="bytes">The number of bytes to allocate.</param>
+        /// <returns>A pointer to a newly-allocated buffer with the specified number of bytes.</returns>
+        /// <seealso cref="Free"/>
+        public static IntPtr Alloc(int bytes) => TurboJpegImport.TjAlloc(bytes);
+
+        /// <summary>
+        /// Free an image buffer previously allocated by TurboJPEG.
+        /// </summary>
+        /// <param name="buffer">Address of the buffer to free.</param>
+        /// <seealso cref="Alloc"/>
+        public static void Free(IntPtr buffer) => TurboJpegImport.TjFree(buffer);
+
+        /// <summary>
         /// Frees unmanaged pointer using allocator.
         /// </summary>
         /// <param name="ptr"></param>
