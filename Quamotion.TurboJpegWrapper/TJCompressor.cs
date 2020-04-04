@@ -381,6 +381,114 @@ namespace TurboJpegWrapper
         }
 
         /// <summary>
+        /// Compress a set of Y, U (Cb), and V (Cr) image planes into a JPEG image.
+        /// </summary>
+        /// <param name="yPlane">
+        /// A pointer to the Y image planes of the YUV image to be decoded.
+        /// The size of the plane should match the value returned by tjPlaneSizeYUV() for the given image width, height, strides, and level of chrominance subsampling.
+        /// </param>
+        /// <param name="uPlane">
+        /// A pointer to the U (Cb) image plane (or just <see langword="null"/>, if decoding a grayscale image) of the YUV image to be decoded.
+        /// The size of the plane should match the value returned by tjPlaneSizeYUV() for the given image width, height, strides, and level of chrominance subsampling.
+        /// </param>
+        /// <param name="vPlane">
+        /// A pointer to the V (Cr)image plane (or just <see langword="null"/>, if decoding a grayscale image) of the YUV image to be decoded.
+        /// The size of the plane should match the value returned by tjPlaneSizeYUV() for the given image width, height, strides, and level of chrominance subsampling.
+        /// </param>
+        /// <param name="width">
+        /// The width (in pixels) of the source image. If the width is not an even multiple of the MCU block width (see tjMCUWidth), then an intermediate buffer copy will be performed within TurboJPEG.
+        /// </param>
+        /// <param name="strides">
+        /// An array of integers, each specifying the number of bytes per line in the corresponding plane of the YUV source image.
+        /// Setting the stride for any plane to 0 is the same as setting it to the plane width (see YUV Image Format Notes.)
+        /// If strides is <see langword="null"/>, then the strides for all planes will be set to their respective plane widths.
+        /// You can adjust the strides in order to specify an arbitrary amount of line padding in each plane or to decode a subregion of a larger YUV planar image.
+        /// </param>
+        /// <param name="height">
+        /// The height (in pixels) of the source image. If the height is not an even multiple of the MCU block height (see tjMCUHeight), then an intermediate buffer copy will be performed within TurboJPEG.
+        /// </param>
+        /// <param name="subsamp">
+        /// The level of chrominance subsampling used in the source image (see Chrominance subsampling options.)
+        /// </param>
+        /// <param name="jpegBuf">
+        /// A pointer to an image buffer that will receive the JPEG image. TurboJPEG has the ability to reallocate the JPEG buffer to accommodate the size of the JPEG image. Thus, you can choose to:
+        /// <list type="number">
+        ///   <item>
+        ///      pre-allocate the JPEG buffer with an arbitrary size using <see cref="TJUtils.Alloc"/> and let TurboJPEG grow the buffer as needed,
+        ///   </item>
+        ///   <item>
+        ///     set* jpegBuf to NULL to tell TurboJPEG to allocate the buffer for you, or
+        ///   </item>
+        ///   <item>
+        ///     pre-allocate the buffer to a "worst case" size determined by calling tjBufSize(). This should ensure that the buffer never has to be re-allocated(setting TJFLAG_NOREALLOC guarantees that it won't be.)
+        ///   </item>
+        /// </list>
+        /// If you choose option 1, * jpegSize should be set to the size of your pre-allocated buffer. In any case, unless you have set TJFLAG_NOREALLOC, you should always check *jpegBuf upon return from this function, as it may have changed.
+        /// </param>
+        /// <param name="jpegQual">
+        /// The image quality of the generated JPEG image (1 = worst, 100 = best).
+        /// </param>
+        /// <param name="flags">
+        /// The bitwise OR of one or more of the flags.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Span{byte}"/> which holds the compressed image.
+        /// </returns>
+        public unsafe Span<byte> CompressFromYUVPlanes(
+                Span<byte> yPlane,
+                Span<byte> uPlane,
+                Span<byte> vPlane,
+                int width,
+                int[] strides,
+                int height,
+                TJSubsamplingOption subsamp,
+                Span<byte> jpegBuf,
+                int jpegQual,
+                TJFlags flags)
+        {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(TJCompressor));
+            }
+
+            uint destBufSize = (uint)jpegBuf.Length;
+            IntPtr jpegBufPtr2 = IntPtr.Zero;
+
+            fixed (byte* yPlanePtr = yPlane)
+            fixed (byte* uPlanePtr = uPlane)
+            fixed (byte* vPlanePtr = vPlane)
+            {
+                byte*[] planes = new byte*[] { yPlanePtr, uPlanePtr, vPlanePtr };
+
+                fixed (int* stridesPtr = strides)
+                fixed (byte* jpegBufPtr = jpegBuf)
+                fixed (byte** planesPtr = planes)
+                {
+                    jpegBufPtr2 = (IntPtr)jpegBufPtr;
+
+                    var result = TurboJpegImport.TjCompressFromYUVPlanes(
+                        this.compressorHandle,
+                        planesPtr,
+                        width,
+                        stridesPtr,
+                        height,
+                        (int)subsamp,
+                        ref jpegBufPtr2,
+                        ref destBufSize,
+                        jpegQual,
+                        (int)flags);
+
+                    if (result == -1)
+                    {
+                        TJUtils.GetErrorAndThrow();
+                    }
+                }
+            }
+
+            return new Span<byte>(jpegBufPtr2.ToPointer(), (int)destBufSize);
+        }
+
+        /// <summary>
         /// The maximum size of the buffer (in bytes) required to hold a JPEG image with
         /// the given parameters.  The number of bytes returned by this function is
         /// larger than the size of the uncompressed source image.  The reason for this
