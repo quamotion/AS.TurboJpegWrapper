@@ -356,6 +356,19 @@ namespace TurboJpegWrapper
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjGetScalingFactors")]
         public static extern IntPtr TjGetScalingFactors(out int numscalingfactors);
 
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecodeYUVPlanes")]
+        public static unsafe extern int TjDecodeYUVPlanes(
+            IntPtr handle,
+            byte** srcPlanes,
+            int* strides,
+            int subsamp,
+            IntPtr dstBuf,
+            int width,
+            int pitch,
+            int height,
+            int pixelFormat,
+            int flags);
+
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
