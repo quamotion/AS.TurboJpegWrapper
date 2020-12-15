@@ -1,5 +1,5 @@
 variables:
-  LIBJPEG_TURBO_VERSION: '1.5.3'
+  LIBJPEG_TURBO_VERSION: '2.0.6'
 
 jobs:
 - job: native_windows
@@ -50,13 +50,13 @@ jobs:
       tar xvf libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
     displayName: Download sources
   - script: |
-      cd libjpeg-turbo-${LIBJPEG_TURBO_VERSION}
-      autoreconf -fiv
-      cd ..
-      sh libjpeg-turbo-${LIBJPEG_TURBO_VERSION}/configure --prefix=${BUILD_ARTIFACTSTAGINGDIRECTORY}/libjpeg-turbo/$RID --host=$TARGET
+      mkdir build
+      cd build
+      cmake -G"Unix Makefiles" ../libjpeg-turbo-${LIBJPEG_TURBO_VERSION} -DCMAKE_INSTALL_PREFIX=${BUILD_ARTIFACTSTAGINGDIRECTORY}/libjpeg-turbo/$RID
       make
     displayName: Build
   - script: |
+      cd build
       make install
     displayName: Install
   - task: PublishBuildArtifacts@1
