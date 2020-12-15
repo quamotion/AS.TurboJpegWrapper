@@ -160,6 +160,39 @@ jobs:
       dotnet test -c Release
     displayName: Test
 
+- job: test_ubuntu_20_04
+  dependsOn:
+    - native_windows
+    - native_macos
+  variables:
+    RID: ubuntu.20.04-x64
+  pool:
+    vmImage: 'ubuntu-16.04'
+  container:
+    image: mcr.microsoft.com/dotnet/core/sdk:3.0-focal
+    options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+  steps:
+  - script: |
+      /tmp/docker exec -t -u 0 ci-container \
+      sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+    displayName: Set up sudo
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: libjpeg-turbo
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y libc6-dev libgdiplus libcurl4 libturbojpeg
+    displayName: Install libgdiplus, libcurl
+  - script: |
+      dotnet restore
+      dotnet build -c Release
+    displayName: Build
+  - script: |
+      cd Quamotion.TurboJpegWrapper.Tests
+      echo $LD_LIBRARY_PATH
+      dotnet test -c Release
+    displayName: Test
+
 - job: test_centos_7
   dependsOn:
     - native_windows
