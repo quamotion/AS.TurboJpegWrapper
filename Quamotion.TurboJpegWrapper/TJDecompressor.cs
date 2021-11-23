@@ -4,19 +4,17 @@
 // </copyright>
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+using Validation;
 
 namespace TurboJpegWrapper
 {
     /// <summary>
     /// Implements compression of RGB, CMYK, grayscale images to the jpeg format.
     /// </summary>
-    public class TJDecompressor : IDisposable
+    public class TJDecompressor : IDisposableObservable
     {
         private readonly object @lock = new object();
         private IntPtr decompressorHandle = IntPtr.Zero;
-        private bool isDisposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TJDecompressor"/> class.
@@ -41,6 +39,9 @@ namespace TurboJpegWrapper
         {
             this.Dispose(false);
         }
+
+        /// <inheritdoc/>
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
@@ -103,10 +104,7 @@ namespace TurboJpegWrapper
         /// <param name="stride">Bytes per line in the destination image.</param>
         public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormat destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException("this");
-            }
+            Verify.NotDisposed(this);
 
             int subsampl;
             int colorspace;
@@ -164,75 +162,12 @@ namespace TurboJpegWrapper
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
         public unsafe byte[] Decompress(byte[] jpegBuf, TJPixelFormat destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException("this");
-            }
+            Verify.NotDisposed(this);
 
             var jpegBufSize = (ulong)jpegBuf.Length;
             fixed (byte* jpegPtr = jpegBuf)
             {
                 return this.Decompress((IntPtr)jpegPtr, jpegBufSize, destPixelFormat, flags, out width, out height, out stride);
-            }
-        }
-
-        /// <summary>
-        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
-        /// </summary>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
-        /// <param name="jpegBufSize">Size of the JPEG image (in bytes).</param>
-        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
-        /// <returns>Decompressed image of specified format.</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
-        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed.</exception>
-        public unsafe Bitmap Decompress(IntPtr jpegBuf, ulong jpegBufSize, PixelFormat destPixelFormat, TJFlags flags)
-        {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException("this");
-            }
-
-            var targetFormat = TJUtils.ConvertPixelFormat(destPixelFormat);
-            int width;
-            int height;
-            int stride;
-            var buffer = this.Decompress(jpegBuf, jpegBufSize, targetFormat, flags, out width, out height, out stride);
-            Bitmap result;
-            fixed (byte* bufferPtr = buffer)
-            {
-                result = new Bitmap(width, height, stride, destPixelFormat, (IntPtr)bufferPtr);
-                if (destPixelFormat == PixelFormat.Format8bppIndexed)
-                {
-                    result.Palette = this.FixPaletteToGrayscale(result.Palette);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
-        /// </summary>
-        /// <param name="jpegBuf">A buffer containing the JPEG image to decompress. This buffer is not modified.</param>
-        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
-        /// <returns>Decompressed image of specified format.</returns>
-        /// <exception cref="TJException">Throws if underlying decompress function failed.</exception>
-        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
-        /// <exception cref="NotSupportedException">Convertion to the requested pixel format can not be performed.</exception>
-        public unsafe Bitmap Decompress(byte[] jpegBuf, PixelFormat destPixelFormat, TJFlags flags)
-        {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException("this");
-            }
-
-            var jpegBufSize = (ulong)jpegBuf.Length;
-            fixed (byte* jpegPtr = jpegBuf)
-            {
-                return this.Decompress((IntPtr)jpegPtr, jpegBufSize, destPixelFormat, flags);
             }
         }
 
@@ -305,10 +240,7 @@ namespace TurboJpegWrapper
             TJPixelFormat pixelFormat,
             TJFlags flags)
         {
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException(nameof(TJDecompressor));
-            }
+            Verify.NotDisposed(this);
 
             fixed (byte* yPlanePtr = yPlane)
             fixed (byte* uPlanePtr = uPlane)
@@ -407,14 +339,14 @@ namespace TurboJpegWrapper
         /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
-            if (this.isDisposed)
+            if (this.IsDisposed)
             {
                 return;
             }
 
             lock (this.@lock)
             {
-                if (this.isDisposed)
+                if (this.IsDisposed)
                 {
                     return;
                 }
@@ -424,21 +356,11 @@ namespace TurboJpegWrapper
             }
         }
 
-        private ColorPalette FixPaletteToGrayscale(ColorPalette palette)
-        {
-            for (var index = 0; index < palette.Entries.Length; ++index)
-            {
-                palette.Entries[index] = Color.FromArgb(index, index, index);
-            }
-
-            return palette;
-        }
-
         protected virtual void Dispose(bool callFromUserCode)
         {
             if (callFromUserCode)
             {
-                this.isDisposed = true;
+                this.IsDisposed = true;
             }
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
