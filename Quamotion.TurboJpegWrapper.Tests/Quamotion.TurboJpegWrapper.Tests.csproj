@@ -13,11 +13,12 @@
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="Xunit.Combinatorial" Version="1.2.7" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All"/>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
 	<PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="6.0.5.128" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Quamotion.TurboJpegWrapper.Drawing\Quamotion.TurboJpegWrapper.Drawing.csproj" />
     <ProjectReference Include="..\Quamotion.TurboJpegWrapper\Quamotion.TurboJpegWrapper.csproj" />
   </ItemGroup>
 
