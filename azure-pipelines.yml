@@ -133,7 +133,7 @@ jobs:
   variables:
     RID: ubuntu.18.04-x64
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-20.04'
   container:
     image: mcr.microsoft.com/dotnet/sdk:3.1-bionic
     options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
@@ -167,7 +167,7 @@ jobs:
   variables:
     RID: ubuntu.20.04-x64
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-20.04'
   container:
     image: mcr.microsoft.com/dotnet/sdk:3.1-focal
     options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
@@ -200,7 +200,7 @@ jobs:
   variables:
     RID: centos.7-x64
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-20.04'
   container:
     image: centos:7
     options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
