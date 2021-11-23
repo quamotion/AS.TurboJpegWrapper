@@ -13,7 +13,7 @@ namespace TurboJpegWrapper
     {
         static LibraryResolver()
         {
-#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NETSTANDARD2_1 && !NET45
+#if NETCOREAPP3_0_OR_GREATER
             NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), DllImportResolver);
 #endif
         }
@@ -23,7 +23,7 @@ namespace TurboJpegWrapper
             // Dummy call to trigger the static constructor
         }
 
-#if !NETCOREAPP2_0 && !NETSTANDARD2_0 && !NETSTANDARD2_1 && !NET45
+#if NETCOREAPP3_0_OR_GREATER
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
             if (libraryName != TurboJpegImport.UnmanagedLibrary)

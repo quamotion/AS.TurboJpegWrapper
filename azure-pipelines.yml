@@ -76,6 +76,11 @@ jobs:
   - task: DownloadBuildArtifacts@0
     inputs:
       artifactName: libjpeg-turbo
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 6.0.100
   - script: |
       mkdir %BUILD_ARTIFACTSTAGINGDIRECTORY%\Quamotion.TurboJpegWrapper
       dotnet restore
@@ -108,13 +113,10 @@ jobs:
     displayName: 'Use .NET Core sdk'
     inputs:
       packageType: sdk
-      version: 3.0.100
+      version: 6.0.100
   - task: DownloadBuildArtifacts@0
     inputs:
       artifactName: libjpeg-turbo
-  - script: |
-      brew install mono-libgdiplus
-    displayName: Install libgdiplus
   - script: |
       dotnet restore
       dotnet build -c Release
@@ -126,40 +128,6 @@ jobs:
       dotnet test -c Release
     displayName: Test
 
-- job: test_ubuntu_18_04
-  dependsOn:
-    - native_windows
-    - native_macos
-  variables:
-    RID: ubuntu.18.04-x64
-  pool:
-    vmImage: 'ubuntu-16.04'
-  container:
-    image: mcr.microsoft.com/dotnet/sdk:3.1-bionic
-    options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
-  steps:
-  - script: |
-      /tmp/docker exec -t -u 0 ci-container \
-      sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
-    displayName: Set up sudo
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      artifactName: libjpeg-turbo
-  - script: |
-      sudo add-apt-repository ppa:quamotion/ppa
-      sudo apt-get update
-      sudo apt-get install -y libc6-dev libgdiplus libcurl4 libturbojpeg
-    displayName: Install libgdiplus, libcurl
-  - script: |
-      dotnet restore
-      dotnet build -c Release
-    displayName: Build
-  - script: |
-      cd Quamotion.TurboJpegWrapper.Tests
-      echo $LD_LIBRARY_PATH
-      dotnet test -c Release
-    displayName: Test
-
 - job: test_ubuntu_20_04
   dependsOn:
     - native_windows
@@ -167,9 +135,9 @@ jobs:
   variables:
     RID: ubuntu.20.04-x64
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-20.04'
   container:
-    image: mcr.microsoft.com/dotnet/sdk:3.1-focal
+    image: mcr.microsoft.com/dotnet/sdk:6.0-focal
     options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
   steps:
   - script: |
@@ -200,7 +168,7 @@ jobs:
   variables:
     RID: centos.7-x64
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-20.04'
   container:
     image: centos:7
     options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
@@ -216,8 +184,8 @@ jobs:
       sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
       # Work around https://github.com/dotnet/core/issues/3853
       sudo yum install -y https://packages.microsoft.com/centos/7/prod/netstandard-targeting-pack-2.1.0-x64.rpm
-      sudo yum install -y dotnet-sdk-3.0
-    displayName: Install .NET 3.0 SDK
+      sudo yum install -y dotnet-sdk-6.0
+    displayName: Install .NET 6.0 SDK
   - script: |
       sudo yum-config-manager -y --add-repo https://download.opensuse.org/repositories/home:/qmfrederik/CentOS_7/home:qmfrederik.repo
       sudo yum install -y libgdiplus libturbojpeg
