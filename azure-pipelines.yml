@@ -1,5 +1,5 @@
 variables:
-  LIBJPEG_TURBO_VERSION: '2.0.6'
+  LIBJPEG_TURBO_VERSION: '2.1.2'
 
 jobs:
 - job: native_windows
