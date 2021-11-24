@@ -16,6 +16,10 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJCompressor : IDisposableObservable
     {
+        private const int DefaultQuality = 100;
+        private const TJFlags DefaultFlags = TJFlags.None;
+        private const TJSubsamplingOption DefaultSubsampling = TJSubsamplingOption.Chrominance420;
+
         private readonly object @lock = new object();
         private IntPtr compressorHandle;
 
@@ -82,7 +86,15 @@ namespace TurboJpegWrapper
         /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, TJPixelFormat pixelFormat, TJSubsamplingOption subSamp, int quality, TJFlags flags)
+        public byte[] Compress(
+            IntPtr srcPtr,
+            int stride,
+            int width,
+            int height,
+            TJPixelFormat pixelFormat,
+            TJSubsamplingOption subSamp = DefaultSubsampling,
+            int quality = DefaultQuality,
+            TJFlags flags = DefaultFlags)
         {
             Verify.NotDisposed(this);
 
@@ -130,6 +142,51 @@ namespace TurboJpegWrapper
         /// <param name="destBuf">
         /// A <see cref="byte"/> array containing the compressed image.
         /// </param>
+        /// <param name="width">Width (in pixels) of the source image.</param>
+        /// <param name="height">Height (in pixels) of the source image.</param>
+        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
+        /// <param name="subSamp">
+        /// The level of chrominance subsampling to be used when
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
+        /// </param>
+        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="Span{T}"/> which is a slice of <paramref name="destBuf"/> which holds the compressed image.
+        /// </returns>
+        /// <exception cref="TJException">
+        /// Throws if compress function failed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
+        /// <exception cref="NotSupportedException">
+        /// Some parameters' values are incompatible:
+        /// <list type="bullet">
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
+        /// </list>
+        /// </exception>
+        public Span<byte> Compress(
+            Span<byte> srcBuf,
+            Span<byte> destBuf,
+            int width,
+            int height,
+            TJPixelFormat pixelFormat,
+            TJSubsamplingOption subSamp = DefaultSubsampling,
+            int quality = DefaultQuality,
+            TJFlags flags = DefaultFlags)
+        {
+            return this.Compress(srcBuf, destBuf, stride: 0, width, height, pixelFormat, subSamp, quality, flags);
+        }
+
+        /// <summary>
+        /// Compresses input image to the jpeg format with specified quality.
+        /// </summary>
+        /// <param name="srcBuf">
+        /// Image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
+        /// This buffer is not modified.
+        /// </param>
+        /// <param name="destBuf">
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </param>
         /// <param name="stride">
         /// Bytes per line in the source image.
         /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded,
@@ -161,7 +218,16 @@ namespace TurboJpegWrapper
         /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
         /// </list>
         /// </exception>
-        public unsafe Span<byte> Compress(Span<byte> srcBuf, Span<byte> destBuf, int stride, int width, int height, TJPixelFormat pixelFormat, TJSubsamplingOption subSamp, int quality, TJFlags flags)
+        public unsafe Span<byte> Compress(
+            Span<byte> srcBuf,
+            Span<byte> destBuf,
+            int stride,
+            int width,
+            int height,
+            TJPixelFormat pixelFormat,
+            TJSubsamplingOption subSamp = DefaultSubsampling,
+            int quality = DefaultQuality,
+            TJFlags flags = DefaultFlags)
         {
             Verify.NotDisposed(this);
 
@@ -194,6 +260,45 @@ namespace TurboJpegWrapper
             }
 
             return destBuf.Slice(0, (int)destBufSize);
+        }
+
+        /// <summary>
+        /// Compresses input image to the jpeg format with specified quality.
+        /// </summary>
+        /// <param name="srcPtr">
+        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
+        /// This buffer is not modified.
+        /// </param>
+        /// <param name="width">Width (in pixels) of the source image.</param>
+        /// <param name="height">Height (in pixels) of the source image.</param>
+        /// <param name="pixelFormat">Pixel format of the source image (see <see cref="PixelFormat"/> "Pixel formats").</param>
+        /// <param name="subSamp">
+        /// The level of chrominance subsampling to be used when
+        /// generating the JPEG image (see <see cref="TJSubsamplingOption"/> "Chrominance subsampling options".)
+        /// </param>
+        /// <param name="quality">The image quality of the generated JPEG image (1 = worst, 100 = best).</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags".</param>
+        /// <returns>
+        /// A <see cref="byte"/> array containing the compressed image.
+        /// </returns>
+        /// <exception cref="TJException"> Throws if compress function failed. </exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore.</exception>
+        /// <exception cref="NotSupportedException">
+        /// Some parameters' values are incompatible:
+        /// <list type="bullet">
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOption.Gray"/> and pixel format <see cref="TJPixelFormat.Gray"/></description></item>
+        /// </list>
+        /// </exception>
+        public byte[] Compress(
+            IntPtr srcPtr,
+            int width,
+            int height,
+            TJPixelFormat pixelFormat,
+            TJSubsamplingOption subSamp = DefaultSubsampling,
+            int quality = DefaultQuality,
+            TJFlags flags = DefaultFlags)
+        {
+            return this.Compress(srcPtr, 0, width, height, pixelFormat, subSamp, quality, flags);
         }
 
         /// <summary>
@@ -251,16 +356,16 @@ namespace TurboJpegWrapper
         /// A <see cref="Span{byte}"/> which holds the compressed image.
         /// </returns>
         public unsafe Span<byte> CompressFromYUVPlanes(
-                Span<byte> yPlane,
-                Span<byte> uPlane,
-                Span<byte> vPlane,
-                int width,
-                int[] strides,
-                int height,
-                TJSubsamplingOption subsamp,
-                Span<byte> jpegBuf,
-                int jpegQual,
-                TJFlags flags)
+            Span<byte> yPlane,
+            Span<byte> uPlane,
+            Span<byte> vPlane,
+            int width,
+            int[] strides,
+            int height,
+            TJSubsamplingOption subsamp,
+            Span<byte> jpegBuf,
+            int jpegQual = DefaultQuality,
+            TJFlags flags = DefaultFlags)
         {
             Verify.NotDisposed(this);
 
