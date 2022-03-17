@@ -7,6 +7,8 @@ using System;
 using System.Buffers;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace TurboJpegWrapper.Tests
@@ -110,6 +112,33 @@ namespace TurboJpegWrapper.Tests
             }
 
             ArrayPool<byte>.Shared.Return(outBuf);
+        }
+
+        [Fact]
+        public void GetImageInfoPointer()
+        {
+            var data = TestUtils.GetTestImagesData("testorig.jpg").Single();
+
+            var handle = GCHandle.Alloc(data.Item2, GCHandleType.Pinned);
+            this.decompressor.GetImageInfo(handle.AddrOfPinnedObject(), (ulong)data.Item2.Length, TJPixelFormat.RGB, out int width, out int height, out int stride, out int bufSize);
+            handle.Free();
+
+            Assert.Equal(227, width);
+            Assert.Equal(149, height);
+            Assert.Equal(684, stride);
+            Assert.Equal(101916, bufSize);
+        }
+
+        [Fact]
+        public void GetImageInfoSpan()
+        {
+            var data = TestUtils.GetTestImagesData("testorig.jpg").Single();
+            this.decompressor.GetImageInfo(data.Item2.AsSpan(), TJPixelFormat.RGB, out int width, out int height, out int stride, out int bufSize);
+
+            Assert.Equal(227, width);
+            Assert.Equal(149, height);
+            Assert.Equal(684, stride);
+            Assert.Equal(101916, bufSize);
         }
     }
 }

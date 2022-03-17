@@ -294,22 +294,51 @@ namespace TurboJpegWrapper
         /// <param name="bufSize">
         /// The size of a buffer that can receive the uncompressed JPEG image.
         /// </param>
-        public void GetImageInfo(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormat destPixelFormat, out int width, out int height, out int stride, out int bufSize)
+        public unsafe void GetImageInfo(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormat destPixelFormat, out int width, out int height, out int stride, out int bufSize)
+        {
+            this.GetImageInfo(new Span<byte>(jpegBuf.ToPointer(), (int)jpegBufSize), destPixelFormat, out width, out height, out stride, out bufSize);
+        }
+
+        /// <summary>
+        /// Retrieve information about a JPEG image without decompressing it.
+        /// </summary>
+        /// <param name="jpegBuf">
+        /// Pointer to a buffer containing a JPEG image.  This buffer is not modified.
+        /// </param>
+        /// <param name="destPixelFormat">
+        /// The pixel format of the uncompressed image.
+        /// </param>
+        /// <param name="width">
+        /// Pointer to an integer variable that will receive the width (in pixels) of the JPEG image.
+        /// </param>
+        /// <param name="height">
+        /// Pointer to an integer variable that will receive the height (in pixels) of the JPEG image.
+        /// </param>
+        /// <param name="stride">
+        /// Pointer to an integer variable that will receive the stride (in bytes) of the JPEG image.
+        /// </param>
+        /// <param name="bufSize">
+        /// The size of a buffer that can receive the uncompressed JPEG image.
+        /// </param>
+        public unsafe void GetImageInfo(Span<byte> jpegBuf, TJPixelFormat destPixelFormat, out int width, out int height, out int stride, out int bufSize)
         {
             int subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.TjDecompressHeader(
-                this.decompressorHandle,
-                jpegBuf,
-                jpegBufSize,
-                out width,
-                out height,
-                out subsampl,
-                out colorspace);
+            fixed (byte* jpegBufPtr = jpegBuf)
+            {
+                var funcResult = TurboJpegImport.TjDecompressHeader(
+                    this.decompressorHandle,
+                    new IntPtr(jpegBufPtr),
+                    (ulong)jpegBuf.Length,
+                    out width,
+                    out height,
+                    out subsampl,
+                    out colorspace);
 
-            stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
-            bufSize = stride * height;
+                stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
+                bufSize = stride * height;
+            }
         }
 
         /// <summary>
