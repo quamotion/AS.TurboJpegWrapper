@@ -96,7 +96,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)/Quamotion.TurboJpegWrapper'
-      artifactName: 'nuget'
+      artifactName: 'TurboJpegWrapper-$(Build.BuildNumber)'
       publishLocation: 'Container'
     displayName: Publish
 
