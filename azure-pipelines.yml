@@ -15,7 +15,7 @@ jobs:
         PLATFORM: Win32
         RID: win7-x86
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'windows-2019'
   steps:
   - script: |
       %VCPKG_INSTALLATION_ROOT%\vcpkg version
@@ -71,7 +71,7 @@ jobs:
     - native_windows
     - native_macos
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-2019'
   steps:
   - task: DownloadBuildArtifacts@0
     inputs:
@@ -105,7 +105,7 @@ jobs:
     - native_windows
     - native_macos
   pool:
-    vmImage: 'macOS-10.14'
+    vmImage: 'macOS-10.15'
   variables:
     RID: osx-x64
   steps:
