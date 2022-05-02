@@ -55,6 +55,13 @@ namespace TurboJpegWrapper
             { TJSubsamplingOption.Chrominance411, new Size(32, 8) },
         };
 
+        /// <summary>
+        /// A value indicating whether we're using tjDecompress3 or falling back
+        /// to tjDecompress2. tjDecompress3 is not available on old versions of turbojpeg,
+        /// such as the version used in CentOS 7.
+        /// </summary>
+        private static bool useTjDecompress2 = false;
+
         public const string UnmanagedLibrary = "turbojpeg";
 
 #if NET45
@@ -318,29 +325,67 @@ namespace TurboJpegWrapper
             out int jpegSubsamp,
             out int jpegColorspace)
         {
-            switch (IntPtr.Size)
+            try
             {
-                case 4:
-                    return TjDecompressHeader3_x86(
-                        handle,
-                        jpegBuf,
-                        (uint)jpegSize,
-                        out width,
-                        out height,
-                        out jpegSubsamp,
-                        out jpegColorspace);
-                case 8:
-                    return TjDecompressHeader3_x64(
-                        handle,
-                        jpegBuf,
-                        jpegSize,
-                        out width,
-                        out height,
-                        out jpegSubsamp,
-                        out jpegColorspace);
+                if (!useTjDecompress2)
+                {
+                    switch (IntPtr.Size)
+                    {
+                        case 4:
+                            return TjDecompressHeader3_x86(
+                                handle,
+                                jpegBuf,
+                                (uint)jpegSize,
+                                out width,
+                                out height,
+                                out jpegSubsamp,
+                                out jpegColorspace);
+                        case 8:
+                            return TjDecompressHeader3_x64(
+                                handle,
+                                jpegBuf,
+                                jpegSize,
+                                out width,
+                                out height,
+                                out jpegSubsamp,
+                                out jpegColorspace);
 
-                default:
-                    throw new InvalidOperationException("Invalid platform. Can not find proper function");
+                        default:
+                            throw new InvalidOperationException("Invalid platform. Can not find proper function");
+                    }
+                }
+                else
+                {
+                    jpegColorspace = -1;
+
+                    switch (IntPtr.Size)
+                    {
+                        case 4:
+                            return TjDecompressHeader2_x86(
+                                handle,
+                                jpegBuf,
+                                (uint)jpegSize,
+                                out width,
+                                out height,
+                                out jpegSubsamp);
+                        case 8:
+                            return TjDecompressHeader2_x64(
+                                handle,
+                                jpegBuf,
+                                jpegSize,
+                                out width,
+                                out height,
+                                out jpegSubsamp);
+
+                        default:
+                            throw new InvalidOperationException("Invalid platform. Can not find proper function");
+                    }
+                }
+            }
+            catch (EntryPointNotFoundException) when (!useTjDecompress2)
+            {
+                useTjDecompress2 = true;
+                return TjDecompressHeader(handle, jpegBuf, jpegSize, out width, out height, out jpegSubsamp, out jpegColorspace);
             }
         }
 
@@ -560,6 +605,12 @@ namespace TurboJpegWrapper
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
         private static extern int TjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp, out int jpegColorspace);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader2")]
+        private static extern int TjDecompressHeader2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out int jpegSubsamp);
+
+        [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader2")]
+        private static extern int TjDecompressHeader2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out int jpegSubsamp);
 
         [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
         private static extern int TjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
