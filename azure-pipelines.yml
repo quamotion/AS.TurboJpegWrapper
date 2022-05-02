@@ -187,8 +187,8 @@ jobs:
       sudo yum install -y dotnet-sdk-6.0
     displayName: Install .NET 6.0 SDK
   - script: |
-      sudo yum-config-manager -y --add-repo https://download.opensuse.org/repositories/home:/qmfrederik/CentOS_7/home:qmfrederik.repo
-      sudo yum install -y libgdiplus libturbojpeg
+      sudo yum-config-manager -y --add-repo https://download.mono-project.com/repo/centos7-stable.repo
+      sudo yum install -y libgdiplus turbojpeg
     displayName: Install libjpeg-turbo native binaries
   - script: |
       dotnet restore
