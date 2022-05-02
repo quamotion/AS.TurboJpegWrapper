@@ -43,7 +43,6 @@ namespace TurboJpegWrapper.Tests
         public void CompressBitmap(
             [CombinatorialValues(
             TJSubsamplingOption.Gray,
-            TJSubsamplingOption.Chrominance411,
             TJSubsamplingOption.Chrominance420,
             TJSubsamplingOption.Chrominance440,
             TJSubsamplingOption.Chrominance422,
@@ -80,7 +79,6 @@ namespace TurboJpegWrapper.Tests
         public void CompressIntPtr(
             [CombinatorialValues(
             TJSubsamplingOption.Gray,
-            TJSubsamplingOption.Chrominance411,
             TJSubsamplingOption.Chrominance420,
             TJSubsamplingOption.Chrominance440,
             TJSubsamplingOption.Chrominance422,
@@ -126,7 +124,6 @@ namespace TurboJpegWrapper.Tests
         public void CompressByteArray(
             [CombinatorialValues(
             TJSubsamplingOption.Gray,
-            TJSubsamplingOption.Chrominance411,
             TJSubsamplingOption.Chrominance420,
             TJSubsamplingOption.Chrominance440,
             TJSubsamplingOption.Chrominance422,
@@ -169,7 +166,6 @@ namespace TurboJpegWrapper.Tests
         public void CompressByteArrayToByteArray(
             [CombinatorialValues(
             TJSubsamplingOption.Gray,
-            TJSubsamplingOption.Chrominance411,
             TJSubsamplingOption.Chrominance420,
             TJSubsamplingOption.Chrominance440,
             TJSubsamplingOption.Chrominance422,
@@ -213,7 +209,6 @@ namespace TurboJpegWrapper.Tests
         public unsafe void CompressSpanToSpan(
             [CombinatorialValues(
             TJSubsamplingOption.Gray,
-            TJSubsamplingOption.Chrominance411,
             TJSubsamplingOption.Chrominance420,
             TJSubsamplingOption.Chrominance440,
             TJSubsamplingOption.Chrominance422,
